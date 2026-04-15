@@ -619,16 +619,13 @@ async function loadApp(name, el, data) {
             openTabs.forEach((h, i) => {
                 const tab = document.createElement("div");
                 tab.textContent = h.id;
-
-                tab.style.padding = "2px 6px";
-                tab.style.background = i === activeTab ? "white" : "#c0c0c0";
-
+                tab.className = "tab";                 
+                if (i === activeTab) tab.classList.add("active"); 
                 tab.onclick = () => {
                     activeTab = i;
                     renderTabs();
                     renderContent();
                 };
-
                 tabsEl.appendChild(tab);
             });
         }
