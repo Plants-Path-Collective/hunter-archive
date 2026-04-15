@@ -163,10 +163,10 @@ async function loadApp(name, el, data) {
         const h = data;
 
         el.innerHTML = `
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; height:100%;">
+    <div class="split split-30-70">
 
         <!-- LEFT: EDITOR -->
-        <div class="panel">
+        <div class="stack">
 
             <h3>${h.id}</h3>
 
@@ -185,7 +185,7 @@ async function loadApp(name, el, data) {
             </div>
 
             <!-- IMAGES -->
-            <div class="panel" style="margin-top:6px">
+            <div class="panel" style="margin-top:6px; aspect-ratio: 4:3">
                 <h3>Images (Imgur URLs)</h3>
 
                 <textarea id="imgs" placeholder="one url per line"></textarea>
@@ -218,7 +218,7 @@ async function loadApp(name, el, data) {
         </div>
 
         <!-- RIGHT: PREVIEW -->
-        <div class="panel" id="preview"></div>
+        <div class="panel scroll" id="preview"></div>
 
     </div>
     `;
@@ -270,7 +270,7 @@ async function loadApp(name, el, data) {
                     <div class="panel">
                         ${data.images[0]
                 ? `<img src="${data.images[0]}" style="width:100%; image-rendering:pixelated;">`
-                : `<div style="height:200px; display:flex; align-items:center; justify-content:center;">No Image</div>`
+                : `<div style="height:200px; display:flex; align-items:center; justify-content:center; aspect-ratio: 4:3">No Image</div>`
             }
                     </div>
 
@@ -340,9 +340,9 @@ async function loadApp(name, el, data) {
         el.innerHTML = `
         <div id="file-tabs" style="display:flex; gap:2px; margin-bottom:4px;"></div>
 
-        <div style="display:grid; grid-template-columns:180px 1fr; gap:6px; height:100%;">
-            <div class="panel" id="file-sidebar"></div>
-            <div class="panel" id="file-content"></div>
+        <div class="split split-30-70">
+            <div class="stack" id="file-sidebar"></div>
+            <div class="panel scroll" id="file-content"></div>
         </div>
         `;
 
@@ -429,7 +429,7 @@ async function loadApp(name, el, data) {
                 <div class="panel">
                     ${h.images?.[0]
                 ? `<img src="${h.images[0]}" style="width:100%; image-rendering:pixelated;">`
-                : `<div style="height:200px; display:flex; align-items:center; justify-content:center;">
+                : `<div style="height:200px; display:flex; align-items:center; justify-content:center; aspect-ratio: 4:3">
                             No Image
                            </div>`
             }

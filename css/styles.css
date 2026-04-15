@@ -5,12 +5,10 @@
     --border-dark: #000;
 }
 
-h3 {
-    margin: 0 0 4px 0;
-    font-size: 12px;
-}
+/* =========================
+   BASE
+========================= */
 
-/* BASE */
 body {
     margin: 0;
     background: var(--bg);
@@ -18,22 +16,35 @@ body {
     overflow: hidden;
 }
 
-/* DESKTOP */
+h3 {
+    margin: 0 0 4px 0;
+    font-size: 12px;
+}
+
+/* =========================
+   DESKTOP
+========================= */
+
 #desktop {
     position: absolute;
     top: 0;
     bottom: 40px;
     left: 0;
     right: 0;
+
     padding: 10px;
+
     display: grid;
     grid-template-columns: repeat(auto-fill, 50px);
     grid-auto-rows: 80px;
-    flex-direction: column;
+
     gap: 16px;
 }
 
-/* ICONO */
+/* =========================
+   ICONS
+========================= */
+
 .icon {
     width: 72px;
 
@@ -51,53 +62,57 @@ body {
     user-select: none;
 }
 
-/* IMAGEN */
 .icon-img {
     width: 32px;
     height: 32px;
-
-    image-rendering: pixelated; /* clave retro */
-    display: block;
+    image-rendering: pixelated;
 }
 
-/* TEXTO */
 .icon-label {
     font-size: 11px;
     color: white;
-
     text-align: center;
     line-height: 1.1;
-
     max-width: 70px;
     word-wrap: break-word;
 }
 
-/* HOVER (ligero) */
 .icon:hover .icon-label {
     background: #000080;
     color: white;
 }
 
-/* CLICK */
 .icon:active {
     transform: translateY(1px);
 }
 
-/* WINDOW */
+/* =========================
+   WINDOW
+========================= */
+
 .window {
     position: absolute;
     width: 840px;
+
     background: var(--window);
+
     border: 2px solid;
     border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+
     display: flex;
     flex-direction: column;
+
+    min-height: 0;
 }
 
-/* TITLE BAR */
+/* =========================
+   TITLE BAR
+========================= */
+
 .title-bar {
     background: navy;
     color: white;
+
     padding: 2px 6px;
 
     display: flex;
@@ -108,12 +123,12 @@ body {
     cursor: move;
 }
 
-/* TEXTO */
 .title-text {
     flex: 1;
 }
 
-/* CONTROLES DERECHA */
+/* CONTROLS */
+
 .window-controls {
     display: flex;
     gap: 2px;
@@ -122,9 +137,12 @@ body {
 .window-controls button {
     width: 16px;
     height: 16px;
+
     background: #c0c0c0;
+
     border: 2px outset #fff;
     padding: 0;
+
     cursor: pointer;
 }
 
@@ -133,69 +151,25 @@ body {
 }
 
 /* =========================
-   FILE EXPLORER UI
+   CONTENT
 ========================= */
 
-/* TABS BAR */
-#file-tabs {
-    background: #c0c0c0;
-    border: 2px solid;
-    border-color: #fff #000 #000 #fff;
-    padding: 2px;
-    display: flex;
-    gap: 2px;
-}
-
-/* TAB */
-.tab {
-    padding: 2px 8px;
-    background: #c0c0c0;
-    border: 2px solid;
-    border-color: #fff #000 #000 #fff;
-}
-
-.tab.active {
-    background: white;
-}
-
-/* SIDEBAR */
-#file-sidebar {
-    background: #fff;
-    border: 2px inset #000;
-    padding: 4px;
-    overflow-y: auto;
-}
-
-/* SIDEBAR ITEMS */
-#file-sidebar div {
-    padding: 2px;
-}
-
-#file-sidebar div:hover {
-    background: #000080;
-    color: white;
-}
-
-/* CONTENT AREA */
-#file-content {
-    background: #fff;
-    border: 2px inset #000;
-    padding: 6px;
-    overflow-y: auto;
-}
-
-/* CONTENT */
 .content {
     padding: 6px;
     flex: 1;
-    overflow-y: auto;
 
     display: flex;
     flex-direction: column;
     gap: 6px;
+
+    overflow: hidden; /* clave */
+    min-height: 0;
 }
 
-/* PANEL HUNDIDO (INPUT / CONTENT) */
+/* =========================
+   PANEL SYSTEM
+========================= */
+
 .panel {
     background: white;
 
@@ -203,17 +177,17 @@ body {
     border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 
     padding: 6px;
-
     box-sizing: border-box;
+
+    min-height: 0;
 }
 
 .panel h3 {
-    margin: 0 0 4px 0;
-    font-size: 12px;
     border-bottom: 1px solid #000;
 }
 
-/* PANEL ELEVADO */
+/* PANEL RAISED */
+
 .panel-raised {
     background: var(--window);
 
@@ -223,6 +197,135 @@ body {
     padding: 6px;
 }
 
+/* PANEL SCROLL */
+
+.panel.scroll {
+    overflow-y: auto;
+}
+
+/* =========================
+   LAYOUT SYSTEM
+========================= */
+
+/* GRID SPLIT */
+
+.split {
+    display: grid;
+    gap: 6px;
+    height: 100%;
+    min-height: 0;
+}
+
+/* PROPORTIONS */
+
+.split-30-70 {
+    grid-template-columns: 280px 1fr;
+}
+
+.split-70-30 {
+    grid-template-columns: 1fr 280px;
+}
+
+.split-50 {
+    grid-template-columns: 1fr 1fr;
+}
+
+/* STACK */
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: 100%;
+    min-height: 0;
+}
+
+/* SCROLL FIX */
+
+.scroll {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+/* =========================
+   FILE EXPLORER
+========================= */
+
+/* TABS */
+
+#file-tabs {
+    background: #c0c0c0;
+
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+
+    padding: 2px;
+    display: flex;
+    gap: 2px;
+}
+
+.tab {
+    padding: 2px 8px;
+
+    background: #c0c0c0;
+
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+
+    cursor: pointer;
+}
+
+.tab.active {
+    background: white;
+}
+
+/* SIDEBAR */
+
+#file-sidebar {
+    background: #fff;
+    border: 2px inset #000;
+
+    padding: 4px;
+
+    overflow-y: auto;
+    min-height: 0;
+}
+
+#file-sidebar div {
+    padding: 2px;
+}
+
+#file-sidebar div:hover {
+    background: #000080;
+    color: white;
+}
+
+/* CONTENT */
+
+#file-content {
+    background: #fff;
+    border: 2px inset #000;
+
+    padding: 6px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    min-height: 0;
+}
+
+#file-content > .panel {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+/* =========================
+   FORM ELEMENTS
+========================= */
+
 input, textarea, select {
     background: white;
 
@@ -230,9 +333,22 @@ input, textarea, select {
     border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 
     padding: 2px;
+
     font-family: inherit;
     font-size: 12px;
+
+    width: 100%;
+    box-sizing: border-box;
 }
+
+textarea {
+    resize: none;
+    min-height: 60px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
 
 button {
     background: var(--window);
@@ -241,6 +357,7 @@ button {
     border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
 
     padding: 2px 6px;
+
     cursor: pointer;
 }
 
@@ -248,7 +365,10 @@ button:active {
     border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
-/* TASKBAR */
+/* =========================
+   TASKBAR
+========================= */
+
 #taskbar {
     position: fixed;
     bottom: 0;
@@ -256,6 +376,7 @@ button:active {
     right: 0;
 
     height: 40px;
+
     background: #c0c0c0;
 
     display: flex;
@@ -267,6 +388,7 @@ button:active {
 }
 
 /* CLOCK */
+
 #clock {
     min-width: 80px;
     text-align: right;
