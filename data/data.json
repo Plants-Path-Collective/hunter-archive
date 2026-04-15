@@ -9,15 +9,42 @@
   "concepts": {
     "function": [
       { "text": "archiva eventos que no ocurrieron" },
-      { "text": "vende recuerdos ilegales" }
+      { "text": "vende recuerdos ilegales" },
+      { "text": "roba fragmentos de sueños ajenos" }
     ],
     "aesthetic": [
       { "text": "oficina infinita fluorescente" },
-      { "text": "ciudad dentro de un insecto" }
+      { "text": "ciudad dentro de un insecto" },
+      { "text": "biblioteca sumergida en aceite" }
     ],
     "anomaly": [
       { "text": "su sombra actúa antes que él" },
-      { "text": "el tiempo se repite al parpadear" }
+      { "text": "el tiempo se repite al parpadear" },
+      { "text": "sus lágrimas son monedas antiguas" }
     ]
-  }
+  },
+  "passive_pool": [
+    "Resistencia elemental (fuego, hielo, rayo)",
+    "Regeneración rápida fuera de combate",
+    "Percepción extrasensorial (ver invisibilidad)",
+    "Adaptación a cualquier entorno extremo",
+    "Memoria eidética (recuerdo perfecto)",
+    "Suerte sobrenatural (reroll fallos)",
+    "Aura intimidante (enemigos cercanos temen)",
+    "Sintonía con máquinas antiguas",
+    "Inmunidad a venenos y enfermedades",
+    "Paso silencioso (no genera ruido)"
+  ],
+  "active_pool": [
+    "Golpe dimensional (ignora armadura)",
+    "Sobrecarga de energía (daño en área)",
+    "Invocar aliado temporal (criatura de sombra)",
+    "Manipular memoria de un objetivo",
+    "Teletransportarse a un punto visto",
+    "Crear ilusión realista (rango medio)",
+    "Absorber el próximo ataque y devolverlo",
+    "Curar a un aliado con sangre propia",
+    "Leer mente superficial (1 turno)",
+    "Congelar el tiempo por 3 segundos"
+  ]
 }

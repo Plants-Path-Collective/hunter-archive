@@ -17,18 +17,44 @@ function downloadJSON(data) {
 async function loadApp(name, el, data) {
 
     /* =========================
-       GENERATOR
+       GENERADOR
     ========================= */
     if (name === "generator") {
 
         const res = await fetch("data/data.json");
         const DATA = await res.json();
 
+        // Asegurar que existan listas de habilidades (si no están en data.json, usar defaults)
+        const passivePool = DATA.passive_pool || [
+            "Resistencia elemental (fuego, hielo, rayo)",
+            "Regeneración rápida fuera de combate",
+            "Percepción extrasensorial (ver invisibilidad)",
+            "Adaptación a cualquier entorno extremo",
+            "Memoria eidética (recuerdo perfecto)",
+            "Suerte sobrenatural (reroll fallos)",
+            "Aura intimidante (enemigos cercanos temen)",
+            "Sintonía con máquinas antiguas",
+            "Inmunidad a venenos y enfermedades",
+            "Paso silencioso (no genera ruido)"
+        ];
+        const activePool = DATA.active_pool || [
+            "Golpe dimensional (ignora armadura)",
+            "Sobrecarga de energía (daño en área)",
+            "Invocar aliado temporal (criatura de sombra)",
+            "Manipular memoria de un objetivo",
+            "Teletransportarse a un punto visto",
+            "Crear ilusión realista (rango medio)",
+            "Absorber el próximo ataque y devolverlo",
+            "Curar a un aliado con sangre propia",
+            "Leer mente superficial (1 turno)",
+            "Congelar el tiempo por 3 segundos"
+        ];
+
         el.innerHTML = `
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; height:100%;">
 
             <div class="panel">
-                <h3>Generator</h3>
+                <h3>Generador</h3>
 
                 <div class="panel" style="margin-top:6px">
                     <label>Género</label>
@@ -41,15 +67,15 @@ async function loadApp(name, el, data) {
                     <select id="mbti"></select>
                 </div>
 
-                <button id="generate" style="margin-top:6px;">Generate</button>
+                <button id="generate" style="margin-top:6px;">Generar</button>
 
                 <div class="panel" id="result" style="margin-top:6px;">
-                    <p>No generation yet.</p>
+                    <p>Sin generación aún.</p>
                 </div>
             </div>
 
             <div class="panel" id="preview">
-                <p>Waiting for generation...</p>
+                <p>Esperando generación...</p>
             </div>
 
         </div>
@@ -71,41 +97,16 @@ async function loadApp(name, el, data) {
 
         const rand = arr => arr[Math.floor(Math.random() * arr.length)];
 
-        function generateSkills(concepts, cls) {
-            let passive = "Adaptación básica al entorno";
-            let active = "Acción primaria estándar";
-
-            const text = concepts.join(" ").toLowerCase();
-
-            if (text.includes("tiempo")) {
-                passive = "Percibe eventos futuros cercanos";
-                active = "Rebobinar acción reciente";
-            }
-
-            if (text.includes("insecto")) {
-                passive = "Comunicación con enjambres";
-                active = "Invocar unidad insectoide";
-            }
-
-            if (text.includes("vampiro")) {
-                passive = "Regeneración por absorción";
-                active = "Drenar energía vital";
-            }
-
-            if (text.includes("mecánico") || text.includes("máquina")) {
-                passive = "Resistencia estructural aumentada";
-                active = "Sobrecarga de sistema";
-            }
-
-            if (cls === "Archivista") {
-                passive += " (memoria perfecta)";
-            }
-
+        // Genera habilidades completamente al azar, sin depender de conceptos
+        function generateRandomSkills() {
+            const passive = rand(passivePool);
+            const active = rand(activePool);
             return { passive, active };
         }
 
         el.querySelector("#generate").onclick = () => {
 
+            // Conceptos aleatorios desde data.json (no influyen en habilidades)
             const concepts = [
                 rand(DATA.concepts.function).text,
                 rand(DATA.concepts.aesthetic).text,
@@ -113,8 +114,7 @@ async function loadApp(name, el, data) {
             ];
 
             const cls = el.querySelector("#class").value;
-
-            const skills = generateSkills(concepts, cls);
+            const skills = generateRandomSkills();
 
             const hunter = {
                 id: "H-" + Date.now(),
@@ -130,7 +130,7 @@ async function loadApp(name, el, data) {
 
             el.querySelector("#result").innerHTML = `
                 <ul>${concepts.map(c => `<li>${c}</li>`).join("")}</ul>
-                <button id="to-editor">Open in Editor</button>
+                <button id="to-editor">Abrir en Editor</button>
             `;
 
             el.querySelector("#preview").innerHTML = `
@@ -143,8 +143,8 @@ async function loadApp(name, el, data) {
                     </div>
 
                     <div class="panel">
-                        <p><b>Passive:</b> ${skills.passive}</p>
-                        <p><b>Active:</b> ${skills.active}</p>
+                        <p><b>Pasiva:</b> ${skills.passive}</p>
+                        <p><b>Activa:</b> ${skills.active}</p>
                     </div>
                 </div>
             `;
@@ -156,12 +156,235 @@ async function loadApp(name, el, data) {
     }
 
     /* =========================
-        EDITOR (UPGRADED)
+        EDITOR
     ========================= */
     if (name === "editor") {
 
+        // Si no se proporciona un Hunter (abierto desde escritorio)
+        if (!data) {
+            // Cargar lista de hunters desde files.json
+            let huntersList = [];
+            let selectedHunter = null;
+
+            const renderSelector = async () => {
+                try {
+                    const res = await fetch("data/data.json");
+                    const configData = await res.json();
+                    // Opcional: guardar para mostrar info
+                } catch (e) {
+                    console.warn("No se pudo cargar data.json");
+                }
+                try {
+                    const res = await fetch("data/files.json");
+                    huntersList = await res.json();
+                } catch (e) {
+                    huntersList = [];
+                }
+
+                el.innerHTML = `
+                    <div class="stack" style="height:100%;">
+                        <div class="panel">
+                            <h3>Seleccionar Hunter</h3>
+                            <select id="hunterSelect" size="10" style="width:100%; margin-bottom:6px;">
+                                <option value="">-- Cargando --</option>
+                            </select>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                <button id="selectHunterBtn">Editar seleccionado</button>
+                                <button id="newHunterBtn">Crear nuevo Hunter</button>
+                                <button id="refreshListBtn">Recargar lista</button>
+                                <button id="editConfigBtn">Editar configuración (data.json)</button>
+                            </div>
+                        </div>
+                        <div id="selectorPreview" class="panel scroll" style="flex:1;">
+                            <p>Selecciona un Hunter para ver vista previa.</p>
+                        </div>
+                    </div>
+                `;
+
+                const selectEl = el.querySelector("#hunterSelect");
+                selectEl.innerHTML = "";
+                if (huntersList.length === 0) {
+                    selectEl.innerHTML = '<option value="">No hay Hunters disponibles</option>';
+                } else {
+                    huntersList.forEach(h => {
+                        const opt = document.createElement("option");
+                        opt.value = h.id;
+                        opt.textContent = `${h.id} - ${h.class} (${h.mbti})`;
+                        selectEl.appendChild(opt);
+                    });
+                }
+
+                // Vista previa al cambiar selección
+                selectEl.addEventListener("change", () => {
+                    const id = selectEl.value;
+                    const hunter = huntersList.find(h => h.id === id);
+                    if (hunter) {
+                        const previewDiv = el.querySelector("#selectorPreview");
+                        previewDiv.innerHTML = `
+                            <div class="panel">
+                                <h3>${hunter.id}</h3>
+                                <p><b>${hunter.class}</b> — ${hunter.mbti}</p>
+                                <p>${hunter.gender || ""}</p>
+                                <h3>Conceptos</h3>
+                                <ul>${(hunter.concepts || []).map(c => `<li>${c}</li>`).join("")}</ul>
+                                <h3>Descripción</h3>
+                                <p>${hunter.description || "Sin descripción."}</p>
+                                <h3>Habilidades</h3>
+                                <p><b>Pasiva:</b> ${hunter.passive || "-"}</p>
+                                <p><b>Activa:</b> ${hunter.active?.base || "-"}</p>
+                            </div>
+                        `;
+                    } else {
+                        el.querySelector("#selectorPreview").innerHTML = "<p>Selecciona un Hunter para ver vista previa.</p>";
+                    }
+                });
+
+                // Botón editar hunter
+                el.querySelector("#selectHunterBtn").onclick = () => {
+                    const id = selectEl.value;
+                    if (!id) {
+                        alert("Selecciona un Hunter de la lista.");
+                        return;
+                    }
+                    const hunter = huntersList.find(h => h.id === id);
+                    if (hunter) {
+                        openApp("editor", hunter);
+                        el.closest(".window").remove();
+                    }
+                };
+
+                // Botón nuevo Hunter: abre el generador
+                el.querySelector("#newHunterBtn").onclick = () => {
+                    openApp("generator");
+                };
+
+                // Botón recargar
+                el.querySelector("#refreshListBtn").onclick = () => {
+                    renderSelector();
+                };
+
+                // Botón editar data.json
+                el.querySelector("#editConfigBtn").onclick = () => {
+                    openApp("editor", { _type: "dataConfig" });
+                };
+            };
+
+            renderSelector();
+            return; // Salir para no seguir con el editor normal
+        }
+
+        // Si data es un objeto con _type === "dataConfig", editamos data.json
+        if (data._type === "dataConfig") {
+            let configJson = "";
+            let parsedConfig = null;
+
+            // Función para cargar data.json actual
+            const loadConfig = async () => {
+                try {
+                    const res = await fetch("data/data.json");
+                    parsedConfig = await res.json();
+                    configJson = JSON.stringify(parsedConfig, null, 2);
+                } catch (e) {
+                    parsedConfig = null;
+                    configJson = "{\n  \"error\": \"No se pudo cargar data.json\"\n}";
+                }
+                renderConfigEditor();
+            };
+
+            const renderConfigEditor = () => {
+                el.innerHTML = `
+                    <div class="split split-30-70" style="height:100%;">
+                        <div class="stack">
+                            <div class="panel">
+                                <h3>Editar data.json</h3>
+                                <textarea id="configJson" style="height:300px; font-family:monospace;">${escapeHtml(configJson)}</textarea>
+                                <div style="display:flex; gap:6px; margin-top:6px;">
+                                    <button id="previewConfigBtn">Vista previa</button>
+                                    <button id="downloadConfigBtn">Descargar JSON</button>
+                                    <button id="resetConfigBtn">Recargar original</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel scroll" id="configPreview">
+                            <p>Haz clic en "Vista previa" para ver cómo queda la configuración.</p>
+                        </div>
+                    </div>
+                `;
+
+                const textarea = el.querySelector("#configJson");
+                const previewDiv = el.querySelector("#configPreview");
+
+                // Vista previa
+                el.querySelector("#previewConfigBtn").onclick = () => {
+                    try {
+                        const newConfig = JSON.parse(textarea.value);
+                        previewDiv.innerHTML = `
+                            <div class="panel">
+                                <h3>Vista previa de data.json</h3>
+                                <h4>Géneros</h4>
+                                <ul>${newConfig.genders?.map(g => `<li>${escapeHtml(g)}</li>`).join("") || "<li>No definido</li>"}</ul>
+                                <h4>MBTI</h4>
+                                <ul>${newConfig.mbti?.map(m => `<li>${escapeHtml(m)}</li>`).join("") || "<li>No definido</li>"}</ul>
+                                <h4>Clases</h4>
+                                <ul>${newConfig.classes?.map(c => `<li>${escapeHtml(c.name || c)}</li>`).join("") || "<li>No definido</li>"}</ul>
+                                <h4>Conceptos</h4>
+                                <p><b>Función:</b> ${newConfig.concepts?.function?.map(f => f.text).join(", ") || "—"}</p>
+                                <p><b>Estética:</b> ${newConfig.concepts?.aesthetic?.map(a => a.text).join(", ") || "—"}</p>
+                                <p><b>Anomalía:</b> ${newConfig.concepts?.anomaly?.map(a => a.text).join(", ") || "—"}</p>
+                                <h4>Habilidades pasivas (${newConfig.passive_pool?.length || 0})</h4>
+                                <ul>${newConfig.passive_pool?.slice(0,5).map(p => `<li>${escapeHtml(p)}</li>`).join("") || "<li>No definido</li>"}${newConfig.passive_pool?.length > 5 ? "<li>...</li>" : ""}</ul>
+                                <h4>Habilidades activas (${newConfig.active_pool?.length || 0})</h4>
+                                <ul>${newConfig.active_pool?.slice(0,5).map(a => `<li>${escapeHtml(a)}</li>`).join("") || "<li>No definido</li>"}${newConfig.active_pool?.length > 5 ? "<li>...</li>" : ""}</ul>
+                            </div>
+                        `;
+                    } catch (e) {
+                        previewDiv.innerHTML = `<div class="panel" style="color:red;">Error en JSON: ${e.message}</div>`;
+                    }
+                };
+
+                // Descargar
+                el.querySelector("#downloadConfigBtn").onclick = () => {
+                    try {
+                        const newConfig = JSON.parse(textarea.value);
+                        const blob = new Blob([JSON.stringify(newConfig, null, 2)], {type: "application/json"});
+                        const a = document.createElement("a");
+                        a.href = URL.createObjectURL(blob);
+                        a.download = "data.json";
+                        a.click();
+                        URL.revokeObjectURL(a.href);
+                        alert("data.json descargado. Reemplaza el archivo original en la carpeta data/");
+                    } catch (e) {
+                        alert("JSON inválido: " + e.message);
+                    }
+                };
+
+                // Recargar original
+                el.querySelector("#resetConfigBtn").onclick = () => {
+                    loadConfig();
+                };
+            };
+
+            // Función auxiliar para escapar HTML
+            function escapeHtml(str) {
+                if (!str) return "";
+                return str.replace(/[&<>]/g, function(m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                    return c;
+                });
+            }
+
+            loadConfig();
+            return;
+        }
+
+        // Si llegamos aquí, es porque se pasó un hunter (data)
         const h = data;
 
+        // ... resto del código del editor (igual que antes, pero con textos en español) ...
         el.innerHTML = `
     <div class="split split-30-70">
 
@@ -178,7 +401,7 @@ async function loadApp(name, el, data) {
 
             <!-- CONCEPTS -->
             <div class="panel" style="margin-top:6px">
-                <h3>Concepts</h3>
+                <h3>Conceptos</h3>
                 <ul>
                     ${h.concepts.map(c => `<li>${c}</li>`).join("")}
                 </ul>
@@ -186,33 +409,33 @@ async function loadApp(name, el, data) {
 
             <!-- IMAGES -->
             <div class="panel" style="margin-top:6px; aspect-ratio: 4:3">
-                <h3>Images (Imgur URLs)</h3>
+                <h3>Imágenes (URLs de Imgur)</h3>
 
-                <textarea id="imgs" placeholder="one url per line"></textarea>
+                <textarea id="imgs" placeholder="una url por línea"></textarea>
             </div>
 
             <!-- DESCRIPTION -->
             <div class="panel" style="margin-top:6px">
-                <h3>Description</h3>
+                <h3>Descripción</h3>
                 <textarea id="desc"></textarea>
             </div>
 
             <!-- ABILITIES -->
             <div class="panel" style="margin-top:6px">
-                <h3>Abilities</h3>
+                <h3>Habilidades</h3>
 
-                <label>Passive</label>
+                <label>Pasiva</label>
                 <input id="passive">
 
-                <label>Active</label>
+                <label>Activa</label>
                 <input id="active">
             </div>
 
             <!-- ACTIONS -->
             <div style="margin-top:6px; display:flex; gap:6px;">
-                <button id="update">Update</button>
-                <button id="download">Download JSON</button>
-                <button id="copy">Copy JSON</button>
+                <button id="update">Actualizar</button>
+                <button id="download">Descargar JSON</button>
+                <button id="copy">Copiar JSON</button>
             </div>
 
         </div>
@@ -270,7 +493,7 @@ async function loadApp(name, el, data) {
                     <div class="panel">
                         ${data.images[0]
                 ? `<img src="${data.images[0]}" style="width:100%; image-rendering:pixelated;">`
-                : `<div style="height:200px; display:flex; align-items:center; justify-content:center; aspect-ratio: 4:3">No Image</div>`
+                : `<div style="height:200px; display:flex; align-items:center; justify-content:center; aspect-ratio: 4:3">Sin Imagen</div>`
             }
                     </div>
 
@@ -283,7 +506,7 @@ async function loadApp(name, el, data) {
                         </div>
 
                         <div class="panel" style="margin-top:6px">
-                            <h3>Concepts</h3>
+                            <h3>Conceptos</h3>
                             <ul>
                                 ${data.concepts.map(c => `<li>${c}</li>`).join("")}
                             </ul>
@@ -294,14 +517,14 @@ async function loadApp(name, el, data) {
                 </div>
 
                 <div class="panel" style="margin-top:6px">
-                    <h3>Description</h3>
-                    <p>${data.description || "No description."}</p>
+                    <h3>Descripción</h3>
+                    <p>${data.description || "Sin descripción."}</p>
                 </div>
 
                 <div class="panel" style="margin-top:6px">
-                    <h3>Abilities</h3>
-                    <p><b>Passive:</b> ${data.passive}</p>
-                    <p><b>Active:</b> ${data.active.base}</p>
+                    <h3>Habilidades</h3>
+                    <p><b>Pasiva:</b> ${data.passive}</p>
+                    <p><b>Activa:</b> ${data.active.base}</p>
                 </div>
 
             </div>
@@ -322,14 +545,14 @@ async function loadApp(name, el, data) {
             navigator.clipboard.writeText(
                 JSON.stringify(build(), null, 2)
             );
-            alert("Copied JSON to clipboard");
+            alert("JSON copiado al portapapeles");
         };
 
         render();
     }
 
     /* =========================
-       FILES (DESDE JSON)
+       ARCHIVOS (DESDE JSON)
     ========================= */
     if (name === "files") {
 
@@ -412,7 +635,7 @@ async function loadApp(name, el, data) {
 
         function renderContent() {
             if (!openTabs.length) {
-                content.innerHTML = "<p>Select a file.</p>";
+                content.innerHTML = "<p>Selecciona un archivo.</p>";
                 return;
             }
 
@@ -425,17 +648,17 @@ async function loadApp(name, el, data) {
 
             <div style="display:grid; grid-template-columns:220px 1fr; gap:6px; margin-top:6px;">
 
-                <!-- LEFT: IMAGE -->
+                <!-- IZQUIERDA: IMAGEN -->
                 <div class="panel">
                     ${h.images?.[0]
                 ? `<img src="${h.images[0]}" style="width:100%; image-rendering:pixelated;">`
                 : `<div style="height:200px; display:flex; align-items:center; justify-content:center; aspect-ratio: 4:3">
-                            No Image
+                            Sin Imagen
                            </div>`
             }
                 </div>
 
-                <!-- RIGHT: CORE INFO -->
+                <!-- DERECHA: INFO PRINCIPAL -->
                 <div class="panel">
 
                     <div class="panel">
@@ -444,7 +667,7 @@ async function loadApp(name, el, data) {
                     </div>
 
                     <div class="panel" style="margin-top:6px">
-                        <h3>Concepts</h3>
+                        <h3>Conceptos</h3>
                         <ul>
                             ${(h.concepts || []).map(c => `<li>${c}</li>`).join("")}
                         </ul>
@@ -454,21 +677,21 @@ async function loadApp(name, el, data) {
 
             </div>
 
-            <!-- DESCRIPTION -->
+            <!-- DESCRIPCIÓN -->
             <div class="panel" style="margin-top:6px">
-                <h3>Description</h3>
-                <p>${h.description || "No description."}</p>
+                <h3>Descripción</h3>
+                <p>${h.description || "Sin descripción."}</p>
             </div>
 
-            <!-- ABILITIES -->
+            <!-- HABILIDADES -->
             <div class="panel" style="margin-top:6px">
-                <h3>Abilities</h3>
-                <p><b>Passive:</b> ${h.passive || "-"}</p>
-                <p><b>Active:</b> ${h.active?.base || "-"}</p>
+                <h3>Habilidades</h3>
+                <p><b>Pasiva:</b> ${h.passive || "-"}</p>
+                <p><b>Activa:</b> ${h.active?.base || "-"}</p>
             </div>
 
             <div style="margin-top:6px;">
-                <button id="open-editor">Open in Editor</button>
+                <button id="open-editor">Abrir en Editor</button>
             </div>
 
         </div>
@@ -481,42 +704,48 @@ async function loadApp(name, el, data) {
 
         loadFiles();
     }
-    
+
     /* =========================
-       MAIL / README
+       CORREO / GUÍA (NARRATIVA ACTUALIZADA)
     ========================= */
     if (name === "mail") {
 
         el.innerHTML = `
         <div class="panel">
 
-            <h3>Hunter Association - Internal Mail</h3>
+            <h3>Hunter Association - Correo Interno</h3>
 
             <div class="panel" style="margin-top:6px">
-                <p><b>From:</b> Hunter Association</p>
-                <p><b>Subject:</b> System Usage Protocol</p>
+                <p><b>De:</b> Hunter Association - Terminal de Control</p>
+                <p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.0)</p>
             </div>
 
             <div class="panel" style="margin-top:6px">
                 <p>
-                    Operator,<br><br>
+                    Operador,<br><br>
 
-                    You are accessing the Hunter Archive System.<br><br>
+                    El flujo de trabajo es el siguiente:<br><br>
 
-                    Standard workflow:<br>
-                    - Generate new Hunters via Generator<br>
-                    - Review and edit in Editor<br>
-                    - Store in system archive<br><br>
+                    <b>1. BÚSQUEDA DE HUNTERS</b><br>
+                    Utiliza el módulo <b>Buscador</b> para localizar Hunters en el archivo multidimensional.<br>
+                    Parámetros de búsqueda: Género, Clase, MBTI.<br>
+                    El sistema generará hasta tres conceptos de realidad (función, estética, anomalía) y asignará habilidades pasivas/activas aleatorias.<br><br>
 
-                    Each Hunter must include:<br>
-                    - Class designation<br>
-                    - Behavioral profile (MBTI)<br>
-                    - Conceptual origin markers<br>
-                    - Ability framework<br><br>
+                    <b>2. ARCHIVOS DE HUNTERS</b><br>
+                    El módulo <b>Archivos</b> muestra todos los expedientes de Hunters encontrados.<br>
+                    Cada expediente incluye: ID, clase, MBTI, conceptos, habilidades, descripción e imágenes.<br>
+                    Puedes abrir cualquier expediente directamente en el Editor.<br><br>
 
-                    Maintain structural integrity of all records.<br><br>
+                    <b>3. EDICIÓN Y CORRECCIÓN</b><br>
+                    El <b>Editor</b> permite modificar cualquier dato incongruente:<br>
+                    - Descripción errónea<br>
+                    - Habilidades desajustadas<br>
+                    - Imágenes incorrectas<br>
+                    - Conceptos contradictorios<br><br>
 
-                    Unauthorized modifications will be logged.<br><br>
+                    También puedes editar el archivo de configuración global (<b>data.json</b>) para ajustar las listas de clases, conceptos o habilidades.<br><br>
+
+                    <b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>
 
                     — Hunter Association
                 </p>
@@ -525,5 +754,5 @@ async function loadApp(name, el, data) {
         </div>
     `;
     }
-    
+
 }

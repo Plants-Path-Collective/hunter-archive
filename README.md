@@ -1,149 +1,197 @@
-# Hunter OS
+# Hunter Association OS
 
-## Overview
+## Resumen
 
-Hunter OS is a browser-based fictional operating system designed to create, edit, and manage "Hunter" character files for a narrative-driven DnD-style universe.
+Hunter Association OS es un sistema operativo ficticio basado en navegador, diseñado para crear, editar y gestionar archivos de personajes "Hunter" para un universo narrativo estilo DnD.
 
-The system simulates a retro desktop environment inspired by Windows 95, presenting character data as structured dossiers within a stylized archive system.
+El sistema simula un entorno de escritorio retro inspirado en Windows 95, presentando los datos de los personajes como expedientes estructurados dentro de un sistema de archivo estilizado.
 
-It is intended as a tool for rapid ideation, character design, and worldbuilding workflows.
-
----
-
-## Core Features
-
-### Desktop Environment
-- Draggable windows
-- Layered window system
-- Taskbar with system clock
-- Desktop icons for launching applications
-- Retro-inspired interface
+Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo de construcción de mundos.
 
 ---
 
-## Applications
+## Características principales
 
-### Generator
+### Entorno de escritorio
+- Ventanas arrastrables
+- Sistema de ventanas en capas
+- Barra de tareas con reloj del sistema
+- Iconos en el escritorio para lanzar aplicaciones
+- Interfaz de estilo retro
 
-Creates new Hunters using structured inputs.
+---
 
-Inputs:
-- Gender
-- Class
+## Aplicaciones
+
+### Buscador
+
+Crea nuevos Hunters usando entradas estructuradas.
+
+Entradas:
+- Género
+- Clase
 - MBTI
 
-Outputs:
-- 2–3 randomized concepts
-- Passive ability
-- Active ability (base)
+Salidas:
+- 2–3 conceptos aleatorios (función, estética, anomalía)
+- Habilidad pasiva (aleatoria, independiente)
+- Habilidad activa (aleatoria, independiente)
 
-Purpose:
-- Provide creative direction
-- Support visual and narrative ideation
+Propósito:
+- Proporcionar dirección creativa
+- Apoyar la ideación visual y narrativa
 
 ---
 
 ### Editor
 
-Full character sheet editor with real-time preview.
+Editor completo de hoja de personaje con vista previa en tiempo real.
 
-Features:
-- Description editing
-- Ability customization
-- Multi-image support (Imgur URLs, one per line)
-- Live preview of final character sheet
-- JSON export
-- Clipboard copy
-
----
-
-### Files
-
-Explorer-style interface for all stored Hunters.
-
-Features:
-- Sidebar navigation
-- Tab system for opened Hunters
-- Horizontal character sheet layout
-- Integrated preview
-- Direct access to Editor
+Características:
+- Edición de descripción
+- Personalización de habilidades
+- Soporte para múltiples imágenes (URLs de Imgur, una por línea)
+- Vista previa en vivo de la hoja final
+- Exportación a JSON
+- Copiar al portapapeles
 
 ---
 
-### Inbox
+### Archivos
 
-Internal system mail.
+Interfaz tipo explorador para todos los Hunters almacenados.
 
-Used as:
-- User guide
-- Narrative layer
-- System protocol reference
-
----
-
-## Workflow
-
-Generator → Editor → Export → files.json → Files Viewer
-
-Step-by-step:
-
-1. Open Generator
-2. Create a Hunter
-3. Send to Editor
-4. Refine description, abilities, and images
-5. Copy or download JSON
-6. Paste into `data/files.json`
-7. Open in Files
+Características:
+- Navegación lateral
+- Sistema de pestañas para Hunters abiertos
+- Diseño horizontal de hoja de personaje
+- Vista previa integrada
+- Acceso directo al Editor
 
 ---
 
-## Data Structure
+### Mail
+
+Correo interno del sistema.
+
+Usado como:
+- Guía de usuario
+- Capa narrativa
+- Referencia de protocolo del sistema
+
+---
+
+## Flujo de trabajo
+
+Generador → Editor → Exportar → files.json → Visor de Archivos
+
+Paso a paso:
+
+1. Abrir Generador
+2. Crear un Hunter
+3. Enviar al Editor
+4. Refinar descripción, habilidades e imágenes
+5. Copiar o descargar JSON
+6. Pegar en `data/files.json`
+7. Abrir en Archivos
+
+---
+
+## Estructura de datos
 
 ### `data/data.json`
 
-Defines generator inputs:
-- Classes
-- Genders
-- MBTI types
-- Concept pools
+Define las entradas del generador:
+- Clases
+- Géneros
+- Tipos MBTI
+- Pool de conceptos (función, estética, anomalía)
+- Pool de habilidades pasivas (`passive_pool`)
+- Pool de habilidades activas (`active_pool`)
 
-Structure `data.json` (output):
+Estructura de `data.json`:
+
 ```
 {
-  "id": "H-0001",
-  "gender": "Androgynous",
-  "class": "Archivist",
-  "mbti": "ENTP",
-  "concepts": [
-    "illegal memory trader",
-    "infinite fluorescent office",
-    "time resets when blinking"
+  "genders": ["Masculino", "Femenino", "Andrógino"],
+  "mbti": ["INTJ", "INTP", "ENTP", "INFJ"],
+  "classes": [
+    { "name": "Interfaz" },
+    { "name": "Archivista" },
+    { "name": "Fragmento" }
   ],
-  "passive": "Perceives near-future events (perfect memory)",
-  "active": {
-    "base": "Rewind recent action"
+  "concepts": {
+    "function": [
+      { "text": "archiva eventos que no ocurrieron" },
+      { "text": "vende recuerdos ilegales" }
+    ],
+    "aesthetic": [
+      { "text": "oficina infinita fluorescente" },
+      { "text": "ciudad dentro de un insecto" }
+    ],
+    "anomaly": [
+      { "text": "su sombra actúa antes que él" },
+      { "text": "el tiempo se repite al parpadear" }
+    ]
   },
-  "description": "Hunter specialized in temporal event manipulation.",
-  "images": [
-    "https://i.imgur.com/example.png"
+  "passive_pool": [
+    "Resistencia elemental (fuego, hielo, rayo)",
+    "Regeneración rápida fuera de combate",
+    "Percepción extrasensorial (ver invisibilidad)"
+  ],
+  "active_pool": [
+    "Golpe dimensional (ignora armadura)",
+    "Sobrecarga de energía (daño en área)",
+    "Invocar aliado temporal (criatura de sombra)"
   ]
 }
 ```
 
 ### `data/files.json`
-
-Stores all Hunters.
-
-Structure `files.json`:
+Almacena todos los Hunters. Ejemplo:
 ```
-{
-  "hunters": [
-    {},
-    {}
-  ]
-}
+[
+  {
+    "id": "H-1776239790089",
+    "gender": "Andrógino",
+    "class": "Archivista",
+    "mbti": "ENTP",
+    "concepts": [
+      "vende recuerdos ilegales",
+      "oficina infinita fluorescente",
+      "el tiempo se repite al parpadear"
+    ],
+    "passive": "Percibe eventos futuros cercanos",
+    "active": {
+      "base": "Rebobinar acción reciente"
+    },
+    "description": "Cazador novato",
+    "images": [
+      "https://i.imgur.com/IsyBjDJ.png"
+    ]
+  },
+  {
+    "id": "H-0000000000001",
+    "gender": "Femenino",
+    "class": "Cazador de Reliquias",
+    "mbti": "ISTP",
+    "concepts": [
+      "explora ruinas prohibidas",
+      "desierto eterno de huesos",
+      "objetos que susurran secretos"
+    ],
+    "passive": "Resistencia a efectos desconocidos",
+    "active": {
+      "base": "Activar artefacto antiguo"
+    },
+    "description": "Especialista en recuperación de objetos anómalos.",
+    "images": [
+      "https://i.imgur.com/placeholder1.png"
+    ]
+  }
+]
 ```
 ---
-## Credits
+## Créditos
 
 © 2024 - 2026 Plants Path Collective

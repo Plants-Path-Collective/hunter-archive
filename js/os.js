@@ -3,13 +3,32 @@
 function openApp(name, data = null) {
     const win = document.createElement("div");
     win.className = "window";
-    win.style.top = "100px";
-    win.style.left = "100px";
+    // Posición inicial centrada aproximadamente
+    win.style.top = "80px";
+    win.style.left = "80px";
     win.style.zIndex = z++;
+
+    let title = "";
+    switch (name) {
+        case "generator":
+            title = "Generador";
+            break;
+        case "files":
+            title = "Archivos";
+            break;
+        case "mail":
+            title = "Mail";
+            break;
+        case "editor":
+            title = "Editor";
+            break;
+        default:
+            title = name;
+    }
 
     win.innerHTML = `
     <div class="title-bar">
-      <span class="title-text">${name}</span>
+      <span class="title-text">${title}</span>
       <div class="window-controls">
         <button onclick="this.closest('.window').remove()">X</button>
       </div>
@@ -20,12 +39,43 @@ function openApp(name, data = null) {
     document.getElementById("windows").appendChild(win);
 
     makeDraggable(win);
+    constrainWindow(win); // Ajustar posición inicial dentro de límites
 
     loadApp(name, win.querySelector(".content"), data);
 }
 
 /* =========================
-   DRAG SYSTEM (FIXED)
+   CONSTRAIN WINDOW WITHIN VIEWPORT
+========================= */
+function constrainWindow(win) {
+    const taskbar = document.getElementById("taskbar");
+    const taskbarHeight = taskbar ? taskbar.offsetHeight : 40;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let top = parseInt(win.style.top, 10);
+    let left = parseInt(win.style.left, 10);
+    const width = win.offsetWidth;
+    const height = win.offsetHeight;
+
+    // Límites
+    const minTop = 10;
+    const maxTop = viewportHeight - taskbarHeight - height - 10;
+    const minLeft = 10;
+    const maxLeft = viewportWidth - width - 10;
+
+    if (isNaN(top)) top = minTop;
+    if (isNaN(left)) left = minLeft;
+
+    top = Math.min(maxTop, Math.max(minTop, top));
+    left = Math.min(maxLeft, Math.max(minLeft, left));
+
+    win.style.top = top + "px";
+    win.style.left = left + "px";
+}
+
+/* =========================
+   DRAG SYSTEM WITH CONSTRAINTS
 ========================= */
 function makeDraggable(win) {
     const bar = win.querySelector(".title-bar");
@@ -37,8 +87,27 @@ function makeDraggable(win) {
         let offsetY = e.clientY - win.offsetTop;
 
         function move(e) {
-            win.style.left = e.clientX - offsetX + "px";
-            win.style.top = e.clientY - offsetY + "px";
+            let newLeft = e.clientX - offsetX;
+            let newTop = e.clientY - offsetY;
+
+            // Aplicar límites
+            const taskbar = document.getElementById("taskbar");
+            const taskbarHeight = taskbar ? taskbar.offsetHeight : 40;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const width = win.offsetWidth;
+            const height = win.offsetHeight;
+
+            const minTop = 10;
+            const maxTop = viewportHeight - taskbarHeight - height - 10;
+            const minLeft = 10;
+            const maxLeft = viewportWidth - width - 10;
+
+            newTop = Math.min(maxTop, Math.max(minTop, newTop));
+            newLeft = Math.min(maxLeft, Math.max(minLeft, newLeft));
+
+            win.style.left = newLeft + "px";
+            win.style.top = newTop + "px";
         }
 
         function stop() {
