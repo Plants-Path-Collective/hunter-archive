@@ -1,15 +1,61 @@
-# Hunter Archive System
+# Hunter OS
 
-## Uso
+## Overview
 
-1. Ir a input.html
-2. Generar personaje
-3. Editar en output.html
-4. Descargar JSON
-5. Copiar manualmente el contenido dentro de data/files.json
+Hunter OS is a browser-based fictional operating system designed to manage and create "Hunter" character files for a narrative-driven DnD-style universe.
 
-## Notas
+The system simulates a retro desktop environment inspired by Windows 95.
 
-- Sistema 100% estático (compatible con GitHub Pages)
-- No hay base de datos
-- Los archivos se gestionan manualmente
+---
+
+## Core Features
+
+### Desktop Environment
+- Draggable windows
+- Taskbar with system clock
+- Desktop icons for launching applications
+
+### Applications
+
+#### Generator
+Creates new Hunter characters using predefined data.
+
+#### Editor
+Allows editing and exporting Hunter files as JSON.
+
+#### Files
+Displays all stored Hunter files from `files.json`.
+
+#### Inbox
+Contains system instructions and narrative flavor.
+
+---
+
+## Workflow
+
+1. Open Generator
+2. Create a Hunter
+3. Edit in Editor
+4. Export JSON
+5. Add manually to `data/files.json`
+
+---
+
+## Notes
+
+- Fully client-side (no backend)
+- Designed for GitHub Pages
+- Data persistence is manual
+
+---
+
+## Future Improvements
+
+- Local storage saving
+- Drag & drop file import
+- Tabbed window system
+- Advanced procedural generation
+
+---
+
+Hunter Association Internal System v1.0

@@ -2,62 +2,41 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Hunter Association OS</title>
+    <title>Hunter OS</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
 <div id="desktop">
 
-    
-
     <!-- ICONOS -->
-    <button class="icon" onclick="openGenerator()">
-        <img class="icon-img" src="https://i.imgur.com/YOUR_ICON.png">
+    <button class="icon" onclick="openApp('generator')">
+        <img src="https://i.imgur.com/kUxi2AZ.png" class="icon-img">
         <span class="icon-label">Generator</span>
     </button>
 
-    <button class="icon" onclick="openMail()">
-        <img class="icon-img" src="https://i.imgur.com/YOUR_ICON2.png">
+    <button class="icon" onclick="openApp('files')">
+        <img src="https://i.imgur.com/0BDLWir.png" class="icon-img">
+        <span class="icon-label">Files</span>
+    </button>
+
+    <button class="icon" onclick="openApp('mail')">
+        <img src="https://i.imgur.com/vC1FJdm.png" class="icon-img">
         <span class="icon-label">Inbox</span>
     </button>
 
-    <!-- VENTANA -->
-    <div class="window" id="viewer-window">
-
-        <div class="title-bar">
-            <span>Hunter Archive</span>
-            <div class="window-controls">
-                <button onclick="minimizeWindow(this.closest('.window'))">_</button>
-                <button onclick="goHome()">X</button>
-            </div>
-        </div>
-
-        <!-- TABS -->
-        <div class="tabs" id="tabs"></div>
-
-        <div class="content two-column">
-
-            <div id="viewer-list"></div>
-
-            <div id="viewer-detail">
-                <p>Seleccione un expediente.</p>
-            </div>
-
-        </div>
-
-    </div>
-
 </div>
+
+<!-- VENTANAS -->
+<div id="windows"></div>
 
 <!-- TASKBAR -->
 <div id="taskbar">
-    <span class="item">Hunter OS v1.1</span>
-    <span id="clock" class="item"></span>
+    <span>Hunter OS</span>
+    <span id="clock"></span>
 </div>
 
-<script src="js/script.js"></script>
-<script src="js/viewer.js"></script>
-
+<script src="js/os.js"></script>
+<script src="js/apps.js"></script>
 </body>
 </html>

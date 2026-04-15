@@ -1,3 +1,61 @@
-﻿{
-  "hunters": []
-}
+﻿[
+  {
+    "id": "H-1776239790089",
+    "gender": "Andrógino",
+    "class": "Archivista",
+    "mbti": "ENTP",
+    "concepts": [
+      "vende recuerdos ilegales",
+      "oficina infinita fluorescente",
+      "el tiempo se repite al parpadear"
+    ],
+    "passive": "Percibe eventos futuros cercanos (memoria perfecta)",
+    "active": {
+      "base": "Rebobinar acción reciente"
+    },
+    "description": "Cazador novato",
+    "images": [
+      "https://i.imgur.com/IsyBjDJ.png"
+    ]
+  },
+
+  {
+    "id": "H-0000000000001",
+    "gender": "Femenino",
+    "class": "Cazador de Reliquias",
+    "mbti": "ISTP",
+    "concepts": [
+      "explora ruinas prohibidas",
+      "desierto eterno de huesos",
+      "objetos que susurran secretos"
+    ],
+    "passive": "Resistencia a efectos desconocidos",
+    "active": {
+      "base": "Activar artefacto antiguo"
+    },
+    "description": "Especialista en recuperación de objetos anómalos.",
+    "images": [
+      "https://i.imgur.com/placeholder1.png"
+    ]
+  },
+
+  {
+    "id": "H-0000000000002",
+    "gender": "Masculino",
+    "class": "Ejecutor Dimensional",
+    "mbti": "INTJ",
+    "concepts": [
+      "persigue entidades entre dimensiones",
+      "ciudad suspendida en el vacío",
+      "las sombras tienen voluntad propia"
+    ],
+    "passive": "Detección de anomalías dimensionales",
+    "active": {
+      "base": "Ruptura de plano"
+    },
+    "description": "Operativo encargado de neutralizar amenazas interdimensionales.",
+    "images": [
+      "https://i.imgur.com/placeholder2.png"
+    ]
+  }
+]
