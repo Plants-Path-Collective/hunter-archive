@@ -1,0 +1,23 @@
+﻿{
+  "genders": ["Masculino", "Femenino", "Andrógino"],
+  "mbti": ["INTJ", "INTP", "ENTP", "INFJ"],
+  "classes": [
+    { "name": "Interfaz" },
+    { "name": "Archivista" },
+    { "name": "Fragmento" }
+  ],
+  "concepts": {
+    "function": [
+      { "text": "archiva eventos que no ocurrieron" },
+      { "text": "vende recuerdos ilegales" }
+    ],
+    "aesthetic": [
+      { "text": "oficina infinita fluorescente" },
+      { "text": "ciudad dentro de un insecto" }
+    ],
+    "anomaly": [
+      { "text": "su sombra actúa antes que él" },
+      { "text": "el tiempo se repite al parpadear" }
+    ]
+  }
+}

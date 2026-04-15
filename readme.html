@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="window">
+    <div class="title-bar">
+        <span>Hunter Association Mail</span>
+        <div class="window-controls">
+            <button onclick="minimizeWindow(this.closest('.window'))">_</button>
+            <button onclick="goHome()">X</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h3>System Usage</h3>
+
+        <p>
+            Operator,<br><br>
+
+            Use Generator to find Hunters.<br>
+            Edit them in Editor.<br>
+            Export and archive manually.<br><br>
+
+            Maintain classification integrity.<br><br>
+
+            — Hunter Association
+        </p>
+
+    </div>
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+    <span class="item">Hunter OS v1.1</span>
+    <span id="clock" class="item"></span>
+</div>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
