@@ -1,26 +1,37 @@
 ﻿{
-  "genders": ["Masculino", "Femenino", "Andrógino"],
-  "mbti": ["INTJ", "INTP", "ENTP", "INFJ"],
+  "genders": ["Masculino", "Femenino", "No binario"],
+  "mbti": ["Analista", "Diplomático", "Centinela", "Explorador"],
   "classes": [
-    { "name": "Interfaz" },
-    { "name": "Archivista" },
-    { "name": "Fragmento" }
+    { "name": "Tanque" },
+    { "name": "Artista Marcial" },
+    { "name": "Artillero" },
+    { "name": "Maga" },
+    { "name": "Asesina" },
+    { "name": "Especialista" },
+    { "name": "Guerrero" },
+    { "name": "Soportes" }
   ],
   "concepts": {
     "function": [
       { "text": "archiva eventos que no ocurrieron" },
       { "text": "vende recuerdos ilegales" },
-      { "text": "roba fragmentos de sueños ajenos" }
+      { "text": "roba fragmentos de sueños ajenos" },
+      { "text": "cuida las costumbres ancestrales" },
+      { "text": "recuerda histoias en canciones" }
     ],
     "aesthetic": [
       { "text": "oficina infinita fluorescente" },
       { "text": "ciudad dentro de un insecto" },
-      { "text": "biblioteca sumergida en aceite" }
+      { "text": "biblioteca sumergida en aceite" },
+      { "text": "jungla de las pirámides" },
+      { "text": "un mundo sumergido bajo las olas" }
     ],
     "anomaly": [
       { "text": "su sombra actúa antes que él" },
       { "text": "el tiempo se repite al parpadear" },
-      { "text": "sus lágrimas son monedas antiguas" }
+      { "text": "sus lágrimas son monedas antiguas" },
+      { "text": "la diosa lo guía en su fe ciega" },
+      { "text": "su voz se vuelve tangible en la realidad" }
     ]
   },
   "passive_pool": [
@@ -33,7 +44,9 @@
     "Aura intimidante (enemigos cercanos temen)",
     "Sintonía con máquinas antiguas",
     "Inmunidad a venenos y enfermedades",
-    "Paso silencioso (no genera ruido)"
+    "Paso silencioso (no genera ruido)",
+    "Oido absoluto (audision perfecta en 8 metos)",
+    "Biofusión cibernética con sistemas electrónicos"
   ],
   "active_pool": [
     "Golpe dimensional (ignora armadura)",
@@ -45,6 +58,8 @@
     "Absorber el próximo ataque y devolverlo",
     "Curar a un aliado con sangre propia",
     "Leer mente superficial (1 turno)",
-    "Congelar el tiempo por 3 segundos"
+    "Congelar el tiempo por 3 segundos",
+    "Tigera independiente (puede cortar todo mientras lo crea)",
+    "Crear clon holográfico distractor (hasta que el enemigo lo note)"
   ]
 }
