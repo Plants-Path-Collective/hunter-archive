@@ -1,23 +1,59 @@
 ﻿{
   "genders": ["Masculino", "Femenino", "No binario"],
   "mbti": ["Analista", "Diplomático", "Centinela", "Explorador"],
+  "mbti_descriptions": {
+    "Analista": "Pensadores lógicos, estratégicos e independientes. Priorizan la eficiencia y los sistemas sobre las convenciones sociales.",
+    "Diplomático": "Empáticos e idealistas. Buscan conexión emocional y armonía en cada decisión que toman.",
+    "Centinela": "Prácticos y organizados. Guardianes del orden estructural y la estabilidad operativa.",
+    "Explorador": "Adaptables e impulsivos. Observadores del entorno con capacidad de respuesta inmediata."
+  },
   "classes": [
-    { "name": "Tanque" },
-    { "name": "Artista Marcial" },
-    { "name": "Artillero" },
-    { "name": "Maga" },
-    { "name": "Asesina" },
-    { "name": "Especialista" },
-    { "name": "Guerrero" },
-    { "name": "Soportes" }
+    {
+      "name": "Artista Marcial",
+      "description": "Combatiente cuerpo a cuerpo que perfecciona el arte del conflicto físico. Su cuerpo es su única arma y su mayor activo."
+    },
+    {
+      "name": "Artillero",
+      "description": "Especialista en armamento pesado y de largo alcance. Controla el campo de batalla desde la distancia con precisión calculada."
+    },
+    {
+      "name": "Arcanista",
+      "description": "Manipulador de fuerzas arcanas y energías no documentadas. Opera en los límites del conocimiento conocido."
+    },
+    {
+      "name": "Tejedor",
+      "description": "Entreteje la realidad para crear efectos invisibles al ojo no entrenado. Su poder reside en los espacios entre lo que existe."
+    },
+    {
+      "name": "Alquimista",
+      "description": "Transforma la materia y las sustancias a voluntad. Combina ciencia y anomalía en cada intervención."
+    },
+    {
+      "name": "Ludópata",
+      "description": "Convierte cada situación en un juego con reglas propias. Impredecible, caótico y siempre calculando el siguiente movimiento."
+    },
+    {
+      "name": "Usurpador",
+      "description": "Absorbe y replica las capacidades de otros. Prospera en el caos y la ambigüedad de identidad."
+    }
   ],
+  "attribute_tooltips": {
+    "mbti": "Arquetipo psicológico del Hunter. Define su patrón de toma de decisiones y respuesta emocional ante situaciones críticas.",
+    "class": "Rol operativo del Hunter dentro de la Asociación. Determina su enfoque en combate, misiones y especialización.",
+    "concepts": "Fragmentos de identidad extraídos del archivo multidimensional. Definen la esencia narrativa completa del Hunter.",
+    "function": "Qué hace el Hunter en el mundo. Su propósito funcional o rol en el tejido de la realidad.",
+    "aesthetic": "Atmósfera visual y sensorial asociada al Hunter. Cómo se percibe su presencia y el entorno que habita.",
+    "anomaly": "Rasgo inexplicable que distingue al Hunter. Una contradicción activa con las leyes de la realidad normal.",
+    "passive": "Capacidad siempre activa. Opera de forma autónoma sin requerir activación consciente del Hunter.",
+    "active": "Habilidad de uso deliberado. Requiere intención, concentración y gasto de recursos para ejecutarse."
+  },
   "concepts": {
     "function": [
       { "text": "archiva eventos que no ocurrieron" },
       { "text": "vende recuerdos ilegales" },
       { "text": "roba fragmentos de sueños ajenos" },
       { "text": "cuida las costumbres ancestrales" },
-      { "text": "recuerda histoias en canciones" }
+      { "text": "recuerda historias en canciones" }
     ],
     "aesthetic": [
       { "text": "oficina infinita fluorescente" },
@@ -45,7 +81,7 @@
     "Sintonía con máquinas antiguas",
     "Inmunidad a venenos y enfermedades",
     "Paso silencioso (no genera ruido)",
-    "Oido absoluto (audision perfecta en 8 metos)",
+    "Oído absoluto (audición perfecta en 8 metros)",
     "Biofusión cibernética con sistemas electrónicos"
   ],
   "active_pool": [
@@ -59,7 +95,7 @@
     "Curar a un aliado con sangre propia",
     "Leer mente superficial (1 turno)",
     "Congelar el tiempo por 3 segundos",
-    "Tigera independiente (puede cortar todo mientras lo crea)",
+    "Tijera independiente (puede cortar todo mientras la crea)",
     "Crear clon holográfico distractor (hasta que el enemigo lo note)"
   ]
 }

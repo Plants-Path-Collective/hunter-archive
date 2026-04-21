@@ -1,5 +1,4 @@
 ﻿:root {
-    /* Brutalista Futurista - Paleta AVT */
     --bg-desktop: #0a0c10;
     --window-bg: #1e1e24;
     --border-light: #3a3f4b;
@@ -11,11 +10,9 @@
     --sidebar-hover-text: #ffffff;
     --tab-active-bg: #2a2e3a;
     --tab-inactive-bg: #101216;
-    --taskbar-bg: #0c0e12;
     --accent-warning: #f5c542;
     --accent-primary: #4f9da6;
-
-    /* Colores de texto */
+    
     --text-primary: #e6e9f0;
     --text-secondary: #b0b5c4;
     --text-muted: #7a7f8c;
@@ -442,7 +439,7 @@ button:active {
     left: 0;
     right: 0;
     height: var(--taskbar-height);
-    background: var(--taskbar-bg);
+    background: var(--bg-desktop);
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -464,4 +461,101 @@ button:active {
     font-size: 12px;
     color: var(--accent-warning);
     letter-spacing: 1px;
+}
+
+/* =========================
+   TOOLTIP GLOBAL
+========================= */
+
+#tooltip {
+    position: fixed;
+    z-index: 9999;
+    background: #000000;
+    border: 1px solid var(--accent-primary);
+    border-left: 3px solid var(--accent-primary);
+    color: var(--text-secondary);
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    line-height: 1.55;
+    padding: 6px 10px;
+    max-width: 240px;
+    pointer-events: none;
+    display: none;
+    box-shadow: 3px 3px 0 rgba(79, 157, 166, 0.2);
+    letter-spacing: 0.3px;
+    text-transform: none;
+    font-weight: normal;
+}
+
+/* Elementos con tooltip: cursor de ayuda + subrayado punteado sutil */
+[data-tooltip] {
+    cursor: help;
+}
+
+b[data-tooltip],
+span[data-tooltip] {
+    border-bottom: 1px dotted var(--accent-primary);
+}
+
+label[data-tooltip] {
+    color: var(--accent-warning);
+}
+
+h3[data-tooltip] {
+    border-left-color: var(--accent-warning);
+}
+
+/* =========================
+   CONCEPT LABELS (BADGES)
+========================= */
+
+.concept-label {
+    display: inline-block;
+    font-size: 9px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-primary);
+    padding: 1px 5px;
+    margin-right: 6px;
+    cursor: help;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.concept-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* =========================
+   FIELD HINT (CLASS/MBTI INLINE DESCRIPTION)
+========================= */
+
+.field-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    margin-bottom: 4px;
+    min-height: 13px;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: none;
+    font-style: italic;
+    font-family: 'Courier New', monospace;
+    font-weight: normal;
+    padding-left: 2px;
+    border-left: 2px solid var(--border-light);
+    transition: color 0.1s;
+}
+
+.field-hint:not(:empty) {
+    color: var(--text-muted);
+    border-left-color: var(--accent-primary);
 }
