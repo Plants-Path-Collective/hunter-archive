@@ -19,6 +19,39 @@ function escapeHtml(str) {
         .replace(/"/g,  "&quot;");
 }
 
+/**
+ * Renders a skill tree (base + paths) as an HTML string.
+ * Used in Generator preview, Editor preview, and File Viewer.
+ */
+function renderSkillTreeHTML(active) {
+    const base  = active?.base  || "—";
+    const paths = Array.isArray(active?.paths) ? active.paths : [];
+    const pathLabels = ["RUTA I", "RUTA II", "RUTA III"];
+
+    const pathsHTML = paths.length
+        ? `<div class="skill-paths">
+            ${paths.map((p, i) => `
+            <div class="skill-node skill-path-node">
+                <span class="skill-badge skill-badge-path">${pathLabels[i] || "RUTA"}</span>
+                <span>${escapeHtml(p)}</span>
+            </div>`).join("")}
+           </div>`
+        : `<div class="skill-paths">
+            <div class="skill-node" style="color:var(--text-muted); font-style:italic;">
+                Sin rutas de evolución definidas.
+            </div>
+           </div>`;
+
+    return `
+<div class="skill-tree">
+    <div class="skill-node">
+        <span class="skill-badge skill-badge-base">BASE</span>
+        <span>${escapeHtml(base)}</span>
+    </div>
+    ${pathsHTML}
+</div>`;
+}
+
 /* =========================
    MAIN LOADER
 ========================= */
@@ -26,8 +59,7 @@ function escapeHtml(str) {
 async function loadApp(name, el, data) {
 
     /* ─────────────────────────────────────────────
-       Load data.json once — used for generator data
-       AND tooltip/description lookups across all apps
+       Load data.json once
     ───────────────────────────────────────────── */
     let CONFIG = {
         genders: [],
@@ -62,11 +94,18 @@ async function loadApp(name, el, data) {
             "Regeneración rápida fuera de combate",
             "Percepción extrasensorial (ver invisibilidad)"
         ];
-        const activePool = CONFIG.active_pool?.length ? CONFIG.active_pool : [
-            "Golpe dimensional (ignora armadura)",
-            "Sobrecarga de energía (daño en área)",
-            "Invocar aliado temporal (criatura de sombra)"
-        ];
+
+        // active_pool: supports both new {base, paths[]} format and legacy string format
+        const activePool = CONFIG.active_pool?.length
+            ? CONFIG.active_pool.map(entry =>
+                typeof entry === "string"
+                    ? { base: entry, paths: [] }
+                    : entry
+            )
+            : [
+                { base: "Golpe dimensional (ignora armadura)", paths: ["Ampliar radio", "Carga triple"] },
+                { base: "Sobrecarga de energía (daño en área)",  paths: ["Pulso continuo", "Núcleo colapsado"] }
+            ];
 
         el.innerHTML = `
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; height:100%;">
@@ -90,7 +129,7 @@ async function loadApp(name, el, data) {
                 <button id="generate" style="margin-top:6px;">Generar</button>
 
                 <div class="panel" id="result" style="margin-top:6px;">
-                    <p>Sin generación aún.</p>
+                    <p style="color:var(--text-muted);">Sin generación aún.</p>
                 </div>
             </div>
 
@@ -101,7 +140,7 @@ async function loadApp(name, el, data) {
         </div>
         `;
 
-        // ── Populate selects ──────────────────────────
+        // Populate selects
         const fillSelect = (id, arr) => {
             const sel = el.querySelector("#" + id);
             arr.forEach(v => {
@@ -115,7 +154,7 @@ async function loadApp(name, el, data) {
         fillSelect("class",  CONFIG.classes.map(c => c.name));
         fillSelect("mbti",   CONFIG.mbti);
 
-        // ── Tooltip + inline hint: Clase ──────────────
+        // Tooltip + inline hint: Clase
         const classSelect = el.querySelector("#class");
         const classHint   = el.querySelector("#class-hint");
 
@@ -128,7 +167,7 @@ async function loadApp(name, el, data) {
         if (tt("class")) Tooltip.bind(el.querySelector("#lbl-class"), tt("class"));
         updateClassHint();
 
-        // ── Tooltip + inline hint: MBTI ───────────────
+        // Tooltip + inline hint: MBTI
         const mbtiSelect = el.querySelector("#mbti");
         const mbtiHint   = el.querySelector("#mbti-hint");
 
@@ -141,10 +180,10 @@ async function loadApp(name, el, data) {
         if (tt("mbti")) Tooltip.bind(el.querySelector("#lbl-mbti"), tt("mbti"));
         updateMbtiHint();
 
-        // ── Random helper ─────────────────────────────
+        // Random helper
         const rand = arr => arr[Math.floor(Math.random() * arr.length)];
 
-        // ── Generate button ───────────────────────────
+        // Generate button
         el.querySelector("#generate").onclick = () => {
 
             const concepts = [
@@ -153,16 +192,24 @@ async function loadApp(name, el, data) {
                 rand(CONFIG.concepts.anomaly).text
             ];
             const passive = rand(passivePool);
-            const active  = rand(activePool);
+
+            // Pick a random active entry from the pool (object with base + paths)
+            const activeEntry = rand(activePool);
+            const activePaths = activeEntry.paths?.length >= 2
+                ? [activeEntry.paths[0], activeEntry.paths[1]]
+                : (activeEntry.paths || []);
 
             const hunter = {
-                id: "H-" + Date.now(),
-                gender: el.querySelector("#gender").value,
-                class:  classSelect.value,
-                mbti:   mbtiSelect.value,
+                id:       "H-" + Date.now(),
+                gender:   el.querySelector("#gender").value,
+                class:    classSelect.value,
+                mbti:     mbtiSelect.value,
                 concepts,
                 passive,
-                active: { base: active },
+                active: {
+                    base:  activeEntry.base,
+                    paths: activePaths
+                },
                 description: "",
                 images: []
             };
@@ -224,7 +271,11 @@ async function loadApp(name, el, data) {
 
                     <div class="panel" style="margin-top:6px;">
                         <p><b id="prev-passive-lbl">Pasiva:</b> ${escapeHtml(passive)}</p>
-                        <p><b id="prev-active-lbl">Activa:</b> ${escapeHtml(active)}</p>
+                    </div>
+
+                    <div class="panel" style="margin-top:6px;">
+                        <h3 id="prev-active-lbl">Habilidad Activa</h3>
+                        ${renderSkillTreeHTML(hunter.active)}
                     </div>
                 </div>
             `;
@@ -249,7 +300,7 @@ async function loadApp(name, el, data) {
 
     if (name === "editor") {
 
-        // ── No hunter passed: show selector ───────────
+        // No hunter passed: show selector
         if (!data) {
             let huntersList = [];
 
@@ -263,7 +314,7 @@ async function loadApp(name, el, data) {
                     <div class="stack" style="height:100%;">
                         <div class="panel">
                             <h3>Seleccionar Hunter</h3>
-                            <select id="hunterSelect" size="10" style="width:100%; margin-bottom:6px;"></select>
+                            <select id="hunterSelect" size="10" style="width:100%; margin-bottom:8px;"></select>
                             <div style="display:flex; gap:6px; flex-wrap:wrap;">
                                 <button id="selectHunterBtn">Editar seleccionado</button>
                                 <button id="newHunterBtn">Crear nuevo Hunter</button>
@@ -272,7 +323,7 @@ async function loadApp(name, el, data) {
                             </div>
                         </div>
                         <div id="selectorPreview" class="panel scroll" style="flex:1;">
-                            <p>Selecciona un Hunter para ver vista previa.</p>
+                            <p style="color:var(--text-muted);">Selecciona un Hunter para ver vista previa.</p>
                         </div>
                     </div>
                 `;
@@ -306,7 +357,7 @@ async function loadApp(name, el, data) {
                             </p>
                             <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(hunter.gender || "")}</p>
 
-                            <h3 id="sel-concepts-h" style="margin-top:8px;">Conceptos</h3>
+                            <h3 id="sel-concepts-h" style="margin-top:10px;">Conceptos</h3>
                             <div class="concept-row">
                                 <span class="concept-label" id="sel-fn">FN</span>
                                 <span>${escapeHtml(hunter.concepts?.[0] || "—")}</span>
@@ -320,12 +371,15 @@ async function loadApp(name, el, data) {
                                 <span>${escapeHtml(hunter.concepts?.[2] || "—")}</span>
                             </div>
 
-                            <h3 style="margin-top:8px;">Descripción</h3>
+                            <h3 style="margin-top:10px;">Descripción</h3>
                             <p>${escapeHtml(hunter.description || "Sin descripción.")}</p>
 
-                            <h3 style="margin-top:8px;">Habilidades</h3>
+                            <h3 style="margin-top:10px;">Habilidades</h3>
                             <p><b id="sel-passive-lbl">Pasiva:</b> ${escapeHtml(hunter.passive || "—")}</p>
-                            <p><b id="sel-active-lbl">Activa:</b> ${escapeHtml(hunter.active?.base || "—")}</p>
+                            <div style="margin-top:6px;">
+                                <p style="margin-bottom:4px;"><b id="sel-active-lbl">Activa</b></p>
+                                ${renderSkillTreeHTML(hunter.active)}
+                            </div>
                         </div>
                     `;
 
@@ -347,16 +401,16 @@ async function loadApp(name, el, data) {
                     const hunter = huntersList.find(h => h.id === id);
                     if (hunter) { openApp("editor", hunter); el.closest(".window").remove(); }
                 };
-                el.querySelector("#newHunterBtn").onclick    = () => openApp("generator");
-                el.querySelector("#refreshListBtn").onclick  = () => renderSelector();
-                el.querySelector("#editConfigBtn").onclick   = () => openApp("editor", { _type: "dataConfig" });
+                el.querySelector("#newHunterBtn").onclick   = () => openApp("generator");
+                el.querySelector("#refreshListBtn").onclick = () => renderSelector();
+                el.querySelector("#editConfigBtn").onclick  = () => openApp("editor", { _type: "dataConfig" });
             };
 
             renderSelector();
             return;
         }
 
-        // ── data.json config editor ───────────────────
+        // data.json config editor
         if (data._type === "dataConfig") {
             let configJson = "";
 
@@ -377,8 +431,8 @@ async function loadApp(name, el, data) {
                         <div class="stack">
                             <div class="panel">
                                 <h3>Editar data.json</h3>
-                                <textarea id="configJson" style="height:300px; font-family:monospace;"></textarea>
-                                <div style="display:flex; gap:6px; margin-top:6px;">
+                                <textarea id="configJson" style="height:300px; font-family:monospace; font-size:12px;"></textarea>
+                                <div style="display:flex; gap:6px; margin-top:8px;">
                                     <button id="previewConfigBtn">Vista previa</button>
                                     <button id="downloadConfigBtn">Descargar JSON</button>
                                     <button id="resetConfigBtn">Recargar original</button>
@@ -386,7 +440,7 @@ async function loadApp(name, el, data) {
                             </div>
                         </div>
                         <div class="panel scroll" id="configPreview">
-                            <p>Haz clic en "Vista previa" para ver cómo queda la configuración.</p>
+                            <p style="color:var(--text-muted);">Haz clic en "Vista previa" para ver cómo queda la configuración.</p>
                         </div>
                     </div>
                 `;
@@ -398,6 +452,14 @@ async function loadApp(name, el, data) {
                 el.querySelector("#previewConfigBtn").onclick = () => {
                     try {
                         const nc = JSON.parse(textarea.value);
+                        const activePoolHTML = nc.active_pool?.map(entry => {
+                            if (typeof entry === "string") {
+                                return `<li><b>${escapeHtml(entry)}</b></li>`;
+                            }
+                            const paths = (entry.paths || []).map(p => `<li style="color:var(--accent-warning);">↳ ${escapeHtml(p)}</li>`).join("");
+                            return `<li><b>${escapeHtml(entry.base || "—")}</b><ul style="margin:2px 0 2px 12px;">${paths}</ul></li>`;
+                        }).join("") || "<li>No definido</li>";
+
                         previewDiv.innerHTML = `
                             <div class="panel">
                                 <h3>Vista previa de data.json</h3>
@@ -408,16 +470,16 @@ async function loadApp(name, el, data) {
                                 <h4>Clases (${nc.classes?.length || 0})</h4>
                                 <ul>${nc.classes?.map(c => `<li>
                                     <b>${escapeHtml(c.name || c)}</b>
-                                    ${c.description ? `<br><span style="color:var(--text-muted);font-size:10px;">↳ ${escapeHtml(c.description)}</span>` : ""}
+                                    ${c.description ? `<br><span style="color:var(--text-muted);font-size:11px;">↳ ${escapeHtml(c.description)}</span>` : ""}
                                 </li>`).join("") || "<li>No definido</li>"}</ul>
                                 <h4>Conceptos</h4>
                                 <p><b>Función:</b> ${nc.concepts?.function?.map(f => escapeHtml(f.text)).join(", ") || "—"}</p>
                                 <p><b>Estética:</b> ${nc.concepts?.aesthetic?.map(a => escapeHtml(a.text)).join(", ") || "—"}</p>
                                 <p><b>Anomalía:</b> ${nc.concepts?.anomaly?.map(a => escapeHtml(a.text)).join(", ") || "—"}</p>
                                 <h4>Habilidades pasivas (${nc.passive_pool?.length || 0})</h4>
-                                <ul>${nc.passive_pool?.slice(0,5).map(p => `<li>${escapeHtml(p)}</li>`).join("") || "<li>No definido</li>"}${nc.passive_pool?.length > 5 ? "<li>...</li>" : ""}</ul>
+                                <ul>${nc.passive_pool?.slice(0,5).map(p => `<li>${escapeHtml(p)}</li>`).join("") || "<li>No definido</li>"}${nc.passive_pool?.length > 5 ? "<li style='color:var(--text-muted)'>…y ${nc.passive_pool.length - 5} más</li>" : ""}</ul>
                                 <h4>Habilidades activas (${nc.active_pool?.length || 0})</h4>
-                                <ul>${nc.active_pool?.slice(0,5).map(a => `<li>${escapeHtml(a)}</li>`).join("") || "<li>No definido</li>"}${nc.active_pool?.length > 5 ? "<li>...</li>" : ""}</ul>
+                                <ul>${activePoolHTML}</ul>
                             </div>
                         `;
                     } catch (e) {
@@ -449,6 +511,16 @@ async function loadApp(name, el, data) {
 
         // ── Hunter editor ─────────────────────────────
         const h = data;
+
+        // Normalize active field (support legacy string format)
+        if (typeof h.active === "string") {
+            h.active = { base: h.active, paths: [] };
+        } else if (!h.active) {
+            h.active = { base: "", paths: [] };
+        }
+        if (!Array.isArray(h.active.paths)) {
+            h.active.paths = [];
+        }
 
         el.innerHTML = `
         <div class="split split-30-70">
@@ -482,22 +554,43 @@ async function loadApp(name, el, data) {
                 <!-- IMAGES -->
                 <div class="panel">
                     <h3>Imágenes (URLs de Imgur)</h3>
-                    <textarea id="imgs" placeholder="una url por línea"></textarea>
+                    <textarea id="imgs" placeholder="una url por línea" style="min-height:60px;"></textarea>
                 </div>
 
                 <!-- DESCRIPTION -->
                 <div class="panel">
                     <h3>Descripción</h3>
-                    <textarea id="desc"></textarea>
+                    <textarea id="desc" style="min-height:70px;"></textarea>
                 </div>
 
                 <!-- ABILITIES -->
                 <div class="panel">
                     <h3>Habilidades</h3>
+
                     <label id="ed-passive-lbl">Pasiva</label>
                     <input id="passive">
-                    <label id="ed-active-lbl">Activa</label>
-                    <input id="active">
+
+                    <div style="margin-top:10px; padding-top:8px; border-top:1px solid var(--border-light);">
+                        <label id="ed-active-lbl" style="margin-bottom:6px;">Activa — Árbol de habilidad</label>
+
+                        <div class="active-fields">
+                            <label style="margin-top:0; font-size:9px; letter-spacing:1.5px;">
+                                <span class="skill-badge skill-badge-base" style="font-size:9px;">BASE</span>
+                            </label>
+                            <input id="active-base" placeholder="habilidad principal...">
+
+                            <div style="border-left:2px solid var(--accent-primary); margin-left:14px; padding-left:10px; margin-top:4px; display:flex; flex-direction:column; gap:4px;">
+                                <label style="margin-top:0; font-size:9px; letter-spacing:1.5px;">
+                                    <span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA I</span>
+                                </label>
+                                <input id="active-path0" placeholder="primera evolución...">
+                                <label style="margin-top:4px; font-size:9px; letter-spacing:1.5px;">
+                                    <span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA II</span>
+                                </label>
+                                <input id="active-path1" placeholder="segunda evolución...">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ACTIONS -->
@@ -515,16 +608,18 @@ async function loadApp(name, el, data) {
         </div>
         `;
 
-        // Set field values safely (no innerHTML attribute injection)
-        el.querySelector("#concept0").value = h.concepts?.[0] || "";
-        el.querySelector("#concept1").value = h.concepts?.[1] || "";
-        el.querySelector("#concept2").value = h.concepts?.[2] || "";
-        el.querySelector("#imgs").value     = (h.images || []).join("\n");
-        el.querySelector("#desc").value     = h.description || "";
-        el.querySelector("#passive").value  = h.passive || "";
-        el.querySelector("#active").value   = h.active?.base || "";
+        // Set field values
+        el.querySelector("#concept0").value    = h.concepts?.[0] || "";
+        el.querySelector("#concept1").value    = h.concepts?.[1] || "";
+        el.querySelector("#concept2").value    = h.concepts?.[2] || "";
+        el.querySelector("#imgs").value        = (h.images || []).join("\n");
+        el.querySelector("#desc").value        = h.description || "";
+        el.querySelector("#passive").value     = h.passive || "";
+        el.querySelector("#active-base").value = h.active?.base  || "";
+        el.querySelector("#active-path0").value = h.active?.paths?.[0] || "";
+        el.querySelector("#active-path1").value = h.active?.paths?.[1] || "";
 
-        // Bind tooltips to form labels/elements
+        // Bind tooltips to form labels
         const cdesc = classDesc(h.class);
         const mdesc = mbtiDesc(h.mbti);
         if (cdesc)           Tooltip.bind(el.querySelector("#ed-class"),       cdesc);
@@ -536,8 +631,13 @@ async function loadApp(name, el, data) {
         if (tt("passive"))   Tooltip.bind(el.querySelector("#ed-passive-lbl"), tt("passive"));
         if (tt("active"))    Tooltip.bind(el.querySelector("#ed-active-lbl"),  tt("active"));
 
-        // Build final object from form
+        // Build final hunter object from form
         function build() {
+            const paths = [
+                el.querySelector("#active-path0").value.trim(),
+                el.querySelector("#active-path1").value.trim()
+            ].filter(Boolean);
+
             return {
                 ...h,
                 concepts: [
@@ -548,8 +648,11 @@ async function loadApp(name, el, data) {
                 description: el.querySelector("#desc").value,
                 images: el.querySelector("#imgs").value
                     .split("\n").map(v => v.trim()).filter(Boolean),
-                passive: el.querySelector("#passive").value,
-                active: { base: el.querySelector("#active").value }
+                passive: el.querySelector("#passive").value.trim(),
+                active: {
+                    base:  el.querySelector("#active-base").value.trim(),
+                    paths
+                }
             };
         }
 
@@ -608,16 +711,17 @@ async function loadApp(name, el, data) {
 
                 <div class="panel" style="margin-top:6px;">
                     <h3>Habilidades</h3>
-                    <p><b id="prev-passive-lbl">Pasiva:</b> ${escapeHtml(d.passive || "—")}</p>
-                    <p><b id="prev-active-lbl">Activa:</b> ${escapeHtml(d.active.base || "—")}</p>
+                    <p style="margin-bottom:8px;"><b id="prev-passive-lbl">Pasiva:</b> ${escapeHtml(d.passive || "—")}</p>
+                    <p style="margin-bottom:6px;"><b id="prev-active-lbl">Activa</b></p>
+                    ${renderSkillTreeHTML(d.active)}
                 </div>
             </div>
             `;
 
-            // Re-bind tooltips after each render (innerHTML replaces nodes)
-            const pEl     = el.querySelector("#preview");
-            const pcdesc  = classDesc(d.class);
-            const pmdesc  = mbtiDesc(d.mbti);
+            // Re-bind tooltips after each render
+            const pEl    = el.querySelector("#preview");
+            const pcdesc = classDesc(d.class);
+            const pmdesc = mbtiDesc(d.mbti);
             if (pcdesc)          Tooltip.bind(pEl.querySelector("#prev-class"),       pcdesc);
             if (pmdesc)          Tooltip.bind(pEl.querySelector("#prev-mbti"),        pmdesc);
             if (tt("concepts"))  Tooltip.bind(pEl.querySelector("#prev-concepts-h"),  tt("concepts"));
@@ -663,6 +767,17 @@ async function loadApp(name, el, data) {
         async function loadFiles() {
             const res = await fetch("data/files.json");
             files = await res.json();
+            // Normalize active fields
+            files.forEach(h => {
+                if (typeof h.active === "string") {
+                    h.active = { base: h.active, paths: [] };
+                } else if (!h.active) {
+                    h.active = { base: "", paths: [] };
+                }
+                if (!Array.isArray(h.active.paths)) {
+                    h.active.paths = [];
+                }
+            });
             renderSidebar();
         }
 
@@ -673,7 +788,6 @@ async function loadApp(name, el, data) {
                 item.textContent = h.id;
                 item.style.cursor = "pointer";
 
-                // Tooltip shows class + description on sidebar item hover
                 const cdesc = classDesc(h.class);
                 if (cdesc) Tooltip.bind(item, `${h.class}: ${cdesc}`);
                 else if (h.class) Tooltip.bind(item, h.class);
@@ -769,11 +883,21 @@ async function loadApp(name, el, data) {
                 <!-- HABILIDADES -->
                 <div class="panel" style="margin-top:6px;">
                     <h3>Habilidades</h3>
-                    <p><b id="fc-passive-lbl">Pasiva:</b> ${escapeHtml(h.passive || "—")}</p>
-                    <p><b id="fc-active-lbl">Activa:</b> ${escapeHtml(h.active?.base || "—")}</p>
+
+                    <p style="margin-bottom:10px;">
+                        <b id="fc-passive-lbl">Pasiva:</b>
+                        ${escapeHtml(h.passive || "—")}
+                    </p>
+
+                    <div>
+                        <p style="margin-bottom:6px;">
+                            <b id="fc-active-lbl">Activa — Árbol de habilidad</b>
+                        </p>
+                        ${renderSkillTreeHTML(h.active)}
+                    </div>
                 </div>
 
-                <div style="margin-top:6px;">
+                <div style="margin-top:8px;">
                     <button id="open-editor">Abrir en Editor</button>
                 </div>
 
@@ -807,12 +931,12 @@ async function loadApp(name, el, data) {
         <div class="panel">
             <h3>Hunter Association — Correo Interno</h3>
 
-            <div class="panel" style="margin-top:6px;">
+            <div class="panel" style="margin-top:8px;">
                 <p><b>De:</b> Hunter Association — Terminal de Control</p>
-                <p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.1)</p>
+                <p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.2)</p>
             </div>
 
-            <div class="panel" style="margin-top:6px;">
+            <div class="panel" style="margin-top:8px; line-height:1.75;">
                 <p>
                     Operador,<br><br>
 
@@ -822,21 +946,29 @@ async function loadApp(name, el, data) {
                     Utiliza el módulo <b>Buscador</b> para localizar Hunters en el archivo multidimensional.<br>
                     Parámetros de búsqueda: Género, Clase, MBTI.<br>
                     Pasa el cursor sobre cada campo para consultar su definición operativa.<br>
-                    El sistema generará tres conceptos de realidad (FN / AE / AN) y asignará habilidades aleatorias.<br><br>
+                    El sistema generará tres conceptos de realidad (FN / AE / AN), una habilidad pasiva,
+                    y una habilidad activa con su árbol de evolución (Base → Ruta I + Ruta II).<br><br>
 
-                    <b>2. ARCHIVOS DE HUNTERS</b><br>
+                    <b>2. ÁRBOL DE HABILIDAD ACTIVA</b><br>
+                    Cada Hunter posee una habilidad <b>BASE</b> que define su capacidad nuclear.<br>
+                    Dos <b>RUTAS DE EVOLUCIÓN</b> representan posibles expansiones de esa capacidad.<br>
+                    Son caminos narrativos, no mecánicas de juego fijas: el Hunter elige una ruta al avanzar.<br>
+                    La estructura se almacena en el JSON bajo la clave <code>active.paths[]</code>.<br><br>
+
+                    <b>3. ARCHIVOS DE HUNTERS</b><br>
                     El módulo <b>Archivos</b> muestra todos los expedientes almacenados.<br>
-                    Cada expediente incluye: ID, clase, MBTI, conceptos, habilidades, descripción e imágenes.<br>
-                    Pasa el cursor sobre la clase o los atributos para ver su descripción.<br><br>
+                    Cada expediente incluye: ID, clase, MBTI, conceptos, habilidades y descripción.<br>
+                    El árbol de habilidad activa se visualiza directamente en el expediente.<br><br>
 
-                    <b>3. EDICIÓN Y CORRECCIÓN</b><br>
+                    <b>4. EDICIÓN Y CORRECCIÓN</b><br>
                     El <b>Editor</b> permite modificar cualquier dato del Hunter:<br>
-                    — Descripción · Habilidades · Imágenes<br>
-                    — Conceptos (FN / AE / AN) ahora son directamente editables<br>
+                    — Descripción · Habilidades · Imágenes · Conceptos<br>
+                    — Árbol activo: BASE + RUTA I + RUTA II son campos independientes y editables<br>
                     Los cambios se reflejan en tiempo real en la vista previa.<br><br>
 
-                    <b>Glosario de badges de concepto:</b><br>
-                    &nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AE = Estética &nbsp;|&nbsp; AN = Anomalía<br><br>
+                    <b>Glosario de badges:</b><br>
+                    &nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AE = Estética &nbsp;|&nbsp; AN = Anomalía<br>
+                    &nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br>
 
                     <b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>
 

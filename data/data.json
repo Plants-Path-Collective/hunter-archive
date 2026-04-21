@@ -45,7 +45,7 @@
     "aesthetic": "Atmósfera visual y sensorial asociada al Hunter. Cómo se percibe su presencia y el entorno que habita.",
     "anomaly": "Rasgo inexplicable que distingue al Hunter. Una contradicción activa con las leyes de la realidad normal.",
     "passive": "Capacidad siempre activa. Opera de forma autónoma sin requerir activación consciente del Hunter.",
-    "active": "Habilidad de uso deliberado. Requiere intención, concentración y gasto de recursos para ejecutarse."
+    "active": "Habilidad de uso deliberado y sus rutas de evolución. La base define el núcleo del poder; las rutas, sus posibles expansiones."
   },
   "concepts": {
     "function": [
@@ -85,17 +85,89 @@
     "Biofusión cibernética con sistemas electrónicos"
   ],
   "active_pool": [
-    "Golpe dimensional (ignora armadura)",
-    "Sobrecarga de energía (daño en área)",
-    "Invocar aliado temporal (criatura de sombra)",
-    "Manipular memoria de un objetivo",
-    "Teletransportarse a un punto visto",
-    "Crear ilusión realista (rango medio)",
-    "Absorber el próximo ataque y devolverlo",
-    "Curar a un aliado con sangre propia",
-    "Leer mente superficial (1 turno)",
-    "Congelar el tiempo por 3 segundos",
-    "Tijera independiente (puede cortar todo mientras la crea)",
-    "Crear clon holográfico distractor (hasta que el enemigo lo note)"
+    {
+      "base": "Golpe dimensional (ignora armadura)",
+      "paths": [
+        "Eco de plano: segundo impacto retardado 1s",
+        "Ruptura armada: deja grieta persistente en el espacio"
+      ]
+    },
+    {
+      "base": "Sobrecarga de energía (daño en área)",
+      "paths": [
+        "Pulso continuo: el daño persiste durante 2 turnos",
+        "Núcleo colapsado: concentra en un punto para daño máximo"
+      ]
+    },
+    {
+      "base": "Invocar aliado temporal (criatura de sombra)",
+      "paths": [
+        "Fusión táctica: absorber la sombra para buff de ataque propio",
+        "Fragmentación: invocar dos sombras menores en lugar de una"
+      ]
+    },
+    {
+      "base": "Manipular memoria de un objetivo",
+      "paths": [
+        "Borrado profundo: elimina memoria a largo plazo del objetivo",
+        "Implante falso: inserta un recuerdo fabricado creíble"
+      ]
+    },
+    {
+      "base": "Teletransportarse a un punto visto",
+      "paths": [
+        "Arrastre: puede llevar a un aliado adyacente en el salto",
+        "Señal persistente: puede regresar al punto marcado por 3 turnos"
+      ]
+    },
+    {
+      "base": "Crear ilusión realista (rango medio)",
+      "paths": [
+        "Ilusión autónoma: la ilusión actúa de forma independiente 1 turno",
+        "Multiplicación: crea tres copias menores simultáneas"
+      ]
+    },
+    {
+      "base": "Absorber el próximo ataque y devolverlo",
+      "paths": [
+        "Amplificación: devuelve el ataque con 150% de daño base",
+        "Redirigir: elige un nuevo objetivo para el contraataque"
+      ]
+    },
+    {
+      "base": "Curar a un aliado con sangre propia",
+      "paths": [
+        "Transfusión inversa: parte de la curación daña al enemigo más cercano",
+        "Sangre corrosiva: el aliado curado gana veneno pasivo por 2 turnos"
+      ]
+    },
+    {
+      "base": "Leer mente superficial (1 turno)",
+      "paths": [
+        "Inmersión total: accede a miedos profundos y ventaja táctica",
+        "Escaneo silencioso: lectura sin que el objetivo sea consciente"
+      ]
+    },
+    {
+      "base": "Congelar el tiempo por 3 segundos",
+      "paths": [
+        "Extensión temporal: aumenta la duración a 6 segundos",
+        "Zona de pausa: el efecto se aplica en área de 5 metros"
+      ]
+    },
+    {
+      "base": "Tijera independiente (corta todo mientras se crea)",
+      "paths": [
+        "Tijeras gemelas: invoca un par de corte dual simultáneo",
+        "Filo eterno: el corte persiste como trampa en el entorno"
+      ]
+    },
+    {
+      "base": "Crear clon holográfico distractor",
+      "paths": [
+        "Clon reactivo: imita las acciones reales del Hunter",
+        "Triplicación: genera hasta tres clones simultáneos"
+      ]
+    }
   ]
 }
