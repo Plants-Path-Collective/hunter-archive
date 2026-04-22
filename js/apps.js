@@ -427,7 +427,7 @@ async function loadApp(name, el, data) {
 
             const renderConfigEditor = () => {
                 el.innerHTML = `
-                    <div class="split split-30-70" style="height:100%;">
+                    <div class="split split-50" style="height:100%;">
                         <div class="stack">
                             <div class="panel">
                                 <h3>Editar data.json</h3>
