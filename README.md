@@ -216,6 +216,42 @@ En las vistas previas (Generador, Editor, Archivos) se renderiza visualmente con
 
 ---
 
+## Próximas mejoras (tareas pendientes)
+
+A continuación se detallan los aspectos que requieren desarrollo para completar la integración del sistema de combate y la gestión de dimensiones:
+
+1. **Añadir referencias a la estructura de armas**  
+   Actualmente las armas están definidas en `classes.json` (con nombre, descripción, tipo, daño y efecto). Es necesario modificar la aplicación **Archivos (File Explorer)** para que, al visualizar una clase sugerida dentro de una dimensión, se muestre también su lista de armas con todos sus atributos.
+
+2. **Apartado de enemigos dentro de la dimensión seleccionada**  
+   Cada dimensión en `dimensions.json` incluye un array `suggested_enemies` con objetos que contienen nombre, tipo, estadísticas y habilidades. Se debe extender la vista de dimensión en **Archivos** para listar estos enemigos, mostrando al menos su nombre y tipo, y permitiendo expandir detalles (estadísticas, habilidades).
+
+3. **Tab de estadísticas (stats) dentro del Hunter seleccionado**  
+   En la vista de un Hunter dentro de **Archivos**, se necesita una nueva sección (o pestaña) que muestre las estadísticas del personaje (`hp, mp, speed, strength, magicpower, defense, magicdefense, evasion`). Estas estadísticas podrían derivarse de la clase y el nivel, o ser editables (ver punto 5).
+
+4. **Nuevo apartado en Archivos: tipos elementales y tipos de criatura**  
+   Además de las secciones **Hunters** y **Dimensiones**, se debe añadir un tercer bloque en el explorador de archivos que contenga:
+    - Una tabla o diagrama de **tipos elementales** (fuego, hielo, tierra, etc.) con sus ventajas y desventajas (similar a la tabla incluida en la guía de diseño).
+    - Una lista de **tipos de criatura** (volador, coloso, élite, etc.) con sus características.
+      Esta información puede cargarse desde un nuevo archivo JSON o estar hardcodeada inicialmente.
+
+5. **Edición de estadísticas a través del Editor**  
+   Actualmente el **Editor** permite modificar descripción, conceptos, habilidades e imágenes, pero no las estadísticas del personaje. Se debe añadir un panel en el Editor para ingresar y modificar los valores de `hp, mp, speed, strength, magicpower, defense, magicdefense, evasion`. Estas estadísticas no se generan automáticamente en el **Generador** (por ahora), pero podrán editarse manualmente.
+
+6. **Mejora de UX/UI**  
+   Actualmente mucha información (árboles de habilidades, listas de armas, enemigos, etc.) se presenta de forma densa y poco organizada. Es necesario rediseñar la disposición de los elementos, usar tarjetas colapsables, mejorar la tipografía y los espaciados, y asegurar que las vistas sean responsivas. También se debe optimizar la navegación entre pestañas y secciones dentro de cada ventana.
+
+7. **Función de renderizado para documentación**  
+   Se requiere una función dentro de la aplicación **Archivos** que permita generar una “captura” o vista imprimible de los siguientes elementos:
+    - Ficha completa de un Hunter (con stats, habilidades, armas, etc.).
+    - Ficha resumida de una Dimensión (incluyendo sus clases sugeridas y enemigos).
+    - Tabla de tipos elementales y tipos de criatura.
+      Esta función debería producir un HTML/CSS autocontenido o una imagen descargable (por ejemplo, usando `html2canvas`) para facilitar la inclusión de dichas fichas en la documentación del proyecto.
+
+Una vez implementados estos puntos, será necesario **actualizar este README** con la documentación correspondiente (estructura de datos, nuevas funcionalidades, flujo de trabajo ampliado).
+
+---
+
 ## Créditos
 
 © 2024 - 2026 Plants Path Collective

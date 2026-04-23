@@ -4,38 +4,62 @@
     "dimension_id": "DIM-6084206892469",
     "description": "Portador de la chispa del dios del viento. Domina las corrientes de aire, se mueve como el huracán y puede cortar con ráfagas invisibles.",
     "passive_pool": [
-      "Puede sentir las corrientes de aire en un radio de cien metros, detectando movimientos y respiraciones",
-      "Su cuerpo pesa la mitad de lo normal; cae más lento y salta el doble",
-      "Nunca es afectado por vientos fuertes o tormentas; estas le son indiferentes"
+      "Siente corrientes de aire en un radio cercano (detecta movimientos).",
+      "Pesa la mitad; salta el doble y cae lento.",
+      "Inmune a vientos fuertes y tormentas."
     ],
     "active_pool": [
       {
-        "base": "Lanzar una ráfaga de viento cortante que hiere a distancia como una cuchilla invisible",
+        "base": "Ráfaga cortante: 20 daño físico a un enemigo (5s).",
         "paths": [
-          "Ráfaga múltiple — lanza tres cortes en abanico",
-          "Ráfaga perforante — un solo corte concentrado que atraviesa armaduras"
+          "Ráfaga múltiple: 3 cortes de 10 daño a enemigos aleatorios (5s).",
+          "Ráfaga perforante: 35 daño, ignora 10 defensa (5s)."
         ]
       },
       {
-        "base": "Crear un torbellino que levanta a los enemigos y los lanza hacia atrás, causando caída",
+        "base": "Torbellino: lanza a un enemigo, 15 daño + caída (5s).",
         "paths": [
-          "Torbellino controlado — puede elegir la dirección del lanzamiento",
-          "Torbellino ascendente — los eleva y luego caen, recibiendo daño por impacto"
+          "Torbellino controlado: eliges dirección (5s).",
+          "Torbellino ascendente: 25 daño, enemigo cae y se aturde 1s (5s)."
         ]
       },
       {
-        "base": "Aumentar su velocidad de movimiento y reacción durante un minuto, volviéndose una ráfaga viviente",
+        "base": "Ráfaga viviente: +50% speed durante 10s (1s).",
         "paths": [
-          "Velocidad sostenida — corre el triple de rápido, puede esquivar proyectiles",
-          "Velocidad explosiva — se teletransporta en línea recta hasta treinta metros"
+          "Velocidad sostenida: +30% speed durante 30s (1s).",
+          "Velocidad explosiva: teletransporte 15m (1s)."
         ]
       }
     ],
     "weapons": [
-      "Abanico de plumas de quetzal (lanza ráfagas cortantes)",
-      "Silbato de viento (convoca corrientes ascendentes)",
-      "Manto de nubes (permite planear brevemente)",
-      "Daga de obsidiana hueca (silba al cortar, desorienta)"
+      {
+        "name": "Abanico de plumas de quetzal",
+        "description": "Abanico ceremonial de plumas iridiscentes que canaliza el viento",
+        "type": "distancia",
+        "damage": 6,
+        "effect": "ráfaga cortante en área: 8 daño a todos los enemigos (5s)"
+      },
+      {
+        "name": "Silbato de viento",
+        "description": "Pequeño silbato de barro cocido con forma de cabeza de serpiente",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "convoca corriente ascendente: +20% evasion a un aliado por 10s"
+      },
+      {
+        "name": "Manto de nubes",
+        "description": "Capa tejida con algodón de nube solidificada",
+        "type": "armadura",
+        "damage": 1,
+        "effect": "permite planear: reduce daño de caída 50% y +5% evasion"
+      },
+      {
+        "name": "Daga de obsidiana hueca",
+        "description": "Daga de obsidiana con una cavidad que silba al cortar el aire",
+        "type": "cuerpo a cuerpo",
+        "damage": 8,
+        "effect": "silbido desorientador: 20% de confundir al enemigo (5s)"
+      }
     ]
   },
   {
@@ -43,38 +67,62 @@
     "dimension_id": "DIM-6084206892469",
     "description": "Portador de la chispa del dios sol. Irradia calor purificador, quema la maleza y protege los cultivos.",
     "passive_pool": [
-      "Su cuerpo emite un calor constante que purifica el agua a su alrededor en un radio de tres metros",
-      "Las plantas que toca crecen más sanas y resistentes a plagas",
-      "Puede resistir temperaturas extremas sin daño (desde el hielo hasta lava)"
+      "Calor constante purifica agua en área cercana.",
+      "Las plantas que toca crecen más sanas.",
+      "Resiste temperaturas extremas (hielo a lava)."
     ],
     "active_pool": [
       {
-        "base": "Lanzar una llamarada solar que quema a los enemigos sin dañar la vegetación ni las estructuras aliadas",
+        "base": "Llamarada solar: 25 daño de fuego a un enemigo (5s).",
         "paths": [
-          "Llamarada selectiva — solo daña a quienes el avatar considera hostiles",
-          "Llamarada envolvente — quema todo en un radio de veinte metros, pero el avatar puede excluir aliados con concentración"
+          "Llamarada selectiva: solo daña hostiles (5s).",
+          "Llamarada envolvente: 15 daño a todos los enemigos, no daña aliados (5s)."
         ]
       },
       {
-        "base": "Aumentar su calor corporal hasta volverse incandescente, fundiendo metales y armas que se le acerquen",
+        "base": "Incandescencia: +20% daño físico, quema a quien toque (5s).",
         "paths": [
-          "Incandescencia controlada — puede tocar aliados sin dañarlos, solo afecta a objetos inanimados y enemigos",
-          "Incandescencia salvaje — quema todo a su paso, pero también se daña a sí mismo"
+          "Incandescencia controlada: no daña aliados, solo objetos y enemigos (5s).",
+          "Incandescencia salvaje: +40% daño, pero el usuario pierde 5 HP por turno (5s)."
         ]
       },
       {
-        "base": "Invocar un escudo de luz solar que repele proyectiles y ataques mágicos durante varios minutos",
+        "base": "Escudo solar: reduce daño recibido 30% por 10s (1s).",
         "paths": [
-          "Escudo reflectante — devuelve los proyectiles al atacante con la misma fuerza",
-          "Escudo absorbente — convierte la energía de los ataques en calor que puede liberar después"
+          "Escudo reflectante: devuelve 20% daño al atacante (1s).",
+          "Escudo absorbente: convierte daño en calor, puedes liberarlo como ataque (1s)."
         ]
       }
     ],
     "weapons": [
-      "Macana de obsidiana con incrustaciones de pirita (arde al impactar)",
-      "Chimalli (escudo circular) que refleja luz cegadora",
-      "Lanza con punta de cobre (se calienta al rojo vivo)",
-      "Atlatl (propulsor de dardos) que lanza proyectiles ígneos"
+      {
+        "name": "Macana de obsidiana",
+        "description": "Maza de piedra con incrustaciones de pirita que arde al impactar",
+        "type": "cuerpo a cuerpo",
+        "damage": 15,
+        "effect": "10% de quemar al enemigo"
+      },
+      {
+        "name": "Chimalli",
+        "description": "Escudo circular que refleja luz cegadora",
+        "type": "escudo",
+        "damage": 3,
+        "effect": "reduce daño físico 20% + 10% de cegar al atacante"
+      },
+      {
+        "name": "Lanza con punta de cobre",
+        "description": "Lanza larga con punta de cobre que se calienta al rojo vivo",
+        "type": "cuerpo a cuerpo",
+        "damage": 14,
+        "effect": "cada golpe aumenta daño 2 puntos (acumulable hasta +10)"
+      },
+      {
+        "name": "Atlatl",
+        "description": "Propulsor de dardos que lanza proyectiles ígneos",
+        "type": "distancia",
+        "damage": 12,
+        "effect": "ignora escudos y 5 de defensa"
+      }
     ]
   },
   {
@@ -82,38 +130,62 @@
     "dimension_id": "DIM-6084206892469",
     "description": "Portador de la chispa de la diosa de la tierra. Controla la fertilidad del suelo y la estabilidad del terreno.",
     "passive_pool": [
-      "Siente las vibraciones del suelo en un radio de cien metros (localiza criaturas enterradas o acechando)",
-      "Nunca resbala ni cae en terreno inestable; sus pies se adhieren a la roca y al barro",
-      "Las semillas que planta germinan en horas incluso en tierra muerta"
+      "Siente vibraciones del suelo cerca (detecta criaturas enterradas).",
+      "Nunca resbala en terreno inestable.",
+      "Las semillas germinan en horas incluso en tierra muerta."
     ],
     "active_pool": [
       {
-        "base": "Hacer temblar el suelo en un área pequeña para derribar a los enemigos y crear grietas",
+        "base": "Temblor: 15 daño físico a todos los enemigos y los derriba (5s).",
         "paths": [
-          "Temblor focalizado — solo afecta a una zona de cinco metros, pero derriba con seguridad",
-          "Temblor en cadena — ondas que se propagan, derribando a objetivos en una línea de treinta metros"
+          "Temblor focalizado: 25 daño a un enemigo, derriba seguro (5s).",
+          "Temblor en cadena: 10 daño a una línea de enemigos, derriba (5s)."
         ]
       },
       {
-        "base": "Fusionarse temporalmente con la tierra, volviéndose intangible y pudiendo moverse bajo el suelo",
+        "base": "Fusión terrestre: intangible bajo tierra por 10s (1s).",
         "paths": [
-          "Fusión breve — hasta un minuto, suficiente para atravesar muros o emboscar",
-          "Fusión extendida — hasta diez minutos, pero al salir queda agotado"
+          "Fusión breve: 5s, pero no gasta energía (1s).",
+          "Fusión extendida: 20s, pero al salir queda agotado (1s)."
         ]
       },
       {
-        "base": "Hacer crecer espinas de roca desde el suelo que atrapan o dañan a los enemigos",
+        "base": "Espinas de roca: 20 daño físico y ralentiza 30% (5s).",
         "paths": [
-          "Espinas afiladas — causan heridas punzantes y ralentizan",
-          "Espinas de contención — crecen en forma de jaula, atrapando sin matar"
+          "Espinas afiladas: +10% sangrado (5s).",
+          "Espinas de contención: atrapa al enemigo 2 turnos, sin daño (5s)."
         ]
       }
     ],
     "weapons": [
-      "Tezcacuitlapilli (bastón de madera con punta de obsidiana, hace brotar raíces)",
-      "Honda de fibra de maguey (lanza piedras que se convierten en barro)",
-      "Red de henequén (atrapa y hunde ligeramente en el suelo)",
-      "Manopla de jade (golpes que hacen temblar el suelo)"
+      {
+        "name": "Tezcacuitlapilli",
+        "description": "Bastón de madera con punta de obsidiana que hace brotar raíces",
+        "type": "cuerpo a cuerpo",
+        "damage": 12,
+        "effect": "al golpear suelo, inmoviliza a un enemigo 1 turno"
+      },
+      {
+        "name": "Honda de fibra de maguey",
+        "description": "Honda tejida con fibras de maguey, lanza piedras que se convierten en barro",
+        "type": "distancia",
+        "damage": 10,
+        "effect": "reduce speed del enemigo 20% por 2 turnos"
+      },
+      {
+        "name": "Red de henequén",
+        "description": "Red pesada de henequén, atrapa y hunde ligeramente en el suelo",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "inmoviliza a un enemigo por 2 turnos"
+      },
+      {
+        "name": "Manopla de jade",
+        "description": "Guantelete de jade que amplifica los golpes con energía telúrica",
+        "type": "cuerpo a cuerpo",
+        "damage": 18,
+        "effect": "los golpes hacen temblar el suelo: 20% de derribar"
+      }
     ]
   },
   {
@@ -121,38 +193,62 @@
     "dimension_id": "DIM-8214739502846",
     "description": "Guerrero que entona frecuencias letales. Su voz puede derrumbar islas o reventar tímpanos enemigos.",
     "passive_pool": [
-      "Su voz resuena en el vacío del espacio entre cuerdas, por lo que puede ser escuchada incluso sin aire",
-      "Puede imitar el canto de cualquier criatura del archipiélago después de oírlo una vez",
-      "Sus cuerdas vocales son indestructibles; ni el grito más fuerte las daña"
+      "Su voz resuena en el vacío, puede ser escuchada sin aire.",
+      "Puede imitar cualquier canto tras oírlo una vez.",
+      "Cuerdas vocales indestructibles."
     ],
     "active_pool": [
       {
-        "base": "Cantar una nota de fractura que rompe las cuerdas bajo los pies de los enemigos, haciéndolos caer al vacío",
+        "base": "Nota de fractura: 20 daño de sonido a un enemigo, lo derriba (5s).",
         "paths": [
-          "Fractura local — solo afecta a una cuerda de hasta diez metros",
-          "Fractura en eco — la nota rebota y afecta a múltiples cuerdas en un radio"
+          "Fractura local: afecta a un área pequeña (5s).",
+          "Fractura en eco: rebota a otro enemigo (5s)."
         ]
       },
       {
-        "base": "Entonar un silbido ultrasónico que aturde a todos los que lo oyen (excepto aliados entrenados)",
+        "base": "Silbido ultrasónico: aturde a todos los enemigos 2s (5s).",
         "paths": [
-          "Aturdimiento masivo — afecta a un área grande, pero el cantor también se aturde ligeramente",
-          "Aturdimiento selectivo — solo afecta a un objetivo, pero lo deja inconsciente por minutos"
+          "Aturdimiento masivo: afecta área grande, pero el cantor se aturde 1s (5s).",
+          "Aturdimiento selectivo: solo un objetivo, aturdido 5s (5s)."
         ]
       },
       {
-        "base": "Cantar una melodía de aceleración que aumenta la velocidad de movimiento de los aliados al plegar el espacio a su alrededor",
+        "base": "Melodía de aceleración: +30% speed a todos los aliados 10s (1s).",
         "paths": [
-          "Aceleración breve — dura un minuto, pero duplica la velocidad",
-          "Aceleración sostenida — dura diez minutos, pero solo aumenta un 30%"
+          "Aceleración breve: +50% speed 5s (1s).",
+          "Aceleración sostenida: +15% speed 30s (1s)."
         ]
       }
     ],
     "weapons": [
-      "Caracola marina tallada (amplifica su voz como un altavoz)",
-      "Tambor de guerra portátil (para ritmos de combate)",
-      "Silbato de hueso de pez abisal (emite ultrasonidos)",
-      "Máscara de coral (protege su garganta y proyecta el sonido en un cono)"
+      {
+        "name": "Caracola marina tallada",
+        "description": "Caracola gigante tallada con runas resonantes",
+        "type": "herramienta",
+        "damage": 4,
+        "effect": "amplifica voz: +50% alcance de habilidades de sonido"
+      },
+      {
+        "name": "Tambor de guerra portátil",
+        "description": "Pequeño tambor de madera con parche de piel de pez abisal",
+        "type": "herramienta",
+        "damage": 3,
+        "effect": "sincroniza a los aliados: +10% speed a todos"
+      },
+      {
+        "name": "Silbato de hueso de pez abisal",
+        "description": "Silbato tallado en vértebra de pez de las profundidades",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "ultrasonido: 20% de aturdir a un enemigo"
+      },
+      {
+        "name": "Máscara de coral",
+        "description": "Máscara de coral rojo que cubre la garganta y la boca",
+        "type": "armadura",
+        "damage": 1,
+        "effect": "protege la garganta y proyecta sonido en cono: +10% precisión"
+      }
     ]
   },
   {
@@ -160,38 +256,62 @@
     "dimension_id": "DIM-8214739502846",
     "description": "Guerrero que usa un tambor de guerra masivo. Cada redoble es un martillo que golpea las cuerdas del espacio.",
     "passive_pool": [
-      "Puede golpear su tambor sin que el sonido le afecte a él ni a sus aliados cercanos",
-      "Sus brazos tienen la fuerza necesaria para hacer vibrar cuerdas a kilómetros de distancia",
-      "Sabe exactamente qué nota hará caer una cuerda después de probar tres golpes"
+      "Golpea su tambor sin afectarse ni a aliados cercanos.",
+      "Brazos con fuerza para hacer vibrar cuerdas a distancia.",
+      "Sabe qué nota rompe una cuerda tras tres golpes de prueba."
     ],
     "active_pool": [
       {
-        "base": "Redoblar para crear ondas de choque que empujan a los enemigos hacia atrás",
+        "base": "Redoble: onda de choque, 15 daño y empuja 5m (5s).",
         "paths": [
-          "Onda frontal — empuja a todos en una línea recta",
-          "Onda circular — empuja a todos alrededor, pero con menos fuerza"
+          "Onda frontal: empuja en línea recta (5s).",
+          "Onda circular: empuja a todos alrededor (5s)."
         ]
       },
       {
-        "base": "Golpe seco que corta una cuerda limpiamente, haciendo que una isla o plataforma se desplome",
+        "base": "Golpe seco: corta una cuerda, hace caer una plataforma (10s).",
         "paths": [
-          "Corte preciso — la cuerda se rompe en el punto exacto, caída controlada",
-          "Corte explosivo — la cuerda se fragmenta, la isla se desmorona en pedazos"
+          "Corte preciso: caída controlada (10s).",
+          "Corte explosivo: la plataforma se fragmenta (10s)."
         ]
       },
       {
-        "base": "Tamborileo rápido que genera una barrera de sonido sólido, deteniendo proyectiles y cargas",
+        "base": "Tamborileo rápido: barrera de sonido sólido que bloquea proyectiles (1s).",
         "paths": [
-          "Barrera estática — dura un minuto, inmóvil",
-          "Barrera móvil — se mueve con el rompecuerdas, pero dura solo treinta segundos"
+          "Barrera estática: dura 10s (1s).",
+          "Barrera móvil: se mueve contigo, dura 5s (1s)."
         ]
       }
     ],
     "weapons": [
-      "Tambor de guerra de caparazón de tortuga gigante",
-      "Baquetas de hueso de ballena (pesadas y resistentes)",
-      "Coraza resonante (amplifica los golpes de su propio pecho)",
-      "Yunque portátil (para golpear superficies sólidas y crear ondas)"
+      {
+        "name": "Tambor de guerra de caparazón de tortuga gigante",
+        "description": "Tambor masivo hecho con caparazón de tortuga marina gigante",
+        "type": "herramienta",
+        "damage": 5,
+        "effect": "ondas de choque: empujan a los enemigos 5m"
+      },
+      {
+        "name": "Baquetas de hueso de ballena",
+        "description": "Baquetas pesadas talladas en costillas de ballena",
+        "type": "cuerpo a cuerpo",
+        "damage": 10,
+        "effect": "golpes contundentes: 20% de aturdir"
+      },
+      {
+        "name": "Coraza resonante",
+        "description": "Armadura de placas que amplifica los golpes del propio pecho",
+        "type": "armadura",
+        "damage": 2,
+        "effect": "+20% daño de habilidades de sonido"
+      },
+      {
+        "name": "Yunque portátil",
+        "description": "Pequeño yunque de hierro para golpear superficies sólidas",
+        "type": "herramienta",
+        "damage": 6,
+        "effect": "crea onda de choque al golpear suelo: 10 daño área"
+      }
     ]
   },
   {
@@ -199,38 +319,62 @@
     "dimension_id": "DIM-8214739502846",
     "description": "Especialista en dibujar rutas imposibles. Sus mapas pueden confundir al enemigo o abrir caminos secretos.",
     "passive_pool": [
-      "Siempre sabe su posición exacta en el archipiélago, incluso sin referencias",
-      "Puede recordar cualquier ruta que haya dibujado o recorrido una sola vez",
-      "Sus mapas son indestructibles al agua, fuego y desgaste"
+      "Siempre sabe su posición exacta en el archipiélago.",
+      "Recuerda cualquier ruta recorrida una sola vez.",
+      "Sus mapas son indestructibles (agua, fuego, desgaste)."
     ],
     "active_pool": [
       {
-        "base": "Dibujar una ruta falsa que hace que quien la siga termine en el punto de partida (bucle infinito)",
+        "base": "Ruta falsa: el enemigo que la sigue entra en bucle 10s (5s).",
         "paths": [
-          "Bucle corto — la víctima se da cuenta tras diez minutos",
-          "Bucle largo — puede durar horas; la víctima cree estar avanzando"
+          "Bucle corto: se da cuenta a los 5s (5s).",
+          "Bucle largo: puede durar 30s (5s)."
         ]
       },
       {
-        "base": "Trazar un atajo que conecta dos puntos distantes, permitiendo a los aliados cruzar en segundos",
+        "base": "Atajo: conecta dos puntos, los aliados cruzan en 1s (5s).",
         "paths": [
-          "Atajo estable — dura una hora, puede usarlo todo el grupo",
-          "Atajo de un solo uso — se desvanece tras el primer viajero"
+          "Atajo estable: dura 10s (5s).",
+          "Atajo de un solo uso: se desvanece tras el primer viajero (5s)."
         ]
       },
       {
-        "base": "Modificar un mapa existente para ocultar una isla entera, haciendo que los navegantes enemigos la rodeen sin verla",
+        "base": "Ocultar isla: modifica mapa para que los enemigos no la vean (10s).",
         "paths": [
-          "Ocultamiento temporal — dura un día",
-          "Ocultamiento permanente — requiere un ritual largo, pero la isla desaparece de todos los mapas"
+          "Ocultamiento temporal: dura 1 día (10s).",
+          "Ocultamiento permanente: requiere ritual, dura para siempre (10s)."
         ]
       }
     ],
     "weapons": [
-      "Pluma de ave marina (traza líneas vibrantes en el aire)",
-      "Tintero de tinta de calamar gigante (indeleble y resonante)",
-      "Brújula de aguja magnética (apunta a la cuerda más cercana)",
-      "Pergamino de piel de pez (imposible de rasgar)"
+      {
+        "name": "Pluma de ave marina",
+        "description": "Pluma de albatros que traza líneas vibrantes en el aire",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "dibuja rutas temporales que los aliados pueden seguir"
+      },
+      {
+        "name": "Tintero de tinta de calamar gigante",
+        "description": "Tintero de bronce con tinta indeleble y resonante",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "tinta imborrable y emite vibración: revela enemigos ocultos"
+      },
+      {
+        "name": "Brújula de aguja magnética",
+        "description": "Brújula que apunta a la cuerda más cercana en lugar del norte",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "revela islas ocultas o trampas en un radio cercano"
+      },
+      {
+        "name": "Pergamino de piel de pez",
+        "description": "Pergamino impermeable hecho de piel de pez abisal",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "soporta agua, fuego y desgaste; mapas de batalla"
+      }
     ]
   },
   {
@@ -238,38 +382,62 @@
     "dimension_id": "DIM-3827596041235",
     "description": "Monje artista que esculpe nubes sólidas en armas y armaduras. Sus creaciones flotan y cortan como el acero.",
     "passive_pool": [
-      "Puede sostener una nube tallada sin que esta se desmorone, incluso si pesa más que él",
-      "Sus manos están siempre frías para no derretir la espuma mineral",
-      "Sabe qué gas hay en una nube con solo lamerla"
+      "Puede sostener una nube tallada sin que se desmorone.",
+      "Manos frías para no derretir la espuma mineral.",
+      "Sabe qué gas hay en una nube con solo lamerla."
     ],
     "active_pool": [
       {
-        "base": "Tallar un arpón de nube sólida que al impactar libera gas congelante, inmovilizando al objetivo",
+        "base": "Arpón de nube: 18 daño físico + congela 2s (5s).",
         "paths": [
-          "Arpón de hielo — congela y rompe en fragmentos cortantes",
-          "Arpón de niebla — crea una nube densa que ciega"
+          "Arpón de hielo: congela y rompe en fragmentos (5s).",
+          "Arpón de niebla: crea nube densa que ciega 5s (5s)."
         ]
       },
       {
-        "base": "Crear un escudo de nube que absorbe impactos y se regenera con el viento ambiente",
+        "base": "Escudo de nube: absorbe 30 daño, se regenera con viento (1s).",
         "paths": [
-          "Escudo ligero — apenas pesa, pero absorbe golpes moderados",
-          "Escudo pesado — pesa como una roca, pero resiste catapultas"
+          "Escudo ligero: pesa poco, absorbe 20 daño (1s).",
+          "Escudo pesado: pesa mucho, absorbe 50 daño (1s)."
         ]
       },
       {
-        "base": "Reesculpir una nube dañada en el campo de batalla, reparando armaduras o armas en segundos",
+        "base": "Reesculpir: repara armadura o arma de nube en 1s (1s).",
         "paths": [
-          "Reparación rápida — tarda un suspiro, pero la nube queda frágil",
-          "Reparación cuidadosa — tarda un minuto, pero la nube queda más resistente"
+          "Reparación rápida: 0.5s, pero frágil (1s).",
+          "Reparación cuidadosa: 5s, pero más resistente (1s)."
         ]
       }
     ],
     "weapons": [
-      "Cincel de bambú (para tallar nubes a distancia)",
-      "Martillo de piedra pómez (golpea sin romper la espuma)",
-      "Arpón de nube congelante (arma arrojadiza)",
-      "Mochila de fuelles (para insuflar gas y crear formas rápido)"
+      {
+        "name": "Cincel de bambú",
+        "description": "Cincel largo de bambú endurecido, para tallar nubes a distancia",
+        "type": "herramienta",
+        "damage": 6,
+        "effect": "permite esculpir nubes sólidas desde lejos"
+      },
+      {
+        "name": "Martillo de piedra pómez",
+        "description": "Martillo ligero de piedra volcánica, golpea sin romper la espuma",
+        "type": "cuerpo a cuerpo",
+        "damage": 8,
+        "effect": "no daña estructuras de nube"
+      },
+      {
+        "name": "Arpón de nube congelante",
+        "description": "Arpón de nube sólida que al impactar libera gas helado",
+        "type": "distancia",
+        "damage": 14,
+        "effect": "20% de congelar al objetivo"
+      },
+      {
+        "name": "Mochila de fuelles",
+        "description": "Mochila con fuelles de bambú para insuflar gas y crear formas rápido",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "acelera creación de nubes sólidas: -50% tiempo"
+      }
     ]
   },
   {
@@ -277,38 +445,62 @@
     "dimension_id": "DIM-3827596041235",
     "description": "Monje que doma las corrientes de aire. Puede desviar tormentas o crear remansos de calma.",
     "passive_pool": [
-      "El viento nunca le mueve la ropa; es invisible para el aire",
-      "Puede caminar sobre corrientes ascendentes como si fuera suelo firme",
-      "Sabe el cambio de viento con diez minutos de antelación"
+      "El viento nunca le mueve la ropa (invisible para el aire).",
+      "Puede caminar sobre corrientes ascendentes.",
+      "Sabe el cambio de viento con 10s de antelación."
     ],
     "active_pool": [
       {
-        "base": "Crear un remanso de aire quieto alrededor de aliados, protegiéndolos de vientos fuertes y proyectiles ligeros",
+        "base": "Remanso de aire: protege a aliados de vientos y proyectiles ligeros 10s (1s).",
         "paths": [
-          "Remanso absoluto — ni el viento ni el sonido penetran",
-          "Remanso permeable — solo bloquea ráfagas fuertes"
+          "Remanso absoluto: ni viento ni sonido penetran (1s).",
+          "Remanso permeable: solo bloquea ráfagas fuertes (1s)."
         ]
       },
       {
-        "base": "Llamar una corriente ascendente que eleva a los aliados a una nube alta o permite saltar obstáculos",
+        "base": "Corriente ascendente: eleva a un aliado, +20% evasion 10s (5s).",
         "paths": [
-          "Ascenso suave — lento pero silencioso",
-          "Ascenso explosivo — rápido pero ruidoso, puede alertar al enemigo"
+          "Ascenso suave: silencioso (5s).",
+          "Ascenso explosivo: rápido pero ruidoso (5s)."
         ]
       },
       {
-        "base": "Desviar una ráfaga de viento enemiga (como flechas de aire o gases) hacia otra dirección",
+        "base": "Desviar ráfaga: redirige un proyectil de viento o gas (1s).",
         "paths": [
-          "Desvío preciso — redirige hacia un objetivo concreto",
-          "Desvío disperso — esparce el ataque en un área amplia, reduciendo su letalidad"
+          "Desvío preciso: hacia un objetivo concreto (1s).",
+          "Desvío disperso: esparce en área, reduce letalidad (1s)."
         ]
       }
     ],
     "weapons": [
-      "Abanico de plumas de cóndor (para desviar vientos)",
-      "Campana de viento (alerta de cambios de corriente)",
-      "Capa de seda (captura el viento y lo libera a voluntad)",
-      "Bastón con veleta (señala la dirección del viento y puede golpear)"
+      {
+        "name": "Abanico de plumas de cóndor",
+        "description": "Abanico grande de plumas de cóndor, para desviar vientos",
+        "type": "herramienta",
+        "damage": 4,
+        "effect": "puede redirigir proyectiles de viento"
+      },
+      {
+        "name": "Campana de viento",
+        "description": "Campanilla de bronce que alerta de cambios de corriente",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "emite sonido cuando se acerca ráfaga hostil"
+      },
+      {
+        "name": "Capa de seda",
+        "description": "Capa ligera de seda que captura el viento",
+        "type": "armadura",
+        "damage": 2,
+        "effect": "almacena una ráfaga y la libera después (daño 10)"
+      },
+      {
+        "name": "Bastón con veleta",
+        "description": "Bastón de madera con una veleta en la punta",
+        "type": "cuerpo a cuerpo",
+        "damage": 8,
+        "effect": "señala dirección del viento y puede golpear"
+      }
     ]
   },
   {
@@ -316,38 +508,62 @@
     "dimension_id": "DIM-3827596041235",
     "description": "Experto en presión de gas. Puede hacer explotar depósitos o sellar fugas en medio de la batalla.",
     "passive_pool": [
-      "Sus pulmones inflan un fuelle roto sin esfuerzo",
-      "Siente la presión del gas a cien metros",
-      "Nunca se quema con gas caliente"
+      "Sus pulmones inflan un fuelle roto sin esfuerzo.",
+      "Siente la presión del gas a distancia.",
+      "Nunca se quema con gas caliente."
     ],
     "active_pool": [
       {
-        "base": "Sobrecargar un fuelle cercano para que explote en una ráfaga que empuja a los enemigos",
+        "base": "Sobrecarga de fuelle: explosión que empuja enemigos 5m y 10 daño (5s).",
         "paths": [
-          "Ráfaga direccional — empuja a un objetivo donde señale",
-          "Ráfaga circular — empuja todo alrededor, incluyéndose a sí mismo"
+          "Ráfaga direccional: empuja un objetivo donde señales (5s).",
+          "Ráfaga circular: empuja a todos alrededor (5s)."
         ]
       },
       {
-        "base": "Sellar una fuga de gas con un golpe, evitando que se desperdicie y pueda ser usado después",
+        "base": "Sellar fuga: evita desperdicio de gas, dura 10s (1s).",
         "paths": [
-          "Sellado rápido — dura una hora",
-          "Sellado permanente — requiere concentración total"
+          "Sellado rápido: 1s, dura 10s (1s).",
+          "Sellado permanente: 5s, dura para siempre (1s)."
         ]
       },
       {
-        "base": "Ajustar la presión de una nube para que se vuelva sólida como piedra, creando barricadas instantáneas",
+        "base": "Ajustar presión: vuelve sólida una nube, crea barricada (5s).",
         "paths": [
-          "Barricada ligera — se puede atravesar con esfuerzo",
-          "Barricada pesada — impenetrable durante una hora"
+          "Barricada ligera: se puede atravesar con esfuerzo (5s).",
+          "Barricada pesada: impenetrable 10s (5s)."
         ]
       }
     ],
     "weapons": [
-      "Fuelles de bambú reforzado (para insuflar o extraer gas)",
-      "Manómetro de bronce (mide la presión, puede lanzarse como dardo)",
-      "Soplete largo (dirige el gas a puntos precisos)",
-      "Maza hueca (llena de gas comprimido, explota al golpear)"
+      {
+        "name": "Fuelles de bambú reforzado",
+        "description": "Fuelles grandes de bambú con refuerzos de bronce",
+        "type": "herramienta",
+        "damage": 3,
+        "effect": "insufla o extrae gas de nubes rápidamente"
+      },
+      {
+        "name": "Manómetro de bronce",
+        "description": "Instrumento de medición de presión, puede lanzarse como dardo",
+        "type": "distancia",
+        "damage": 6,
+        "effect": "muestra la presión del objetivo (si es depósito)"
+      },
+      {
+        "name": "Soplete largo",
+        "description": "Tubo largo de bronce para dirigir gas a puntos precisos",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "permite aplicar gas a distancia"
+      },
+      {
+        "name": "Maza hueca",
+        "description": "Maza de metal con cavidad llena de gas comprimido",
+        "type": "cuerpo a cuerpo",
+        "damage": 16,
+        "effect": "explota al golpear: 10 daño adicional al portador"
+      }
     ]
   },
   {
@@ -355,38 +571,62 @@
     "dimension_id": "DIM-9472018563720",
     "description": "Faraón que toca el tambor de cráneo de tiranosaurio y se transforma en la bestia prehistórica más temida.",
     "passive_pool": [
-      "Sus huesos son más densos; las caídas no le rompen",
-      "Puede rugir imitando a un tiranosaurio, aterrando a enemigos débiles",
-      "Siente la presencia de fósiles cercanos"
+      "Huesos densos: caídas no le rompen.",
+      "Rugido imita a tiranosaurio, asusta a enemigos débiles.",
+      "Siente fósiles cercanos."
     ],
     "active_pool": [
       {
-        "base": "Transformarse en tiranosaurio durante un minuto: gana tamaño, mordida devastadora y cola arrolladora",
+        "base": "Transformación en tiranosaurio: +50% daño, +30% HP, mordida 30 daño (5s).",
         "paths": [
-          "Transformación controlada — mantiene la conciencia y puede pensar",
-          "Transformación berserker — más fuerza y velocidad, pero actúa por instinto"
+          "Transformación controlada: mantiene conciencia (5s).",
+          "Transformación berserker: +80% daño pero actúa por instinto (5s)."
         ]
       },
       {
-        "base": "Golpear el tambor para emitir un rugido sónico que derriba a todos en un radio de veinte metros",
+        "base": "Rugido sónico: derriba a todos en área, 15 daño (5s).",
         "paths": [
-          "Rugido direccional — solo hacia adelante, mayor alcance",
-          "Rugido circular — menos alcance pero afecta a todos alrededor"
+          "Rugido direccional: solo hacia adelante, +50% alcance (5s).",
+          "Rugido circular: afecta a todos alrededor (5s)."
         ]
       },
       {
-        "base": "Morder a un enemigo y, si lo traga, puede digerirlo lentamente mientras mantiene la transformación",
+        "base": "Mordida y tragar: 40 daño, si mata recupera 20 HP (5s).",
         "paths": [
-          "Digerir rápido — el enemigo muere en un minuto, pero el faraón no puede usar otras acciones",
-          "Digerir lento — el enemigo sufre daño constante pero el faraón puede seguir luchando"
+          "Digerir rápido: mata en 1 turno, no puede actuar (5s).",
+          "Digerir lento: daño constante 10 por turno (5s)."
         ]
       }
     ],
     "weapons": [
-      "Tambor de cráneo de tiranosaurio (desencadena la transformación)",
-      "Baquetas de fémur de hadrosaurio (resonancia perfecta)",
-      "Máscara de hueso con dientes (aumenta el terror del rugido)",
-      "Amuleto de garra (permite una transformación parcial rápida)"
+      {
+        "name": "Tambor de cráneo de tiranosaurio",
+        "description": "Tambor ceremonial hecho con el cráneo de un tiranosaurio",
+        "type": "herramienta",
+        "damage": 4,
+        "effect": "desencadena transformación en tiranosaurio"
+      },
+      {
+        "name": "Baquetas de fémur de hadrosaurio",
+        "description": "Baquetas talladas en fémur de hadrosaurio, resonancia perfecta",
+        "type": "herramienta",
+        "damage": 8,
+        "effect": "+30% poder del rugido sónico"
+      },
+      {
+        "name": "Máscara de hueso con dientes",
+        "description": "Máscara tallada con dientes de dinosaurio",
+        "type": "armadura",
+        "damage": 2,
+        "effect": "aumenta el terror del rugido: 30% de hacer huir a enemigos débiles"
+      },
+      {
+        "name": "Amuleto de garra",
+        "description": "Amuleto colgante con una garra de tiranosaurio",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "permite transformación parcial rápida (solo brazos) por 5s"
+      }
     ]
   },
   {
@@ -394,38 +634,62 @@
     "dimension_id": "DIM-9472018563720",
     "description": "Faraón que usa una flauta de vértebra de espinosaurio. Se transforma en un dinosaurio anfibio con gran velocidad en el agua.",
     "passive_pool": [
-      "Puede contener la respiración bajo el agua durante diez minutos",
-      "Nada el doble de rápido que un humano entrenado",
-      "Sus escamas de espinosaurio le dan resistencia al calor"
+      "Puede contener la respiración bajo agua 10 min.",
+      "Nada el doble de rápido que un humano.",
+      "Escamas de espinosaurio: resistencia al calor."
     ],
     "active_pool": [
       {
-        "base": "Transformarse en espinosaurio: garras afiladas, cresta dorsal y habilidad para moverse rápido en agua y tierra",
+        "base": "Transformación en espinosaurio: +30% speed, +20% daño, garras 25 daño (5s).",
         "paths": [
-          "Forma anfibia — puede pasar de agua a tierra sin penalización",
-          "Forma acuática — más veloz en agua, más lento en tierra"
+          "Forma anfibia: sin penalización agua/tierra (5s).",
+          "Forma acuática: +50% speed en agua, -20% en tierra (5s)."
         ]
       },
       {
-        "base": "Atacar con la garra del espinosaurio para desgarrar armaduras y escudos",
+        "base": "Garra penetrante: 30 daño, ignora 10 defensa (5s).",
         "paths": [
-          "Garra penetrante — ignora la mitad de la protección",
-          "Garra desarmadora — puede arrancar el escudo de las manos del enemigo"
+          "Garra desarmadora: puede arrancar escudo (5s).",
+          "Garra doble: dos ataques de 18 daño (5s)."
         ]
       },
       {
-        "base": "Sumergirse y crear un remolino que arrastra a los enemigos cercanos bajo el agua",
+        "base": "Remolino: arrastra enemigos bajo agua, 15 daño + ahogo 5s (5s).",
         "paths": [
-          "Remolino letal — los enemigos pueden ahogarse si no saben nadar",
-          "Remolino de contención — los atrapa pero no los daña, útil para capturar"
+          "Remolino letal: daño 25, puede ahogar (5s).",
+          "Remolino de contención: atrapa sin dañar (5s)."
         ]
       }
     ],
     "weapons": [
-      "Flauta de vértebra de espinosaurio (transformación anfibia)",
-      "Arpón de hueso (para pescar o enganchar enemigos desde el agua)",
-      "Red de fibras de papiro (resistente y ligera)",
-      "Daga de diente de cocodrilo (venenosa para enemigos terrestres)"
+      {
+        "name": "Flauta de vértebra de espinosaurio",
+        "description": "Flauta larga tallada en una vértebra de espinosaurio",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "transformación anfibia"
+      },
+      {
+        "name": "Arpón de hueso",
+        "description": "Arpón de hueso para pescar o enganchar enemigos desde el agua",
+        "type": "distancia",
+        "damage": 12,
+        "effect": "puede arrastrar enemigos hacia el portador"
+      },
+      {
+        "name": "Red de fibras de papiro",
+        "description": "Red resistente y ligera de fibras de papiro",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "inmoviliza a un enemigo en agua por 2 turnos"
+      },
+      {
+        "name": "Daga de diente de cocodrilo",
+        "description": "Daga afilada hecha con un diente de cocodrilo gigante",
+        "type": "cuerpo a cuerpo",
+        "damage": 14,
+        "effect": "10% de envenenar a enemigos terrestres"
+      }
     ]
   },
   {
@@ -433,38 +697,62 @@
     "dimension_id": "DIM-9472018563720",
     "description": "Rastreador que localiza huesos cantantes en el desierto. Sabe extraerlos sin dañar su memoria sonora.",
     "passive_pool": [
-      "Puede oír los fósiles enterrados a metros de profundidad",
-      "Nunca se deshidrata en el desierto",
-      "Sabe la edad exacta de un fósil con solo mirarlo"
+      "Puede oír fósiles enterrados a metros de profundidad.",
+      "Nunca se deshidrata en el desierto.",
+      "Sabe la edad exacta de un fósil con solo mirarlo."
     ],
     "active_pool": [
       {
-        "base": "Extraer un fósil intacto en mitad de una tormenta de arena, protegiéndolo con su cuerpo",
+        "base": "Extracción rápida: extrae un fósil en 5s, riesgo de daño (5s).",
         "paths": [
-          "Extracción rápida — minutos, pero puede dañar el fósil",
-          "Extracción delicada — horas, pero conserva toda la memoria"
+          "Extracción rápida: 2s, puede dañar (5s).",
+          "Extracción delicada: 10s, conserva memoria (5s)."
         ]
       },
       {
-        "base": "Unir dos fósiles incompletos de la misma especie para crear un instrumento más poderoso",
+        "base": "Unir fósiles: crea instrumento más poderoso (10s).",
         "paths": [
-          "Unión armónica — suena perfecto",
-          "Unión inestable — suena desafinado pero puede emitir dos notas a la vez"
+          "Unión armónica: suena perfecto (10s).",
+          "Unión inestable: desafinado pero dos notas a la vez (10s)."
         ]
       },
       {
-        "base": "Marcar un fósil con su símbolo para que solo él pueda hacerlo sonar; otros que lo intenten se aturden",
+        "base": "Marcar fósil: solo él puede hacerlo sonar, otros se aturden (5s).",
         "paths": [
-          "Marca exclusiva — permanente hasta su muerte",
-          "Marca temporal — dura una semana"
+          "Marca exclusiva: permanente hasta muerte (5s).",
+          "Marca temporal: dura 1 semana (5s)."
         ]
       }
     ],
     "weapons": [
-      "Pico de excavador (golpea sin dañar fósiles)",
-      "Cepillo de cerdas de camello (limpia arena sin rayar)",
-      "Cuerno de carnero (para llamar a otros cazadores)",
-      "Cuerda de tripa de dinosaurio (resistente y elástica)"
+      {
+        "name": "Pico de excavador",
+        "description": "Pico pequeño de hierro, golpea sin dañar fósiles",
+        "type": "herramienta",
+        "damage": 6,
+        "effect": "extrae fósiles sin romperlos"
+      },
+      {
+        "name": "Cepillo de cerdas de camello",
+        "description": "Cepillo suave de cerdas de camello, limpia arena sin rayar",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "limpieza delicada de fósiles"
+      },
+      {
+        "name": "Cuerno de carnero",
+        "description": "Cuerno de carnero, para llamar a otros cazadores",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "emite sonido audible a 1 km"
+      },
+      {
+        "name": "Cuerda de tripa de dinosaurio",
+        "description": "Cuerda resistente y elástica hecha de tendones fosilizados",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "puede usarse como trampa o para asegurar fósiles"
+      }
     ]
   },
   {
@@ -472,38 +760,62 @@
     "dimension_id": "DIM-1092837465582",
     "description": "Vikingo que empuña lanzas de sal precipitada que se endurecen al contacto con la sangre. Cada lanza lleva una emoción cristalizada.",
     "passive_pool": [
-      "Puede lanzar una lanza de sal sin que esta se desmorone en el aire",
-      "Sus manos no se cortan con los cristales de sal",
-      "Sabe qué emoción contiene una lanza por su color (amarga = gris, dulce = rosa, etc.)"
+      "Puede lanzar lanzas de sal sin que se desmoronen en el aire.",
+      "Sus manos no se cortan con cristales de sal.",
+      "Sabe qué emoción contiene una lanza por su color."
     ],
     "active_pool": [
       {
-        "base": "Lanzar una lanza de sal amarga (traición) que causa una hemorragia interna que dura horas",
+        "base": "Lanza amarga: 18 daño + hemorragia (5s).",
         "paths": [
-          "Hemorragia lenta — el enemigo pierde salud gradualmente",
-          "Hemorragia explosiva — al impactar, la lanza estalla en fragmentos"
+          "Hemorragia lenta: 5 daño por turno durante 3 turnos (5s).",
+          "Hemorragia explosiva: estalla en fragmentos, 10 daño adicional (5s)."
         ]
       },
       {
-        "base": "Lanzar una lanza de sal picante (ira) que hace que el objetivo ataque a sus propios aliados durante un breve lapso",
+        "base": "Lanza picante: 15 daño + confusión 5s (5s).",
         "paths": [
-          "Confusión total — el objetivo ataca al más cercano",
-          "Confusión dirigida — el lanzador puede elegir a quién ataca"
+          "Confusión total: ataca al más cercano (5s).",
+          "Confusión dirigida: eliges el objetivo (5s)."
         ]
       },
       {
-        "base": "Lanzar una lanza de sal dulce (amor) que, en lugar de dañar, hace que el objetivo no pueda atacar al lanzador durante un minuto (lo ve como amigo)",
+        "base": "Lanza dulce: 10 daño + encantamiento (no puede atacarte) 5s (5s).",
         "paths": [
-          "Encantamiento débil — el objetivo puede atacar a otros aliados",
-          "Encantamiento fuerte — el objetivo protege al lanzador de otros enemigos"
+          "Encantamiento débil: puede atacar a otros (5s).",
+          "Encantamiento fuerte: te protege de otros enemigos (5s)."
         ]
       }
     ],
     "weapons": [
-      "Lanzas de sal precipitada (desechables, una por emoción)",
-      "Arpa de cuarzo (para cargar emociones en las lanzas)",
-      "Escudo de sal cristalizada (refleja emociones al bloqueador)",
-      "Cuchillo de sal (para cortes rápidos que inducen emociones)"
+      {
+        "name": "Lanzas de sal precipitada",
+        "description": "Lanzas desechables hechas de sal emocional cristalizada",
+        "type": "distancia",
+        "damage": 14,
+        "effect": "efecto según emoción (amarga: hemorragia, picante: confusión, dulce: encantamiento)"
+      },
+      {
+        "name": "Arpa de cuarzo",
+        "description": "Pequeño arpa de cuarzo para cargar emociones en las lanzas",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "cambia el tipo de emoción de una lanza"
+      },
+      {
+        "name": "Escudo de sal cristalizada",
+        "description": "Escudo redondo de sal cristalina, translúcido",
+        "type": "escudo",
+        "damage": 3,
+        "effect": "refleja emociones: 20% de confundir al atacante"
+      },
+      {
+        "name": "Cuchillo de sal",
+        "description": "Cuchillo pequeño de sal sólida, para cortes rápidos",
+        "type": "cuerpo a cuerpo",
+        "damage": 8,
+        "effect": "induce emoción leve (tristeza/alegría): -10% precisión"
+      }
     ]
   },
   {
@@ -511,38 +823,62 @@
     "dimension_id": "DIM-1092837465582",
     "description": "Vikingo que se autoinflige heridas para mezclar su propia rabia con la sal del océano, volviéndose un torbellino de cristales cortantes.",
     "passive_pool": [
-      "No siente dolor mientras está en berserker (puede ignorar heridas graves)",
-      "Su sangre se endurece en cristales de sal al contacto con el aire",
-      "Cuanto más herido está, más fuerte se vuelve (hasta un límite)"
+      "No siente dolor en berserker (ignora heridas graves).",
+      "Su sangre se endurece en cristales de sal al aire.",
+      "Cuanto más herido, más fuerte (máx +50% daño)."
     ],
     "active_pool": [
       {
-        "base": "Entrar en furia berserker: durante un minuto, cada golpe suyo lanza fragmentos de sal que hieren a los enemigos cercanos",
+        "base": "Furia berserker: +30% daño, cada golpe lanza fragmentos 5 daño a enemigos cercanos (5s).",
         "paths": [
-          "Furia constante — el daño adicional es bajo pero continuo",
-          "Furia explosiva — al final del minuto, libera una onda de cristales que daña todo a su alrededor"
+          "Furia constante: fragmentos 3 daño continuo (5s).",
+          "Furia explosiva: al final, onda de 30 daño a todos (5s)."
         ]
       },
       {
-        "base": "Cortarse las manos y arrojar la sangre al suelo para que broten estalagmitas de sal que pinchan a los enemigos",
+        "base": "Estalagmitas de sangre: brotan del suelo, 20 daño a un área (5s).",
         "paths": [
-          "Estalagmitas grandes — daño alto, pero fáciles de esquivar",
-          "Estalagmitas múltiples — muchas pequeñas, área grande"
+          "Estalagmitas grandes: 35 daño, fácil de esquivar (5s).",
+          "Estalagmitas múltiples: muchas pequeñas, 10 daño área (5s)."
         ]
       },
       {
-        "base": "Absorber la sal de un cadáver reciente para recuperar salud y aumentar su fuerza temporalmente",
+        "base": "Absorber sal: recupera 20 HP de un cadáver (5s).",
         "paths": [
-          "Absorción rápida — recupera mucha salud, pero el cadáver se desintegra",
-          "Absorción lenta — recupera poca salud, pero puede usarse varias veces"
+          "Absorción rápida: recupera 30 HP, cadáver se desintegra (5s).",
+          "Absorción lenta: recupera 10 HP, puede usarse varias veces (5s)."
         ]
       }
     ],
     "weapons": [
-      "Hacha de sal sólida (se rompe y regenera con la furia)",
-      "Espinas de sal (se insertan en los brazos para aumentar daño)",
-      "Capa de salmuera (lanza gotas que se endurecen al contacto)",
-      "Cuerno para beber (lleno de salmuera, al beberlo activa el berserker)"
+      {
+        "name": "Hacha de sal sólida",
+        "description": "Hacha de una pieza de sal cristalizada, se rompe y regenera con la furia",
+        "type": "cuerpo a cuerpo",
+        "damage": 18,
+        "effect": "se regenera al final de cada turno si tiene rabia acumulada"
+      },
+      {
+        "name": "Espinas de sal",
+        "description": "Pequeñas espinas de sal que se insertan en los brazos para aumentar daño",
+        "type": "herramienta",
+        "damage": 4,
+        "effect": "+20% daño de golpes, pero pierde 2 HP por turno"
+      },
+      {
+        "name": "Capa de salmuera",
+        "description": "Capa empapada en salmuera, lanza gotas que se endurecen al contacto",
+        "type": "armadura",
+        "damage": 2,
+        "effect": "al recibir golpe, 20% de cegar al enemigo"
+      },
+      {
+        "name": "Cuerno para beber",
+        "description": "Cuerno de hidromiel lleno de salmuera, al beberlo activa el berserker",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "entra en berserker inmediatamente sin herirse"
+      }
     ]
   },
   {
@@ -550,38 +886,62 @@
     "dimension_id": "DIM-1092837465582",
     "description": "Vikingo que lee las emociones del océano y puede calmarlas o avivarlas con su arpa de cuarzo.",
     "passive_pool": [
-      "Puede saborear una pizca de sal y saber qué emoción guarda",
-      "Sabe cuándo una corriente está cargada de una emoción dominante",
-      "Su presencia calma las emociones extremas de quienes están cerca"
+      "Puede saborear una pizca de sal y saber qué emoción guarda.",
+      "Sabe cuándo una corriente está cargada de una emoción dominante.",
+      "Su presencia calma emociones extremas cercanas."
     ],
     "active_pool": [
       {
-        "base": "Tocar el arpa para extraer un recuerdo de la sal del lugar y proyectarlo como imagen borrosa, confundiendo al enemigo",
+        "base": "Proyección de recuerdo: imagen borrosa que confunde 5s (5s).",
         "paths": [
-          "Proyección nítida — imagen clara, dura diez segundos",
-          "Proyección sensorial — transmite la emoción del recuerdo"
+          "Proyección nítida: imagen clara, 2s (5s).",
+          "Proyección sensorial: transmite emoción (5s)."
         ]
       },
       {
-        "base": "Cristalizar su propia emoción en un grano de sal que lanza como proyectil; al impactar, transmite esa emoción",
+        "base": "Cristalizar emoción: proyectil que transmite emoción, 10 daño + efecto (5s).",
         "paths": [
-          "Emoción pura — el objetivo la siente con toda intensidad durante una hora",
-          "Emoción invertida — el objetivo siente la contraria"
+          "Emoción pura: dura 10s (5s).",
+          "Emoción invertida: siente la contraria (5s)."
         ]
       },
       {
-        "base": "Leer la sal de una persona para saber qué emoción la domina, incluso si intenta ocultarla",
+        "base": "Leer sal de persona: revela emoción dominante (1s).",
         "paths": [
-          "Lectura superficial — solo emociones fuertes",
-          "Lectura profunda — detecta emociones sutiles"
+          "Lectura superficial: solo emociones fuertes (1s).",
+          "Lectura profunda: detecta emociones sutiles (1s)."
         ]
       }
     ],
     "weapons": [
-      "Arpa de cuarzo (para hacer vibrar la sal)",
-      "Cuenco de salmuera (para beber y potenciar la lectura)",
-      "Púa de hueso (para rasgar el arpa con más fuerza)",
-      "Amatista de sal (guarda una emoción para usar después)"
+      {
+        "name": "Arpa de cuarzo",
+        "description": "Arpa pequeña de cuarzo, para hacer vibrar la sal",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "lee y manipula emociones en sal"
+      },
+      {
+        "name": "Cuenco de salmuera",
+        "description": "Cuenco de madera con salmuera concentrada, para beber y potenciar la lectura",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "+30% precisión en lectura de emociones"
+      },
+      {
+        "name": "Púa de hueso",
+        "description": "Púa de hueso de ballena, para rasgar el arpa con más fuerza",
+        "type": "herramienta",
+        "damage": 3,
+        "effect": "proyecciones de recuerdo duran el doble"
+      },
+      {
+        "name": "Amatista de sal",
+        "description": "Gema de sal cristalizada que guarda una emoción para usar después",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "almacena una emoción capturada para liberarla más tarde"
+      }
     ]
   },
   {
@@ -589,38 +949,62 @@
     "dimension_id": "DIM-7182930415264",
     "description": "Guerrero que empuña una katana engrasada con Kuroyū. El filo sólido corta cualquier material, y puede volverse gas para esquivar.",
     "passive_pool": [
-      "Su katana nunca se desafila mientras esté engrasada",
-      "Puede sentir la voluntad del Kuroyū en su arma (si está de humor o rebelde)",
-      "Sus movimientos con la katana son silenciosos"
+      "Su katana nunca se desafila mientras esté engrasada.",
+      "Puede sentir la voluntad del Kuroyū en su arma.",
+      "Movimientos con la katana son silenciosos."
     ],
     "active_pool": [
       {
-        "base": "Solidificar el filo para cortar cualquier material (metal, piedra, magia) durante diez minutos",
+        "base": "Filo sólido: corta cualquier material, 25 daño, ignora defensa (5s).",
         "paths": [
-          "Corte absoluto — imparable, pero la katana se calienta y puede dañarse",
-          "Corte selectivo — corta solo lo que desea (ropa sin tocar piel)"
+          "Corte absoluto: imparable, pero la katana se calienta (puede dañarse) (5s).",
+          "Corte selectivo: corta solo lo que desea (ej. ropa sin piel) (5s)."
         ]
       },
       {
-        "base": "Volverse gaseoso (intangible) durante unos segundos, esquivando ataques y atravesando obstáculos",
+        "base": "Gaseoso: intangible 2s, esquiva ataques (1s).",
         "paths": [
-          "Gas rápido — apenas un segundo, útil para esquivar un golpe",
-          "Gas sostenido — hasta cinco segundos, permite atravesar rejas"
+          "Gas rápido: 0.5s, útil para esquivar un golpe (1s).",
+          "Gas sostenido: 5s, permite atravesar rejas (1s)."
         ]
       },
       {
-        "base": "Envolver su katana en una capa de alquitrán pegajoso que, al golpear, inmoviliza al enemigo (lo pega al suelo)",
+        "base": "Alquitrán pegajoso: envuelve katana, golpe inmoviliza 2s (5s).",
         "paths": [
-          "Pegajoso leve — la víctima puede liberarse con fuerza",
-          "Pegajoso tenaz — requiere disolvente o magia para soltarse"
+          "Pegajoso leve: se libera con fuerza (5s).",
+          "Pegajoso tenaz: requiere disolvente o magia (5s)."
         ]
       }
     ],
     "weapons": [
-      "Katana con canal para Kuroyū (almacena una dosis)",
-      "Wakizashi gemela (una para corte sólido, otra para gas)",
-      "Frasco de cerámica con Kuroyū líquido (para reabastecer)",
-      "Armadura de escamas de alquitrán (endurece al recibir golpes)"
+      {
+        "name": "Katana con canal para Kuroyū",
+        "description": "Katana tradicional con un canal en la hoja que almacena una dosis de Kuroyū",
+        "type": "cuerpo a cuerpo",
+        "damage": 18,
+        "effect": "cambia entre modo sólido y gaseoso"
+      },
+      {
+        "name": "Wakizashi gemela",
+        "description": "Dos espadas cortas: una para corte sólido, otra para gas",
+        "type": "cuerpo a cuerpo",
+        "damage": 12,
+        "effect": "permite atacar con ambos modos simultáneamente"
+      },
+      {
+        "name": "Frasco de cerámica con Kuroyū líquido",
+        "description": "Frasco pequeño con petróleo vivo, para reabastecer el arma",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "recarga la katana con nueva dosis"
+      },
+      {
+        "name": "Armadura de escamas de alquitrán",
+        "description": "Armadura ligera de escamas de alquitrán solidificado",
+        "type": "armadura",
+        "damage": 3,
+        "effect": "se endurece al recibir golpes: +10 defensa por 5s"
+      }
     ]
   },
   {
@@ -628,38 +1012,62 @@
     "dimension_id": "DIM-7182930415264",
     "description": "Especialista que negocia con el petróleo vivo. Puede enfurecerlo para que ataque a los enemigos o calmarlo para que sirva de escudo.",
     "passive_pool": [
-      "Puede respirar dentro del Kuroyū sin ahogarse",
-      "El Kuroyū nunca le quema ni le mancha",
-      "Siente cualquier masa de Kuroyū en un radio de cien metros"
+      "Puede respirar dentro del Kuroyū sin ahogarse.",
+      "El Kuroyū nunca le quema ni le mancha.",
+      "Siente cualquier masa de Kuroyū en un radio cercano."
     ],
     "active_pool": [
       {
-        "base": "Ordenar a una masa de Kuroyū que se solidifique en una forma ofensiva (garras, púas, muro)",
+        "base": "Ordenar solidificación: crea garras/púas de alquitrán, 20 daño (5s).",
         "paths": [
-          "Forma obediente — perfecta, dura una hora",
-          "Forma rebelde — tosca, pero dura el doble"
+          "Forma obediente: perfecta, dura 10s (5s).",
+          "Forma rebelde: tosca, dura 20s (5s)."
         ]
       },
       {
-        "base": "Enfurecer al Kuroyū de un arma enemiga para que esta ataque a su propio dueño",
+        "base": "Enfurecer arma enemiga: hace que ataque a su dueño, 15 daño (5s).",
         "paths": [
-          "Furia ciega — ataca al más cercano",
-          "Furia dirigida — el domador elige el objetivo"
+          "Furia ciega: ataca al más cercano (5s).",
+          "Furia dirigida: eliges objetivo (5s)."
         ]
       },
       {
-        "base": "Calmar a un kraken de alquitrán para que deje de atacar, volviéndolo pasivo",
+        "base": "Calmar kraken: lo vuelve pasivo 10s (5s).",
         "paths": [
-          "Calma profunda — el kraken duerme una hora",
-          "Calma superficial — sigue consciente pero no ataca; se puede negociar"
+          "Calma profunda: duerme 10s (5s).",
+          "Calma superficial: no ataca pero puede negociar (5s)."
         ]
       }
     ],
     "weapons": [
-      "Cetro de obsidiana (concentra la voluntad del domador)",
-      "Campana de bronce (emite frecuencias que calman al Kuroyū)",
-      "Red de fibras vegetales (para contener pequeñas masas rebeldes)",
-      "Aceite esencial de hierbas (atrae o repele al Kuroyū)"
+      {
+        "name": "Cetro de obsidiana",
+        "description": "Cetro negro de obsidiana, concentra la voluntad del domador",
+        "type": "herramienta",
+        "damage": 6,
+        "effect": "aumenta el rango de control sobre Kuroyū"
+      },
+      {
+        "name": "Campana de bronce",
+        "description": "Campana pequeña de bronce, emite frecuencias que calman al Kuroyū",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "pacifica a un enjambre de Kuroyū"
+      },
+      {
+        "name": "Red de fibras vegetales",
+        "description": "Red resistente hecha de lianas, para contener pequeñas masas rebeldes",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "inmoviliza masa de Kuroyū de hasta 2m"
+      },
+      {
+        "name": "Aceite esencial de hierbas",
+        "description": "Frasco con aceite que atrae o repele al Kuroyū",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "atrae o repele Kuroyū según uso"
+      }
     ]
   },
   {
@@ -667,38 +1075,62 @@
     "dimension_id": "DIM-7182930415264",
     "description": "Ninja que se inyecta Kuroyū para volverse gaseoso a voluntad. Perfecto para infiltración y asesinato silencioso.",
     "passive_pool": [
-      "Su cuerpo es más liviano; cae sin hacer ruido",
-      "Puede deslizarse por rendijas tan estrechas como un dedo",
-      "El Kuroyū que lleva dentro no le duele ni le intoxica"
+      "Cuerpo liviano: cae sin hacer ruido.",
+      "Puede deslizarse por rendijas muy estrechas.",
+      "Kuroyū interno no le duele ni intoxica."
     ],
     "active_pool": [
       {
-        "base": "Volverse intangible por un minuto, atravesando paredes y suelos, pero no puede atacar en ese estado",
+        "base": "Intangible: atraviesa paredes 5s, no puede atacar (1s).",
         "paths": [
-          "Intangibilidad total — atraviesa cualquier materia no mágica",
-          "Intangibilidad parcial — solo el torso, puede atacar con piernas"
+          "Intangibilidad total: atraviesa cualquier materia (1s).",
+          "Intangibilidad parcial: solo torso, puede atacar con piernas (1s)."
         ]
       },
       {
-        "base": "Materializar una daga de alquitrán sólido directamente dentro del cuerpo de un enemigo (requiere contacto previo)",
+        "base": "Daga interna: materializa daga dentro de un enemigo (requiere contacto previo), 40 daño (5s).",
         "paths": [
-          "Daga letal — mata al instante si acierta en órgano vital",
-          "Daga de dolor — no mata pero incapacita por minutos"
+          "Daga letal: mata si acierta órgano vital (5s).",
+          "Daga de dolor: incapacita 5s (5s)."
         ]
       },
       {
-        "base": "Dejar un rastro de gas envenenado al moverse, que afecta a quienes lo respiren",
+        "base": "Rastro de gas venenoso: deja veneno al moverse, 5 daño por turno (1s).",
         "paths": [
-          "Veneno rápido — causa tos y ceguera temporal",
-          "Veneno lento — causa parálisis gradual"
+          "Veneno rápido: tos y ceguera 2s (1s).",
+          "Veneno lento: parálisis gradual 5s (1s)."
         ]
       }
     ],
     "weapons": [
-      "Aguja hueca (para inyectar Kuroyū)",
-      "Daga de alquitrán sólido (se desmaterializa tras usarse)",
-      "Funda de gas (libera una nube al abrirla)",
-      "Zapatos de tela (silenciosos, impregnan veneno en el suelo)"
+      {
+        "name": "Aguja hueca",
+        "description": "Aguja fina de metal con un depósito para inyectar Kuroyū",
+        "type": "herramienta",
+        "damage": 4,
+        "effect": "inyecta Kuroyū en usuario o enemigo"
+      },
+      {
+        "name": "Daga de alquitrán sólido",
+        "description": "Daga que se materializa y desmaterializa a voluntad",
+        "type": "cuerpo a cuerpo",
+        "damage": 16,
+        "effect": "se desmaterializa tras usarse, imposible de rastrear"
+      },
+      {
+        "name": "Funda de gas",
+        "description": "Funda de tela que libera una nube de gas al abrirla",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "crea nube de Kuroyū que oculta al shinobi (+20% evasion)"
+      },
+      {
+        "name": "Zapatos de tela",
+        "description": "Zapatos silenciosos impregnados de veneno",
+        "type": "armadura",
+        "damage": 1,
+        "effect": "al caminar, dejan rastro de veneno (5 daño a quien pise)"
+      }
     ]
   },
   {
@@ -706,38 +1138,62 @@
     "dimension_id": "DIM-4950182736451",
     "description": "Descifrador que usa la arena de los libros para crear armas sólidas y escudos en mitad de la batalla.",
     "passive_pool": [
-      "Puede hacer flotar un puñado de arena sin moverlo, solo con la mirada",
-      "La arena no se le pega a la ropa",
-      "Sabe qué tipo de arena es mejor para cada forma"
+      "Puede hacer flotar arena con la mirada.",
+      "La arena no se le pega a la ropa.",
+      "Sabe qué tipo de arena es mejor para cada forma."
     ],
     "active_pool": [
       {
-        "base": "Moldear una espada de arena sólida que corta como el acero pero se deshace al golpear hueso (solo daña tejido blando)",
+        "base": "Espada de arena: 20 daño, se deshace al golpear hueso (solo daño superficial) (5s).",
         "paths": [
-          "Espada precisa — corta ropa y piel, no mata",
-          "Espada roma — golpea como un mazo"
+          "Espada precisa: corta ropa y piel, no mata (5s).",
+          "Espada roma: golpea como mazo, 15 daño (5s)."
         ]
       },
       {
-        "base": "Crear un escudo de arena que absorbe impactos y se regenera mientras haya arena cerca",
+        "base": "Escudo de arena: absorbe 30 daño, se regenera con arena (1s).",
         "paths": [
-          "Escudo ligero — apenas pesa, resiste flechas",
-          "Escudo pesado — pesa como piedra, resiste catapultas"
+          "Escudo ligero: absorbe 20, pesa poco (1s).",
+          "Escudo pesado: absorbe 50, pesa mucho (1s)."
         ]
       },
       {
-        "base": "Lanzar una ráfaga de arena afilada que ciega y corta a los enemigos en un cono",
+        "base": "Ráfaga de arena: 15 daño en cono, ciega 2s (5s).",
         "paths": [
-          "Ráfaga amplia — afecta a muchos, daño bajo",
-          "Ráfaga concentrada — daño alto, un solo objetivo"
+          "Ráfaga amplia: área grande, daño 10 (5s).",
+          "Ráfaga concentrada: daño 25, un objetivo (5s)."
         ]
       }
     ],
     "weapons": [
-      "Frasco de arena de batalla (con memoria de combates pasados)",
-      "Guanteletes con canal de viento (para moldear rápido)",
-      "Cuchillo de arena (se deshace tras un corte)",
-      "Mochila de pergaminos (almacena diferentes tipos de arena)"
+      {
+        "name": "Frasco de arena de batalla",
+        "description": "Frasco de cristal con arena que guarda memoria de combates pasados",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "arena adopta formas más efectivas contra tipos conocidos"
+      },
+      {
+        "name": "Guanteletes con canal de viento",
+        "description": "Guanteletes de cuero con pequeños canales para moldear arena rápido",
+        "type": "herramienta",
+        "damage": 3,
+        "effect": "acelera creación de armas de arena (-50% tiempo)"
+      },
+      {
+        "name": "Cuchillo de arena",
+        "description": "Cuchillo de arena sólida que se deshace tras un corte",
+        "type": "cuerpo a cuerpo",
+        "damage": 12,
+        "effect": "desechable, causa heridas superficiales"
+      },
+      {
+        "name": "Mochila de pergaminos",
+        "description": "Mochila con varios pergaminos que contienen diferentes tipos de arena",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "cambia tipo de arena (memoria, sigilo, ofensiva) en combate"
+      }
     ]
   },
   {
@@ -745,38 +1201,62 @@
     "dimension_id": "DIM-4950182736451",
     "description": "Especialista en leer libros de arena para proyectar hologramas que confunden al enemigo o revelan sus secretos.",
     "passive_pool": [
-      "Puede contener la respiración diez minutos",
-      "Sabe la dirección del viento en todo momento",
-      "Nunca estornuda sobre un libro"
+      "Puede contener la respiración 10 minutos.",
+      "Sabe la dirección del viento en todo momento.",
+      "Nunca estornuda sobre un libro."
     ],
     "active_pool": [
       {
-        "base": "Soplar un libro para proyectar el holograma de un ejército falso que asusta y atrae a los enemigos",
+        "base": "Holograma de ejército: ilusión que asusta, los enemigos pierden 1 turno (5s).",
         "paths": [
-          "Ejército realista — parece sólido, puede sonar",
-          "Ejército fantasma — semitransparente, pero cubre más área"
+          "Ejército realista: parece sólido, puede sonar (5s).",
+          "Ejército fantasma: semitransparente, cubre más área (5s)."
         ]
       },
       {
-        "base": "Inhalar la arena de un libro para grabar en su memoria un evento útil (por ejemplo, la contraseña de una puerta)",
+        "base": "Inhalar memoria: graba un evento en su mente (ej. contraseña) (5s).",
         "paths": [
-          "Memoria vívida — recuerda con detalle, pero puede confundirlo con su vida",
-          "Memoria fría — recuerda los hechos sin emociones"
+          "Memoria vívida: recuerda con detalle, pero puede confundir (5s).",
+          "Memoria fría: recuerda hechos sin emociones (5s)."
         ]
       },
       {
-        "base": "Soplar un libro hacia un enemigo para que la arena lo envuelva y le muestre su peor recuerdo, aturdiéndolo",
+        "base": "Proyectar peor recuerdo: arena muestra el peor recuerdo al enemigo, aturde 5s (5s).",
         "paths": [
-          "Aturdimiento breve — dura un minuto",
-          "Aturdimiento profundo — el enemigo queda catatónico hasta que alguien lo sacuda"
+          "Aturdimiento breve: 2s (5s).",
+          "Aturdimiento profundo: catatónico hasta que lo sacudan (5s)."
         ]
       }
     ],
     "weapons": [
-      "Pajilla de bambú (para soplar con precisión)",
-      "Máscara de filtro (protege de la arena al inhalar)",
-      "Ventilador de mano (para desviar el viento no deseado)",
-      "Lámpara de aceite (ilumina los hologramas para hacerlos más reales)"
+      {
+        "name": "Pajilla de bambú",
+        "description": "Pajilla larga de bambú, para soplar con precisión",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "+50% alcance de soplido"
+      },
+      {
+        "name": "Máscara de filtro",
+        "description": "Máscara de cuero con filtro de carbón, protege de la arena al inhalar",
+        "type": "armadura",
+        "damage": 2,
+        "effect": "inmunidad a efectos secundarios de arena al leer libros"
+      },
+      {
+        "name": "Ventilador de mano",
+        "description": "Ventilador plegable de seda, para desviar el viento no deseado",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "cambia dirección de la arena en el aire"
+      },
+      {
+        "name": "Lámpara de aceite",
+        "description": "Pequeña lámpara de aceite, ilumina los hologramas para hacerlos más reales",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "hologramas parecen sólidos a la luz de la lámpara"
+      }
     ]
   },
   {
@@ -784,38 +1264,62 @@
     "dimension_id": "DIM-4950182736451",
     "description": "Guardián que evita que los libros de arena se mezclen o se pierdan. Puede 'congelar' la arena en su lugar.",
     "passive_pool": [
-      "Puede contar los granos de un libro con solo mirar",
-      "Sus dedos no dañan los cristales de arena",
-      "Sabe si un grano falta o está de más"
+      "Puede contar los granos de un libro con solo mirar.",
+      "Sus dedos no dañan los cristales de arena.",
+      "Sabe si un grano falta o está de más."
     ],
     "active_pool": [
       {
-        "base": "Congelar la arena de un libro abierto, impidiendo que se mueva o sea soplada (protección contra descifradores hostiles)",
+        "base": "Congelar arena: impide que se mueva o sea soplada 10s (1s).",
         "paths": [
-          "Congelamiento total — la arena no se puede mover por una hora",
-          "Congelamiento parcial — solo impide que se forme hologramas, pero se puede soplar"
+          "Congelamiento total: no se puede mover 10s (1s).",
+          "Congelamiento parcial: solo impide hologramas (1s)."
         ]
       },
       {
-        "base": "Separar dos tipos de arena mezcladas (por ejemplo, un libro contaminado) en cuestión de segundos",
+        "base": "Separar mezclas: restaura libro original en 5s (5s).",
         "paths": [
-          "Separación rápida — restaura el libro original",
-          "Separación creativa — puede mezclarlas a propósito para crear un libro híbrido"
+          "Separación rápida: 2s (5s).",
+          "Separación creativa: mezcla a propósito para crear libro híbrido (5s)."
         ]
       },
       {
-        "base": "Crear una barrera de granos flotantes que desvía proyectiles y atrapa a los intrusos (como arenas movedizas)",
+        "base": "Barrera de granos: desvía proyectiles y atrapa intrusos (5s).",
         "paths": [
-          "Barrera defensiva — desvía flechas y lanzas",
-          "Barrera trampa — atrapa a quien la toca, hundiéndolo hasta la cintura"
+          "Barrera defensiva: desvía flechas y lanzas (5s).",
+          "Barrera trampa: atrapa a quien la toca, hunde hasta cintura (5s)."
         ]
       }
     ],
     "weapons": [
-      "Pincel de pelo de camello (para recolocar granos)",
-      "Tamiz de bronce (para separar mezclas)",
-      "Frasco de vidrio soplado (para almacenar arena congelada)",
-      "Cinta de seda (marca libros prohibidos)"
+      {
+        "name": "Pincel de pelo de camello",
+        "description": "Pincel suave para recolocar granos de arena",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "reordena la arena sin dañarla"
+      },
+      {
+        "name": "Tamiz de bronce",
+        "description": "Tamiz fino de bronce, para separar mezclas de arena",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "separa dos tipos de arena en segundos"
+      },
+      {
+        "name": "Frasco de vidrio soplado",
+        "description": "Frasco hermético para almacenar arena congelada",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "preserva arena congelada indefinidamente"
+      },
+      {
+        "name": "Cinta de seda",
+        "description": "Cinta roja de seda, marca libros prohibidos",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "al atarla a un libro, solo el conservador puede abrirlo"
+      }
     ]
   },
   {
@@ -823,38 +1327,62 @@
     "dimension_id": "DIM-6029384756102",
     "description": "Fractal que ha perfeccionado el arte de dividirse en múltiples copias conscientes para dominar el campo de batalla.",
     "passive_pool": [
-      "Puede dividirse en hasta cinco fragmentos sin perder conciencia",
-      "Cada fragmento puede pensar y actuar de forma independiente",
-      "Si un fragmento muere, los demás no sienten dolor"
+      "Puede dividirse en hasta 5 fragmentos sin perder conciencia.",
+      "Cada fragmento piensa y actúa independientemente.",
+      "Si un fragmento muere, los demás no sienten dolor."
     ],
     "active_pool": [
       {
-        "base": "Dividirse en dos copias idénticas durante una hora; cada una tiene la mitad de fuerza pero la misma inteligencia",
+        "base": "Dividirse en 2 copias: cada una 50% fuerza, misma inteligencia (5s).",
         "paths": [
-          "División equilibrada — ambas iguales",
-          "División desigual — una fuerte (70%) y otra débil (30%), útil para distraer"
+          "División equilibrada: ambas iguales (5s).",
+          "División desigual: 70% y 30% (5s)."
         ]
       },
       {
-        "base": "Reunir todos los fragmentos en un solo cuerpo, recuperando fuerza total y curando heridas leves",
+        "base": "Reunir fragmentos: recupera fuerza total y cura heridas leves (1s).",
         "paths": [
-          "Reunión rápida — tarda un segundo, pero gasta energía",
-          "Reunión cuidadosa — tarda un minuto, pero cura heridas graves"
+          "Reunión rápida: 0.5s, gasta energía (1s).",
+          "Reunión cuidadosa: 5s, cura heridas graves (1s)."
         ]
       },
       {
-        "base": "Enviar un fragmento pequeño a espiar o activar una trampa, mientras el resto se queda a salvo",
+        "base": "Enviar fragmento explorador: pequeño, casi invisible (1s).",
         "paths": [
-          "Fragmento explorador — muy pequeño, casi invisible",
-          "Fragmento kamikaze — pequeño pero puede congelarse al explotar"
+          "Fragmento explorador: tamaño muy pequeño (1s).",
+          "Fragmento kamikaze: pequeño, explota al contacto (20 daño) (1s)."
         ]
       }
     ],
     "weapons": [
-      "Cuchillas de hielo (cada fragmento puede llevar una)",
-      "Red de escarcha (atrapar enemigos para dividirse con calma)",
-      "Núcleo de repuesto (un trozo de hielo vivo que ayuda a regenerar fragmentos perdidos)",
-      "Silbato de resonancia (para coordinarse entre fragmentos)"
+      {
+        "name": "Cuchillas de hielo",
+        "description": "Cuchillas de hielo cristalino que cada fragmento puede llevar",
+        "type": "cuerpo a cuerpo",
+        "damage": 10,
+        "effect": "cada fragmento puede crear una"
+      },
+      {
+        "name": "Red de escarcha",
+        "description": "Red de fibras de hielo, atrapa enemigos para dividirse con calma",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "inmoviliza a un enemigo por 2 turnos"
+      },
+      {
+        "name": "Núcleo de repuesto",
+        "description": "Trozo de hielo vivo que ayuda a regenerar fragmentos perdidos",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "regenera un fragmento destruido tras 3 turnos"
+      },
+      {
+        "name": "Silbato de resonancia",
+        "description": "Silbato de hielo, emite una frecuencia para coordinarse entre fragmentos",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "comunicación a larga distancia entre fragmentos"
+      }
     ]
   },
   {
@@ -862,38 +1390,62 @@
     "dimension_id": "DIM-6029384756102",
     "description": "Fractal que ha aprendido a fusionar fragmentos de distintos individuos, creando entidades más poderosas (o una mente colmena).",
     "passive_pool": [
-      "Puede comunicarse telepáticamente con otros Fractales a distancia",
-      "Siente cuándo dos fragmentos son compatibles para fusionarse",
-      "Su núcleo de agua vital es más grande de lo normal"
+      "Comunicación telepática con otros Fractales a distancia.",
+      "Siente compatibilidad entre fragmentos para fusionarse.",
+      "Su núcleo de agua vital es más grande de lo normal."
     ],
     "active_pool": [
       {
-        "base": "Fusionar dos fragmentos de aliados diferentes en un solo ser temporal (más fuerte, pero con doble conciencia)",
+        "base": "Fusionar dos fragmentos aliados: ser temporal más fuerte (5s).",
         "paths": [
-          "Fusión armónica — el ser combinado obedece a ambos aliados",
-          "Fusión dominante — uno de los dos controla el cuerpo"
+          "Fusión armónica: obedece a ambos (5s).",
+          "Fusión dominante: uno controla (5s)."
         ]
       },
       {
-        "base": "Fusionar un fragmento enemigo con uno aliado para 'contaminar' su conciencia y volverlo leal",
+        "base": "Fusionar fragmento enemigo con aliado: contamina su conciencia, lo vuelve leal (5s).",
         "paths": [
-          "Conversión rápida — el enemigo cambia de bando al instante",
-          "Conversión lenta — el enemigo duda y puede traicionar después"
+          "Conversión rápida: cambia de bando al instante (5s).",
+          "Conversión lenta: duda, puede traicionar (5s)."
         ]
       },
       {
-        "base": "Absorber fragmentos muertos para ganar sus recuerdos y habilidades temporalmente",
+        "base": "Absorber fragmentos muertos: gana sus recuerdos y habilidades temporalmente (5s).",
         "paths": [
-          "Absorción completa — gana todas las habilidades del fragmento",
-          "Absorción selectiva — elige una habilidad específica"
+          "Absorción completa: gana todas las habilidades (5s).",
+          "Absorción selectiva: elige una habilidad (5s)."
         ]
       }
     ],
     "weapons": [
-      "Cetro de hielo fractal (para canalizar fusiones)",
-      "Cuenco de agua vital (para mantener la fusión estable)",
-      "Cadenas de escarcha (inmovilizan a los fragmentos que se van a fusionar)",
-      "Espejo de hielo (para ver la compatibilidad de fragmentos)"
+      {
+        "name": "Cetro de hielo fractal",
+        "description": "Cetro de hielo con estructura fractal, para canalizar fusiones",
+        "type": "herramienta",
+        "damage": 8,
+        "effect": "+30% éxito de fusiones"
+      },
+      {
+        "name": "Cuenco de agua vital",
+        "description": "Cuenco con agua de núcleo fractal, para mantener la fusión estable",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "prolonga duración de fusión temporal"
+      },
+      {
+        "name": "Cadenas de escarcha",
+        "description": "Cadenas de hielo, inmovilizan a los fragmentos que se van a fusionar",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "evita que un fragmento huya durante fusión"
+      },
+      {
+        "name": "Espejo de hielo",
+        "description": "Espejo de hielo pulido, para ver la compatibilidad de fragmentos",
+        "type": "herramienta",
+        "damage": 1,
+        "effect": "revela si dos fragmentos pueden fusionarse sin riesgos"
+      }
     ]
   },
   {
@@ -901,38 +1453,62 @@
     "dimension_id": "DIM-6029384756102",
     "description": "Fractal que usa vibraciones de sus facetas para aturdir, comunicarse a larga distancia o detectar enemigos ocultos.",
     "passive_pool": [
-      "Puede enviar mensajes vibracionales a otros Fractales en un radio de un kilómetro",
-      "Siente las vibraciones del suelo y del hielo, detectando movimientos",
-      "Su propio zumbido puede volverse molesto para los enemigos"
+      "Envía mensajes vibracionales a otros Fractales en 1 km.",
+      "Siente vibraciones del suelo y hielo, detecta movimientos.",
+      "Su zumbido molesta a los enemigos cercanos."
     ],
     "active_pool": [
       {
-        "base": "Emitir una vibración de alta frecuencia que aturde a los enemigos cercanos (no fractales) durante segundos",
+        "base": "Vibración alta frecuencia: aturde enemigos 2s (5s).",
         "paths": [
-          "Aturdimiento corto — apenas un parpadeo, pero repite cada pocos segundos",
-          "Aturdimiento largo — un solo pulso que deja atontado por un minuto"
+          "Aturdimiento corto: 1s, pero repite cada 2s (5s).",
+          "Aturdimiento largo: 5s un pulso (5s)."
         ]
       },
       {
-        "base": "Resonar a baja frecuencia para hacer vibrar el hielo del suelo y crear grietas que ralentizan a los enemigos",
+        "base": "Resonar baja frecuencia: grietas en hielo, ralentiza enemigos 30% (5s).",
         "paths": [
-          "Grietas profundas — pueden atrapar extremidades",
-          "Grietas superficiales — solo dificultan el movimiento"
+          "Grietas profundas: pueden atrapar extremidades (5s).",
+          "Grietas superficiales: solo dificultan movimiento (5s)."
         ]
       },
       {
-        "base": "Usar un pulso de resonancia para localizar a todos los Fractales (amigos y enemigos) en un radio de quinientos metros",
+        "base": "Pulso de resonancia: localiza todos los Fractales en 500m (1s).",
         "paths": [
-          "Localización precisa — muestra posición exacta",
-          "Localización vaga — solo dirección y distancia aproximada"
+          "Localización precisa: muestra posición exacta (1s).",
+          "Localización vaga: solo dirección y distancia aprox (1s)."
         ]
       }
     ],
     "weapons": [
-      "Diapasón de hielo (amplifica las vibraciones)",
-      "Tambor de membrana de hielo (para emitir pulsos más potentes)",
-      "Cuerno de carámbano (proyecta el zumbido a distancia)",
-      "Collar de cascabeles de hielo (crea un campo de vibración constante)"
+      {
+        "name": "Diapasón de hielo",
+        "description": "Diapasón tallado en hielo, amplifica las vibraciones",
+        "type": "herramienta",
+        "damage": 2,
+        "effect": "duplica alcance de vibraciones"
+      },
+      {
+        "name": "Tambor de membrana de hielo",
+        "description": "Pequeño tambor con membrana de hielo flexible, para emitir pulsos más potentes",
+        "type": "herramienta",
+        "damage": 4,
+        "effect": "pulsos pueden romper objetos frágiles"
+      },
+      {
+        "name": "Cuerno de carámbano",
+        "description": "Cuerno largo de hielo, proyecta el zumbido a distancia",
+        "type": "herramienta",
+        "damage": 3,
+        "effect": "aturde enemigos a 50m"
+      },
+      {
+        "name": "Collar de cascabeles de hielo",
+        "description": "Collar con pequeños cascabeles de hielo, crea un campo de vibración constante",
+        "type": "armadura",
+        "damage": 1,
+        "effect": "enemigos cercanos tienen -10% precisión"
+      }
     ]
   }
 ]

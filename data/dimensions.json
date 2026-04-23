@@ -3,7 +3,7 @@
     {
       "id": "DIM-6084206892469",
       "name": "Aztlán de Cristal",
-      "tagline": "Donde los dioses caminan entre humanos y la naturaleza no se conquista, se honra.",
+      "tagline": "Dioses caminan entre humanos",
       "description": "Los mexicas nunca fueron conquistados y desarrollaron una relación de armonía con la naturaleza, sin intervenirla.\n\nTecnología: no es mecánica ni digital, sino un profundo conocimiento de astronomía, química (pigmentos, aleaciones suaves), biología (domesticación selectiva) y arquitectura (pirámides que canalizan luz y agua).\n\nAvances: observatorios solares, jardines flotantes y templos de obsidiana pulida.\n\nLos avatares: los dioses eligen a ciertos humanos para portar una chispa de su poder. Su fuerza viene del ritual y la devoción.\n\nMetztli (avatar de la diosa lunar): camina sobre superficies líquidas, ve en la oscuridad, sus heridas sangran luz plateada.\n\nTonatiuh (avatar del sol): irradia calor que purifica el agua y quema la maleza sin dañar cultivos.\n\nLos avatares protegen sus ciudades-estado de invasores que intentan robar los secretos de la observación celeste.",
       "lore": "Tras repeler la invasión española con la ayuda de los avatares divinos, los mexicas consolidaron un imperio que no buscaba expandirse sino equilibrarse. Cada ciudad‑estado elige a un avatar —un humano que porta una chispa de un dios— mediante rituales de observación astronómica. Estos avatares no gobiernan, sino que protegen; su poder crece con la devoción y decrece si dañan la naturaleza. La mayor amenaza actual es un culto secreto que intenta robar la luz de Tonatiuh para forjar armas de obsidiana térmica, rompiendo el pacto con los dioses.",
       "image": "",
@@ -11,12 +11,44 @@
         "Avatar del Viento (Ehécatl)",
         "Avatar Solar (Tonatiuh)",
         "Avatar Terrestre (Tlaltecuhtli)"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Guerrero de Obsidiana",
+          "type": ["tierra", "humanoide"],
+          "stats": { "hp": 90, "mp": 20, "speed": 40, "strength": 20, "magicpower": 5, "defense": 25, "magicdefense": 10 },
+          "abilities": ["Golpe de obsidiana (daño físico + 10% de sangrado)", "Escudo de cristal (reduce daño mágico 30% por 3 turnos)"]
+        },
+        {
+          "name": "Sacrificador de Sangre",
+          "type": ["oscuro", "humanoide"],
+          "stats": { "hp": 70, "mp": 50, "speed": 60, "strength": 10, "magicpower": 25, "defense": 15, "magicdefense": 20 },
+          "abilities": ["Ritual de sangre (daño mágico y roba 10 hp)", "Maldición lunar (reduce speed de un aliado un 20%)"]
+        },
+        {
+          "name": "Jaguar de Cristal",
+          "type": ["bestia", "luz"],
+          "stats": { "hp": 110, "mp": 10, "speed": 70, "strength": 22, "magicpower": 0, "defense": 20, "magicdefense": 15 },
+          "abilities": ["Zarpazo reluciente (daño físico, ignora 10 de defensa)", "Aullido de cristal (aumenta su speed un 30% por 2 turnos)"]
+        },
+        {
+          "name": "Ave Solar",
+          "type": ["fuego", "volador"],
+          "stats": { "hp": 80, "mp": 40, "speed": 65, "strength": 12, "magicpower": 18, "defense": 12, "magicdefense": 18 },
+          "abilities": ["Llamarada (daño de fuego a un enemigo)", "Escudo de luz (protege a un aliado del próximo ataque)"]
+        },
+        {
+          "name": "Espectro de la Luna",
+          "type": ["fantasma", "oscuridad"],
+          "stats": { "hp": 60, "mp": 60, "speed": 50, "strength": 5, "magicpower": 28, "defense": 10, "magicdefense": 25 },
+          "abilities": ["Toque lunar (daño mágico + 20% de dormir)", "Desvanecerse (se vuelve intangible por 2 turnos, no puede atacar)"]
+        }
       ]
     },
     {
       "id": "DIM-8214739502846",
       "name": "El Archipiélago de Cuerdas",
-      "tagline": "Canta la ruta entre islas que vibran con la música del cosmos.",
+      "tagline": "Islas flotan sobre música cuántica",
       "description": "En este universo, las islas flotan sobre \"cuerdas\" vibrantes del tejido del espacio-tiempo. Los navegantes polinesios desarrollaron oídos capaces de escuchar las frecuencias cuánticas; con sus cantos y tambores pueden plegar distancias, crear atajos entre islas o incluso generar agujeros de gusano temporales. Cada isla resuena en una nota única, y los conflictos se resuelven con duelos de \"sinfonías gravitacionales\"",
       "lore": "",
       "image": "",
@@ -24,12 +56,44 @@
         "Cantor de Mareas (combate)",
         "Rompecuerdas",
         "Cartógrafo de Cuerdas (táctico)"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Sirena de Cuerdas",
+          "type": ["agua", "sonido"],
+          "stats": { "hp": 75, "mp": 45, "speed": 55, "strength": 8, "magicpower": 22, "defense": 12, "magicdefense": 18 },
+          "abilities": ["Canto hipnótico (puede dormir a un enemigo)", "Eco punzante (daño de sonido a un aliado y a un enemigo)"]
+        },
+        {
+          "name": "Tritón del Abismo",
+          "type": ["agua", "guerrero"],
+          "stats": { "hp": 120, "mp": 15, "speed": 45, "strength": 25, "magicpower": 5, "defense": 28, "magicdefense": 12 },
+          "abilities": ["Golpe de marea (daño físico, empuja al enemigo)", "Burbuja protectora (reduce daño un 20% por 2 turnos)"]
+        },
+        {
+          "name": "Cangrejo Resonante",
+          "type": ["bestia", "tierra"],
+          "stats": { "hp": 90, "mp": 30, "speed": 35, "strength": 18, "magicpower": 10, "defense": 35, "magicdefense": 20 },
+          "abilities": ["Pinza vibradora (daño físico + 10% de aturdir)", "Caparazón resonante (rebota 15% del daño recibido)"]
+        },
+        {
+          "name": "Pez Globo de Frecuencias",
+          "type": ["agua", "explosivo"],
+          "stats": { "hp": 50, "mp": 60, "speed": 30, "strength": 5, "magicpower": 30, "defense": 8, "magicdefense": 8 },
+          "abilities": ["Inflar (se prepara, explota al siguiente turno causando daño masivo)", "Escape rápido (aumenta speed un 50% por 1 turno)"]
+        },
+        {
+          "name": "Arpía de la Tormenta",
+          "type": ["volador", "electricidad"],
+          "stats": { "hp": 85, "mp": 40, "speed": 70, "strength": 15, "magicpower": 20, "defense": 15, "magicdefense": 15 },
+          "abilities": ["Rayo de la tormenta (daño eléctrico a un enemigo)", "Canto de confusión (confunde a un enemigo por 2 turnos)"]
+        }
       ]
     },
     {
       "id": "DIM-3827596041235",
       "name": "El Tallador de Nubes",
-      "tagline": "Donde los monjes esculpen el cielo con fuelles de bambú y paciencia milenaria.",
+      "tagline": "Monjes esculpen nubes sólidas",
       "description": "En este planeta de montañas infinitas, los monjes tibetanos aprendieron a esculpir las nubes usando máquinas de aire comprimido hechas de bambú y seda.\n\nCon enormes fuelles y tubos de bronce, extraen gas de grietas volcánicas y lo inyectan en formaciones de nubes solidificadas (una espuma mineral liviana).\n\nAsí crean islas flotantes, templos colgantes y puentes de vapor.\n\nNo hay dioses ni tecnología avanzada; solo un conocimiento empírico de la dinámica de fluidos.\n\nLos Talladores son artistas‑ingenieros que pasan décadas aprendiendo a leer las corrientes de viento.\n\nConflicto: los valles bajos están invadidos por un imperio minero que quiere extraer el gas para fabricar armas de presión. Los monjes defienden sus cielos usando arpones de nube (lanzas que al impactar liberan gas congelante) y desviando tormentas.",
       "lore": "Hace siglos, un terremoto partió la montaña más alta y liberó un gas ligero de las profundidades. Los monjes tibetanos descubrieron que al inyectar ese gas en formaciones de nubes solidificadas podían crear espuma mineral flotante. Así nacieron los Talladores, artistas‑ingenieros que dedican décadas a dominar la dinámica de fluidos. Hoy, un imperio minero del valle ha descendido con máquinas de vapor para robar el gas y fabricar cañones de presión. Los Talladores defienden sus templos colgantes con arpones de nube congelante y desviando tormentas.",
       "image": "",
@@ -37,12 +101,44 @@
         "Tallador de Nubes (guerrero)",
         "Guardabrisas (defensor)",
         "Afinador de Fuelles (ingeniero de combate)"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Minero de Vapor",
+          "type": ["humanoide", "fuego"],
+          "stats": { "hp": 95, "mp": 25, "speed": 40, "strength": 22, "magicpower": 8, "defense": 25, "magicdefense": 10 },
+          "abilities": ["Martillo de vapor (daño físico, puede quemar)", "Escape de gas (crea una nube que reduce precisión)"]
+        },
+        {
+          "name": "Taladro de Montaña",
+          "type": ["máquina", "tierra"],
+          "stats": { "hp": 130, "mp": 0, "speed": 30, "strength": 30, "magicpower": 0, "defense": 35, "magicdefense": 15 },
+          "abilities": ["Perforación (daño físico, ignora 15 de defensa)", "Vibración (reduce speed de todos los aliados un 10%)"]
+        },
+        {
+          "name": "Golem de Gas",
+          "type": ["elemental", "viento"],
+          "stats": { "hp": 100, "mp": 40, "speed": 35, "strength": 15, "magicpower": 20, "defense": 20, "magicdefense": 25 },
+          "abilities": ["Explosión de gas (daño de área, puede aturdir)", "Fusión (se divide en dos Golems más pequeños al 50% de vida)"]
+        },
+        {
+          "name": "Ave de los Picos",
+          "type": ["volador", "hielo"],
+          "stats": { "hp": 70, "mp": 35, "speed": 80, "strength": 12, "magicpower": 18, "defense": 10, "magicdefense": 15 },
+          "abilities": ["Picotazo helado (daño físico + 10% congelar)", "Vuelo rasante (aumenta evasión un 30% por 2 turnos)"]
+        },
+        {
+          "name": "Monje Caído",
+          "type": ["humanoide", "oscuridad"],
+          "stats": { "hp": 85, "mp": 55, "speed": 50, "strength": 12, "magicpower": 24, "defense": 18, "magicdefense": 22 },
+          "abilities": ["Toque corrupto (daño mágico + 20% de envenenar)", "Sifón de gas (roba 10 mp al enemigo)"]
+        }
       ]
     },
     {
       "id": "DIM-9472018563720",
       "name": "Las Profundidades del Canto Fósil",
-      "tagline": "Huesos de dinosaurio que cantan y convierten a los faraones en bestias prehistóricas.",
+      "tagline": "Faraones se transforman en dinosaurios",
       "description": "En este planeta desértico, los fósiles de dinosaurios no son piedra, sino huesos que aún conservan una memoria biológica. Los egipcios tallan estos huesos en instrumentos musicales únicos que solo los faraones pueden tocar.",
       "lore": "En este desierto, los dinosaurios no se fosilizaron en piedra muerta, sino en huesos que retienen un eco biológico. Los faraones egipcios aprendieron a tallar esos huesos en instrumentos únicos: una flauta de vértebra puede transformar parcialmente al músico en un espinosaurio; un tambor de cráneo, si se golpea con el ritmo adecuado, convierte al faraón por completo durante minutos. Pero tocar mal un instrumento puede hacer que la transformación sea irreversible o que el faraón quede atrapado en la mente del dinosaurio. La casa real mantiene en secreto la ubicación del fósil de un tiranosaurio albino, cuya melodía podría despertar a todos los muertos del desierto.",
       "image": "",
@@ -50,12 +146,44 @@
         "Faraón Transformador (Tiranosaurio)",
         "Faraón Transformador (Espinosaurio)",
         "Cazador de Fósiles (explorador)"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Momia de Arena",
+          "type": ["muerto viviente", "tierra"],
+          "stats": { "hp": 110, "mp": 20, "speed": 25, "strength": 20, "magicpower": 10, "defense": 28, "magicdefense": 18 },
+          "abilities": ["Garra de vendas (daño físico + 10% de parálisis)", "Tormenta de arena (reduce precisión de todos)"]
+        },
+        {
+          "name": "Escarabajo Fósil",
+          "type": ["bestia", "tierra"],
+          "stats": { "hp": 80, "mp": 15, "speed": 45, "strength": 18, "magicpower": 5, "defense": 35, "magicdefense": 15 },
+          "abilities": ["Embestida (daño físico, empuja al enemigo)", "Caparazón blindado (reduce daño físico 30% por 2 turnos)"]
+        },
+        {
+          "name": "Cobra de Hueso",
+          "type": ["bestia", "veneno"],
+          "stats": { "hp": 65, "mp": 40, "speed": 70, "strength": 10, "magicpower": 20, "defense": 12, "magicdefense": 20 },
+          "abilities": ["Mordedura venenosa (daño físico + 30% de envenenar)", "Mirada petrificante (puede aturdir a un enemigo)"]
+        },
+        {
+          "name": "Avispa del Desierto",
+          "type": ["volador", "veneno"],
+          "stats": { "hp": 55, "mp": 25, "speed": 85, "strength": 14, "magicpower": 8, "defense": 8, "magicdefense": 12 },
+          "abilities": ["Aguijón tóxico (daño físico + 20% de envenenar)", "Vuelo rápido (aumenta evasión un 40% por 1 turno)"]
+        },
+        {
+          "name": "Esfinge de Arena",
+          "type": ["constructo", "arena"],
+          "stats": { "hp": 150, "mp": 50, "speed": 30, "strength": 25, "magicpower": 15, "defense": 30, "magicdefense": 25 },
+          "abilities": ["Arenas movedizas (daño de área + reduce speed)", "Enigma (confunde a un enemigo, requiere acertijo para cancelar)"]
+        }
       ]
     },
     {
       "id": "DIM-1092837465582",
       "name": "Los Jardines de Sal Amarga",
-      "tagline": "Un océano que llora emociones y vikingos que navegan sobre cristales de rencor.",
+      "tagline": "Océano de emociones cristalizadas",
       "description": "Un planeta cubierto por un océano de salmuera hipersalina, donde la sal cristaliza de forma consciente.\n\nLos vikingos aprendieron que la sal registra las emociones: sal amarga (traiciones), sal dulce (amores), sal picante (ira).\n\nConstruyen barcos con cristales de sal que crecen en forma de quillas vivas.\n\nCada tripulación tiene un Lector de Sal que, con un arpa de cuarzo, hace vibrar los cristales y revela las corrientes emocionales del océano (ej. una zona con mucha traición pasada produce remolinos traicioneros).\n\nArmas: no hay espadas de metal, sino lanzas de sal precipitada que se endurecen al contacto con la sangre. Los guerreros vikingos, en un ritual de autolesión, mezclan su propia rabia con la sal del agua para crear fragmentos cortantes que lanzan como cuchillas.\n\nConflicto: un clan descubrió cómo cristalizar la desesperación ajena y quiere congelar todo el océano en un bloque de odio perpetuo.\n\n",
       "lore": "Cuando un meteorito de sal consciente cayó en el océano primigenio, las aguas aprendieron a cristalizar sentimientos. Los vikingos de este mundo forjaron su cultura en torno a la \"sal emocional\": construyen barcos con quillas de sal que crecen al ritmo de la tripulación, y los Lectores de Sal usan arpas de cuarzo para leer remolinos de traición o dulzura. Un clan, los Corazones de Hiel, descubrió cómo extraer la desesperación de prisioneros y cristalizarla en lanzas eternas. Ahora quieren congelar todo el océano en un único bloque de odio perpetuo, lo que mataría cualquier emoción y, con ella, la navegación misma.",
       "image": "",
@@ -63,12 +191,44 @@
         "Lancero de Sal (guerrero vikingo)",
         "Berserker de Sal",
         "Lector de Sal (apoyo)"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Vikingo del Odio",
+          "type": ["humanoide", "oscuridad"],
+          "stats": { "hp": 100, "mp": 20, "speed": 50, "strength": 24, "magicpower": 6, "defense": 22, "magicdefense": 12 },
+          "abilities": ["Lanza de ira (daño físico + 20% de confundir)", "Grito de batalla (aumenta fuerza del clan un 15%)"]
+        },
+        {
+          "name": "Sirena de Salmuera",
+          "type": ["agua", "sonido"],
+          "stats": { "hp": 70, "mp": 55, "speed": 60, "strength": 8, "magicpower": 26, "defense": 12, "magicdefense": 22 },
+          "abilities": ["Canto amargo (daño mágico + 10% de tristeza, reduce ataque)", "Escamas de sal (refleja 20% de daño mágico)"]
+        },
+        {
+          "name": "Golem de Sal",
+          "type": ["elemental", "tierra"],
+          "stats": { "hp": 140, "mp": 0, "speed": 25, "strength": 28, "magicpower": 0, "defense": 40, "magicdefense": 30 },
+          "abilities": ["Puño de cristal (daño físico, puede romper escudos)", "Absorción de sal (recupera 10 hp por turno)"]
+        },
+        {
+          "name": "Cangrejo de Rencor",
+          "type": ["bestia", "agua"],
+          "stats": { "hp": 85, "mp": 15, "speed": 40, "strength": 20, "magicpower": 8, "defense": 35, "magicdefense": 15 },
+          "abilities": ["Pinza vengativa (daño físico, si recibe daño previo, duplica daño)", "Caparazón de amargura (reduce daño crítico un 50%)"]
+        },
+        {
+          "name": "Espectro de Desesperación",
+          "type": ["fantasma", "oscuridad"],
+          "stats": { "hp": 60, "mp": 70, "speed": 55, "strength": 4, "magicpower": 30, "defense": 10, "magicdefense": 25 },
+          "abilities": ["Toque de congelación emocional (daño mágico + reduce speed)", "Lamento eterno (todos los enemigos pierden 5 mp por turno)"]
+        }
       ]
     },
     {
       "id": "DIM-7182930415264",
       "name": "El Imperio de las Mareas Negras",
-      "tagline": "Katanas de petróleo vivo y shogunes que cabalgan krakens de alquitrán.",
+      "tagline": "Petróleo vivo y katanas sólidas",
       "description": "Un archipiélago donde el petróleo no es fósil sino un organismo líquido semi-inteligente llamado \"Kuroyū\". Los samurái engrasan sus katanas con este ser, que puede solidificarse al instante en formas cortantes o volverse gas inflamable. Los castillos son enormes relojes hidráulicos movidos por mareas de crudo. Los shinobis usan inyecciones de Kuroyū para volverse intangibles. El shogun controla un kraken de alquitrán vivo.",
       "lore": "El Kuroyū no es un recurso, sino un organismo líquido semiconsciente que habita las profundidades del archipiélago. Los samurái forjaron un pacto con él: a cambio de calor corporal, el Kuroyū se solidifica en filos imposibles o se evapora para hacer intangibles a los shinobis. El shogun actual controla un kraken de alquitrán vivo, una fusión de cientos de litros de Kuroyū que obedece sus órdenes. Pero el organismo empieza a mostrar voluntad propia: ha comenzado a negarse a solidificarse para los samurái que maltratan a sus sirvientes. Una rebelión silenciosa se teje en las mareas negras.",
       "image": "",
@@ -76,12 +236,44 @@
         "Samurái de Alquitrán",
         "Domador de Kuroyū (controlador)",
         "Shinobi Intangible"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Samurái Rebelde",
+          "type": ["humanoide", "oscuridad"],
+          "stats": { "hp": 105, "mp": 30, "speed": 55, "strength": 25, "magicpower": 8, "defense": 20, "magicdefense": 15 },
+          "abilities": ["Katana de alquitrán (daño físico + 10% de quemar)", "Corte gaseoso (daño de área, ignora 10 de defensa)"]
+        },
+        {
+          "name": "Kuroyū Salvaje",
+          "type": ["elemental", "líquido"],
+          "stats": { "hp": 120, "mp": 40, "speed": 35, "strength": 18, "magicpower": 15, "defense": 25, "magicdefense": 20 },
+          "abilities": ["Marea negra (daño de área, reduce speed)", "Solidificar (se vuelve inmune a daño físico por 1 turno)"]
+        },
+        {
+          "name": "Shinobi de la Sombra",
+          "type": ["humanoide", "sigilo"],
+          "stats": { "hp": 75, "mp": 45, "speed": 80, "strength": 18, "magicpower": 14, "defense": 15, "magicdefense": 18 },
+          "abilities": ["Daga intangible (daño físico, ignora escudos)", "Humo negro (reduce precisión de los enemigos un 20%)"]
+        },
+        {
+          "name": "Kraken de Alquitrán (bebé)",
+          "type": ["bestia", "agua"],
+          "stats": { "hp": 150, "mp": 25, "speed": 30, "strength": 28, "magicpower": 10, "defense": 30, "magicdefense": 20 },
+          "abilities": ["Tentáculo pegajoso (daño físico + 20% de inmovilizar)", "Escupitajo de alquitrán (daño de área + reduce speed)"]
+        },
+        {
+          "name": "Relojero del Shogun",
+          "type": ["máquina", "humanoide"],
+          "stats": { "hp": 90, "mp": 60, "speed": 45, "strength": 12, "magicpower": 22, "defense": 18, "magicdefense": 22 },
+          "abilities": ["Tiempo prestado (retrasa la acción de un enemigo)", "Engranaje explosivo (daño de área, puede aturdir)"]
+        }
       ]
     },
     {
       "id": "DIM-4950182736451",
       "name": "La Biblioteca de las Arenas",
-      "tagline": "Libros que exhalan hologramas de arena y revelan los secretos del desierto.",
+      "tagline": "Libros de arena con hologramas",
       "description": "En medio de un desierto infinito hay una biblioteca cuyos libros no tienen páginas, sino cajas de vidrio llenas de arena fina.\n\nCada grano es una partícula de memoria de un evento real o ficticio.\n\nUn Descifrador de Viento abre el libro y sopla suavemente sobre la arena. La arena se levanta y forma figuras tridimensionales: un holograma de arena que representa el secreto del libro.\n\nEjemplo: un libro de batallas pasadas muestra ejércitos en miniatura chocando; un libro de recetas muestra ingredientes flotando.\n\nLos descifradores pueden controlar la arena para que adopte formas útiles: una llave de arena que abre una puerta real, un mapa de arena que cambia según el terreno, o incluso un cuchillo de arena sólida; pero estos constructos se desmoronan al cabo de un par de horas.",
       "lore": "Hace milenios, un rey persa ordenó moler todos los pergaminos del mundo y mezclarlos con arena mágica. Cada grano absorbió la memoria de un evento, verdadero o ficticio. Hoy, la Biblioteca de las Arenas es un laberinto sin paredes donde los Descifradores de Viento pasan años aprendiendo a soplar con la presión exacta para que la arena forme hologramas. Los libros más peligrosos son aquellos que contienen secretos de reyes caídos; quien los lee puede ser envenenado por la arena si no se protege con máscaras de cristal. Un sultán ha ofrecido una fortuna por el \"Libro del Viento Cálido\", que supuestamente muestra cómo derrocar a cualquier gobernante con una sola frase.",
       "image": "",
@@ -89,12 +281,44 @@
         "Guerrero de Arena (Moldador de combate)",
         "Descifrador de Viento (apoyo ofensivo)",
         "Conservador de Granos (defensor de la biblioteca)"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Espectro de Pergamino",
+          "type": ["fantasma", "arena"],
+          "stats": { "hp": 65, "mp": 65, "speed": 50, "strength": 5, "magicpower": 28, "defense": 12, "magicdefense": 22 },
+          "abilities": ["Página maldita (daño mágico + 20% de silenciar)", "Desvanecer (se vuelve intangible por 2 turnos)"]
+        },
+        {
+          "name": "Golem de Arena",
+          "type": ["elemental", "tierra"],
+          "stats": { "hp": 130, "mp": 0, "speed": 25, "strength": 26, "magicpower": 0, "defense": 35, "magicdefense": 25 },
+          "abilities": ["Puño de grano (daño físico, puede cegar)", "Regeneración de arena (recupera 5 hp por turno)"]
+        },
+        {
+          "name": "Lector Oscuro",
+          "type": ["humanoide", "oscuridad"],
+          "stats": { "hp": 85, "mp": 50, "speed": 55, "strength": 12, "magicpower": 22, "defense": 15, "magicdefense": 20 },
+          "abilities": ["Soplo corrupto (daño mágico, puede envenenar)", "Robo de recuerdo (copia una habilidad pasiva del enemigo por 3 turnos)"]
+        },
+        {
+          "name": "Avispa de Cristal",
+          "type": ["volador", "arena"],
+          "stats": { "hp": 55, "mp": 30, "speed": 85, "strength": 14, "magicpower": 12, "defense": 10, "magicdefense": 12 },
+          "abilities": ["Aguijón de sílice (daño físico + 10% de sangrado)", "Enjambre (invoca 2 avispas menores)"]
+        },
+        {
+          "name": "Momia del Sultán",
+          "type": ["muerto viviente", "arena"],
+          "stats": { "hp": 120, "mp": 35, "speed": 30, "strength": 22, "magicpower": 15, "defense": 28, "magicdefense": 18 },
+          "abilities": ["Maldición de arena (daño de área + reduce defensa)", "Vendaje opresivo (inmoviliza a un enemigo por 2 turnos)"]
+        }
       ]
     },
     {
       "id": "DIM-6029384756102",
       "name": "El Coral de Hielo Fractal",
-      "tagline": "Criaturas de hielo que se dividen para vivir y construyen tecnología orgánica en un planeta eternamente helado.",
+      "tagline": "Criaturas de hielo que se dividen",
       "description": "En el planeta glacial Glacieon habitan los Fractales, criaturas no humanoides de hielo cristalino con múltiples extremidades y un núcleo de agua vital.\n\nSu capacidad única es la fisión consciente: pueden dividirse en fragmentos más pequeños pero igualmente inteligentes, lo que les permite sobrevivir, trabajar en paralelo o resolver problemas complejos.\n\nSu tecnología es criorgánica: cultivan herramientas vivas a partir de su propio hielo, construyen colmenas que laten con pulso térmico y se comunican mediante vibraciones de sus facetas.",
       "lore": "Los Fractales no tienen reyes ni dioses. Su sociedad es un coral pensante donde cada individuo puede fragmentarse en decenas de copias conscientes y luego reunirse. Esta capacidad les permitió sobrevivir a glaciaciones extremas, pero también generó un miedo profundo: perder la propia identidad al fusionarse con otro. El anciano conocido como \"El Unificador\" descubrió cómo fusionar fragmentos de distintos Fractales en un solo cuerpo gigante, creando una superconciencia. Ofrece \"inmortalidad colectiva\", pero los Fractales jóvenes lo ven como una muerte en vida. La guerra no es con ejércitos, sino con debates de frecuencias resonantes y, en el peor de los casos, con fisiones tácticas para confundir y absorber al oponente.",
       "image": "",
@@ -102,6 +326,38 @@
         "Fractal Divisor (especialista en fisión)",
         "Fractal Unificador (superconciencia)",
         "Fractal Resonante (comunicador de combate)"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Golem de Hielo",
+          "type": ["hielo", "elemental"],
+          "stats": { "hp": 120, "mp": 20, "speed": 30, "strength": 25, "magicpower": 5, "defense": 30, "magicdefense": 15 },
+          "abilities": ["Golpe glacial (daño físico + 10% congelar)", "Fusión parcial (recupera 10 hp por turno)"]
+        },
+        {
+          "name": "Fragmento Fractal",
+          "type": ["hielo", "fisión"],
+          "stats": { "hp": 60, "mp": 40, "speed": 60, "strength": 10, "magicpower": 20, "defense": 10, "magicdefense": 10 },
+          "abilities": ["División: al recibir daño, se divide en dos fragmentos más débiles", "Ráfaga de escarcha (daño mágico a todos)"]
+        },
+        {
+          "name": "Cristal Resonante",
+          "type": ["hielo", "sonido"],
+          "stats": { "hp": 80, "mp": 50, "speed": 45, "strength": 8, "magicpower": 25, "defense": 12, "magicdefense": 20 },
+          "abilities": ["Vibración aturdidora (reduce speed de un aliado)", "Eco helado (daño mágico y silencia)"]
+        },
+        {
+          "name": "Gigante de Hielo Vivo",
+          "type": ["hielo", "coloso"],
+          "stats": { "hp": 200, "mp": 10, "speed": 20, "strength": 40, "magicpower": 0, "defense": 40, "magicdefense": 25 },
+          "abilities": ["Aplastar (daño físico alto, baja precisión)", "Grito de glaciar (reduce defensa de todos los aliados)"]
+        },
+        {
+          "name": "Núcleo Congelado",
+          "type": ["hielo", "élite"],
+          "stats": { "hp": 150, "mp": 60, "speed": 50, "strength": 15, "magicpower": 35, "defense": 20, "magicdefense": 30 },
+          "abilities": ["Absorción térmica (roba mp)", "Tormenta de hielo (daño masivo, requiere 2 turnos de carga)"]
+        }
       ]
     }
   ]
