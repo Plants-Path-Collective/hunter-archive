@@ -8,7 +8,7 @@ El sistema simula un entorno de escritorio retro inspirado en Windows 95, presen
 
 Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo de construcción de mundos.
 
-**Versión actual:** v1.5.0 (incorpora Dimensiones de Origen y árbol de habilidades activas)
+**Versión actual:** v1.4.4 (incorpora Dimensiones de Origen y clases correspondientes a la dimensión)
 
 ---
 
@@ -25,6 +25,26 @@ Está pensado como una herramienta para la ideación rápida, diseño de persona
 ### Sistema de Tooltips
 - Casi todos los elementos (clases, MBTI, conceptos, habilidades) muestran tooltips con descripciones contextuales.
 - Los tooltips se obtienen de `data.json` (`attribute_tooltips`) y de las descripciones propias de clases, MBTI y dimensiones.
+
+---
+
+```
+hunter-archive/
+├── css/
+│   └── styles.css
+├── data/
+│   ├── classes.json
+│   ├── concepts.json
+│   ├── data.json
+│   ├── dimensions.json
+│   └── files.json
+├── js/
+│   ├── apps.js
+│   └── os.js
+├── Guía para la Creación de Dimensiones, Clases y Habilidades.md
+├── README.md
+└── index.html
+```
 
 ---
 
@@ -218,36 +238,23 @@ En las vistas previas (Generador, Editor, Archivos) se renderiza visualmente con
 
 ## Próximas mejoras (tareas pendientes)
 
-A continuación se detallan los aspectos que requieren desarrollo para completar la integración del sistema de combate y la gestión de dimensiones:
+7. UX/UI Improvements
 
-1. **Añadir referencias a la estructura de armas**  
-   Actualmente las armas están definidas en `classes.json` (con nombre, descripción, tipo, daño y efecto). Es necesario modificar la aplicación **Archivos (File Explorer)** para que, al visualizar una clase sugerida dentro de una dimensión, se muestre también su lista de armas con todos sus atributos.
+* Reduce information density: collapsible cards, improved spacing, cleaner typography.
+* Ensure responsiveness (desktop).
+* Optimize navigation between tabs/sections within Files, Editor, and Generator.
+* If not already in use, implement a component library (shadcn/ui, MUI) or refine the CSS with Tailwind.
+* Remember to maintain the essence of the website (a fictional OS based on Windows 95)
 
-2. **Apartado de enemigos dentro de la dimensión seleccionada**  
-   Cada dimensión en `dimensions.json` incluye un array `suggested_enemies` con objetos que contienen nombre, tipo, estadísticas y habilidades. Se debe extender la vista de dimensión en **Archivos** para listar estos enemigos, mostrando al menos su nombre y tipo, y permitiendo expandir detalles (estadísticas, habilidades).
+8. Rendering Feature for Documentation
 
-3. **Tab de estadísticas (stats) dentro del Hunter seleccionado**  
-   En la vista de un Hunter dentro de **Archivos**, se necesita una nueva sección (o pestaña) que muestre las estadísticas del personaje (`hp, mp, speed, strength, magicpower, defense, magicdefense, evasion`). Estas estadísticas podrían derivarse de la clase y el nivel, o ser editables (ver punto 5).
+* In Files, add buttons that allow you to generate a downloadable image (PNG) of:
+* A Hunter’s full profile (stats, abilities, weapons).
+* A Dimension’s summary profile (suggested classes, enemies).
+* Table of elemental types + creature types.
+* Use `html2canvas` and an “Export to Image” button that captures a specific container.
 
-4. **Nuevo apartado en Archivos: tipos elementales y tipos de criatura**  
-   Además de las secciones **Hunters** y **Dimensiones**, se debe añadir un tercer bloque en el explorador de archivos que contenga:
-    - Una tabla o diagrama de **tipos elementales** (fuego, hielo, tierra, etc.) con sus ventajas y desventajas (similar a la tabla incluida en la guía de diseño).
-    - Una lista de **tipos de criatura** (volador, coloso, élite, etc.) con sus características.
-      Esta información puede cargarse desde un nuevo archivo JSON o estar hardcodeada inicialmente.
-
-5. **Edición de estadísticas a través del Editor**  
-   Actualmente el **Editor** permite modificar descripción, conceptos, habilidades e imágenes, pero no las estadísticas del personaje. Se debe añadir un panel en el Editor para ingresar y modificar los valores de `hp, mp, speed, strength, magicpower, defense, magicdefense, evasion`. Estas estadísticas no se generan automáticamente en el **Generador** (por ahora), pero podrán editarse manualmente.
-
-6. **Mejora de UX/UI**  
-   Actualmente mucha información (árboles de habilidades, listas de armas, enemigos, etc.) se presenta de forma densa y poco organizada. Es necesario rediseñar la disposición de los elementos, usar tarjetas colapsables, mejorar la tipografía y los espaciados, y asegurar que las vistas sean responsivas. También se debe optimizar la navegación entre pestañas y secciones dentro de cada ventana.
-
-7. **Función de renderizado para documentación**  
-   Se requiere una función dentro de la aplicación **Archivos** que permita generar una “captura” o vista imprimible de los siguientes elementos:
-    - Ficha completa de un Hunter (con stats, habilidades, armas, etc.).
-    - Ficha resumida de una Dimensión (incluyendo sus clases sugeridas y enemigos).
-    - Tabla de tipos elementales y tipos de criatura.
-      Esta función debería producir un HTML/CSS autocontenido o una imagen descargable (por ejemplo, usando `html2canvas`) para facilitar la inclusión de dichas fichas en la documentación del proyecto.
-
+You can break the tasks down, so let's start with the first three. If you need more information or a specific file, let me know. I attached the readme file of theproject with the current state of the project and the current file tree, ask for the files u need.
 Una vez implementados estos puntos, será necesario **actualizar este README** con la documentación correspondiente (estructura de datos, nuevas funcionalidades, flujo de trabajo ampliado).
 
 ---

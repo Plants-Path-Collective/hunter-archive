@@ -1,86 +1,132 @@
 {
-  "function": [
-    "Repara relojes de bolsillo que no son suyos",
-    "Cataloga los ruidos de edificios vacíos",
-    "Conduce el último autobús nocturno de la ciudad",
-    "Poda árboles que nadie plantó",
-    "Transcribe llamadas telefónicas que fueron cortadas",
-    "Hornea pan para personas que no están en casa",
-    "Cuida las plantas de oficinas abandonadas",
-    "Ordena archivos de casos sin resolver",
-    "Recoge carritos de supermercado en los estacionamientos",
-    "Lleva la contabilidad de un negocio que ya cerró",
-    "Reparte correspondencia a direcciones que no existen",
-    "Pinta paredes medianeras de edificios a medio demoler",
-    "Enseña idiomas a personas que nunca viajarán",
-    "Calibra instrumentos de medición obsoletos",
-    "Diseña menús para restaurantes de un solo cliente",
-    "Archiva fotografías de desconocidos encontradas en la calle",
-    "Instala cableado en edificios sin suministro eléctrico",
-    "Guarda el turno en una fila que no avanza",
-    "Escribe actas de reuniones que nadie convocó",
-    "Afina pianos en casas deshabitadas",
-    "Cuida mascotas de personas en estado de coma",
-    "Repara paraguas rotos en días completamente soleados",
-    "Administra una biblioteca de un solo libro",
-    "Opera una grúa en un puerto sin barcos",
-    "Fotocopia documentos que nadie recogerá jamás",
-    "Inspecciona extintores en edificios sin historial de incendios",
-    "Enseña natación en piscinas vacías o clausuradas",
-    "Borda epitafios en servilletas de papel",
-    "Recoge objetos olvidados en trenes y los devuelve sin avisar",
-    "Elabora listas de tareas detalladas para personas que no las pidieron"
-  ],
-  "anomaly": [
-    "Recuerda los sueños de otros, nunca los propios",
-    "Sus zapatos siempre están mojados aunque no llueva",
-    "Olvida los nombres pero recuerda el sabor favorito de cada persona",
-    "Su sombra aparece con diez minutos de retraso",
-    "Huele a café recién hecho aunque nunca lo beba",
-    "Los relojes a su alrededor corren tres segundos más lento",
-    "Solo puede mentir diciendo verdades que aún no han ocurrido",
-    "Cuando llora, las lágrimas suenan al caer como monedas antiguas",
-    "Los espejos muestran su imagen tal como era hace siete años",
-    "Los animales le cuentan chismes que no le interesan a nadie más",
-    "Estornuda cuando alguien cercano toma una decisión importante",
-    "Su hambre desaparece completamente cuando hay tensión en el ambiente",
-    "Atrae los calcetines perdidos de los demás sin proponérselo",
-    "Las fotografías viejas hacen estática cuando las toca",
-    "Le es imposible llegar tarde, aunque lo intente deliberadamente",
-    "Sus bolsillos siempre contienen exactamente lo que alguien más necesita",
-    "Recuerda con precisión absoluta todo número de teléfono que alguna vez escuchó",
-    "Su voz suena distinto dependiendo del piso del edificio en que se encuentre",
-    "Los gatos abandonados lo siguen durante exactamente veinticuatro horas y luego se van",
-    "Tose cuando alguien miente en un radio de diez metros",
-    "Su letra cambia según el estado de ánimo del lector, no del escritor",
-    "Siempre encuentra el dinero exacto para pagar, nunca un céntimo de más",
-    "Las heridas menores sanan al ritmo de la música que suena en ese momento",
-    "Habla en pasado sobre eventos que todavía no han ocurrido",
-    "Nunca recuerda haber dormido, pero siempre amanece descansado",
-    "Las llaves ajenas funcionan en sus manos aunque no deberían",
-    "Su temperatura corporal sube cuando alguien miente cerca de él",
-    "Los insectos forman filas ordenadas en el espacio que habita",
-    "Puede distinguir el sabor del agua de cada ciudad sin que se lo digan",
-    "Las escaleras mecánicas siempre van en su dirección cuando las necesita",
-    "Recuerda el nombre de cada persona que alguna vez lloró frente a él",
-    "Sus pies no producen eco en espacios cerrados",
-    "Le es imposible dejar algo a medias, incluso si quiere abandonarlo",
-    "Las máquinas expendedoras le entregan el doble sin que él haga nada",
-    "Huele la lluvia con exactamente doce horas de anticipación",
-    "Los libros que toca se abren solos en la página más relevante para ese momento",
-    "Su respiración se sincroniza con la del interlocutor más nervioso en la sala",
-    "Las sombras de los árboles lo persiguen unos metros después de que pase",
-    "Puede identificar qué instrumento tocó una persona con solo darle la mano",
-    "Los botones del ascensor se iluminan un segundo antes de que los pulse",
-    "Recuerda exactamente qué comió cada persona la última vez que los vio",
-    "Sus bolígrafos nunca se quedan sin tinta, pero siempre terminan en manos de otros",
-    "Cada vez que camina sobre hierba, deja un rastro levemente más verde",
-    "Escucha el sonido que hará algo antes de que se rompa",
-    "Las puertas se abren un segundo antes de que llegue a ellas",
-    "Los paraguas ajenos no lo mojan aunque llueva directamente sobre él",
-    "Su número de teléfono nunca aparece guardado en la agenda de nadie",
-    "Los calendarios cerca de él muestran el día incorrecto de forma consistente",
-    "Cuando duerme cerca de plantas, estas florecen fuera de temporada",
-    "La música que escucha cambia de letra para contarle cosas que necesita saber"
-  ]
+  "dimensions": {
+    "DIM-6084206892469": {
+      "functions": [
+        "Portador de la luz solar que purifica el agua",
+        "Guardián de los templos de obsidiana",
+        "Tejedor de nubes para traer lluvia a los cultivos",
+        "Cantor de himnos ancestrales que fortalecen la tierra",
+        "Cuidador de jaguares de cristal que protegen las ciudades"
+      ],
+      "anomalies": [
+        "Su sombra refleja constelaciones antiguas que nadie puede leer",
+        "Al hablar, las pirámides cercanas emiten un leve zumbido",
+        "Cada amanecer, sus ojos brillan como obsidiana pulida",
+        "Las plantas a su alrededor crecen en espiral, nunca rectas",
+        "Su aliento huele a copal ardiente aunque nunca haya quemado incienso"
+      ]
+    },
+    "DIM-8214739502846": {
+      "functions": [
+        "Cantor de mareas que armoniza las cuerdas del espacio",
+        "Cartógrafo que dibuja islas flotantes con tinta vibrante",
+        "Rompecuerdas que desafina los caminos enemigos",
+        "Guardián de las frecuencias sagradas del archipiélago",
+        "Navegante que escucha las notas de las corrientes ocultas"
+      ],
+      "anomalies": [
+        "Su voz resuena en el vacío, oída a kilómetros bajo el agua",
+        "Camina sobre las cuerdas como si fueran suelo sólido",
+        "Sus oídos sangran melodías cuando hay una tormenta lejana",
+        "Las islas flotan más cerca cuando él tararea una canción olvidada",
+        "Puede romper una cuerda con un susurro, pero nunca lo hace sin permiso"
+      ]
+    },
+    "DIM-3827596041235": {
+      "functions": [
+        "Escultor de nubes que forja armas de espuma mineral",
+        "Guardabrisas que desvía tormentas de los templos colgantes",
+        "Afinador de fuelles que controla la presión del gas sagrado",
+        "Ingeniero de puentes de vapor entre montañas",
+        "Pintor de cielos con pigmentos de nube solidificada"
+      ],
+      "anomalies": [
+        "Manos siempre frías, como si hubiera moldeado hielo invisible",
+        "Las nubes a su alrededor adoptan formas de animales que le siguen",
+        "Puede contener la respiración durante horas en altitudes extremas",
+        "Su ropa nunca se moja con la lluvia, el agua se desliza a su alrededor",
+        "Los fuelles de bambú se abren solos cuando él se acerca"
+      ]
+    },
+    "DIM-9472018563720": {
+      "functions": [
+        "Cazador de fósiles que extrae huesos cantores del desierto",
+        "Faraón transformador que toca tambores de cráneo de dinosaurio",
+        "Tallador de flautas con vértebras de espinosaurio",
+        "Guardián de las tumbas resonantes donde los huesos aún cantan",
+        "Domador de bestias fósiles que despierta con su música"
+      ],
+      "anomalies": [
+        "Sus pies nunca tocan la arena; deja huellas que flotan un instante",
+        "Puede oír la melodía de un fósil antes de desenterrarlo",
+        "Los dinosaurios extintos lo visitan en sueños y le enseñan danzas",
+        "Tiene dos sombras: una humana y otra de un dinosaurio",
+        "Al tocar un hueso, su voz se vuelve grave como un rugido ancestral"
+      ]
+    },
+    "DIM-1092837465582": {
+      "functions": [
+        "Lancero de sal que cristaliza emociones en armas cortantes",
+        "Lector de sal que descubre recuerdos en el océano amargo",
+        "Berserker de sal que se hiere para volverse más fuerte",
+        "Pescador de cristales que extrae dulzura de las olas",
+        "Navegante que traza rutas sobre remolinos de ira congelada"
+      ],
+      "anomalies": [
+        "Lágrimas de sal amarga curan heridas pero causan tristeza",
+        "Su sudor brilla como escamas de cristal al sol",
+        "Los barcos de sal a su alrededor flotan sin vela ni remo",
+        "Puede saborear la historia de un lugar lamiendo una roca costera",
+        "Sus heridas nunca sangran rojo, sino gotas de salmuera"
+      ]
+    },
+    "DIM-7182930415264": {
+      "functions": [
+        "Samurái de alquitrán que solidifica el Kuroyū en katanas",
+        "Domador de mareas negras que negocia con el petróleo vivo",
+        "Shinobi intangible que se vuelve gas para atravesar muros",
+        "Relojero hidráulico que mueve castillos con la marea negra",
+        "Alquimista de crudo que extrae memorias del organismo líquido"
+      ],
+      "anomalies": [
+        "Su piel nunca se mancha con alquitrán; resbala como agua",
+        "Puede contener la respiración durante horas sumergido en Kuroyū",
+        "El petróleo vivo le susurra secretos de barcos hundidos",
+        "Su katana se solidifica solo cuando él siente ira o determinación",
+        "Los relojes de agua a su alrededor se detienen si él no respira"
+      ]
+    },
+    "DIM-4950182736451": {
+      "functions": [
+        "Descifrador de viento que sopla libros de arena en hologramas",
+        "Guerrero de arena que moldea armas efímeras de grano",
+        "Conservador de granos que congela libros para evitar mezclas",
+        "Bibliotecario de las dunas que organiza cajas de vidrio",
+        "Susurrador de arena que lee secretos en los remolinos del desierto"
+      ],
+      "anomalies": [
+        "Nunca estornuda con polvo; la arena danza a su alrededor",
+        "Los hologramas de arena que crea duran el doble si él está cerca",
+        "Sus ojos se vuelven del color del grano que está leyendo",
+        "Puede beber agua de un espejismo de arena sin morir de sed",
+        "Los libros cerrados giran hacia él cuando pasa, como buscando su mirada"
+      ]
+    },
+    "DIM-6029384756102": {
+      "functions": [
+        "Fractal divisor que se fragmenta en copias conscientes",
+        "Unificador que fusiona fragmentos de distintos seres",
+        "Resonante que usa vibraciones para comunicarse a distancia",
+        "Cuidador del coral de hielo fractal que regenera núcleos",
+        "Cantante de frecuencias que alinea las facetas del hielo vivo"
+      ],
+      "anomalies": [
+        "Cada vez que se divide, una de sus copias tiene un recuerdo diferente",
+        "Sus extremidades se mueven como si tuvieran vida propia",
+        "Puede escuchar conversaciones a través del hielo a kilómetros",
+        "Al fusionarse, recupera fragmentos de memoria de los otros",
+        "Su núcleo de agua vital nunca se congela, incluso en el frío extremo"
+      ]
+    }
+  }
 }

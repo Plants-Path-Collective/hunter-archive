@@ -1,0 +1,20 @@
+{
+  "elemental_types": [
+    { "name": "Fuego", "advantage": ["Hielo", "Planta"], "disadvantage": ["Agua", "Tierra"] },
+    { "name": "Agua", "advantage": ["Fuego", "Tierra"], "disadvantage": ["Rayo", "Planta"] },
+    { "name": "Tierra", "advantage": ["Rayo", "Fuego"], "disadvantage": ["Agua", "Hielo"] },
+    { "name": "Aire", "advantage": ["Tierra", "Planta"], "disadvantage": ["Rayo", "Hielo"] },
+    { "name": "Rayo", "advantage": ["Agua", "Aire"], "disadvantage": ["Tierra", "Metal"] },
+    { "name": "Hielo", "advantage": ["Agua", "Tierra"], "disadvantage": ["Fuego", "Aire"] },
+    { "name": "Planta", "advantage": ["Agua", "Tierra"], "disadvantage": ["Fuego", "Hielo"] },
+    { "name": "Metal", "advantage": ["Hielo", "Tierra"], "disadvantage": ["Rayo", "Fuego"] }
+  ],
+  "creature_types": [
+    { "name": "Volador", "description": "Puede evadir ataques terrestres, vulnerable a rayos y redes." },
+    { "name": "Coloso", "description": "Alta resistencia y daño, pero lento y fácil de golpear." },
+    { "name": "Élite", "description": "Estadísticas mejoradas, aparece en grupos reducidos." },
+    { "name": "Bestia", "description": "Ataques físicos fuertes, poca defensa mágica." },
+    { "name": "Espectro", "description": "Inmune a ataques físicos normales, vulnerable a magia sagrada." },
+    { "name": "Dragón", "description": "Alta resistencia a magia, aliento elemental poderoso." }
+  ]
+}

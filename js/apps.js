@@ -65,7 +65,6 @@ async function loadApp(name, el, data) {
         mbti: [],
         mbti_descriptions: {},
         attribute_tooltips: {},
-        // Legacy fallback fields — kept for old files that may still have them
         classes: [],
         concepts: { function: [], anomaly: [] },
         passive_pool: [],
@@ -99,7 +98,6 @@ async function loadApp(name, el, data) {
         CLASSES = await res.json();
     } catch (e) {
         console.warn("No se pudo cargar classes.json — usando CONFIG.classes como fallback:", e);
-        // Fallback: convert legacy CONFIG.classes to new format if present
         CLASSES = (CONFIG.classes || []).map(c => ({
             name: c.name || c,
             description: c.description || "",
@@ -109,23 +107,27 @@ async function loadApp(name, el, data) {
     }
 
     /* ─────────────────────────────────────────────
-       Load concepts.json
+       Load concepts.json (new per-dimension format)
     ───────────────────────────────────────────── */
-    let CONCEPTS = { function: [], anomaly: [] };
+    let CONCEPTS_BY_DIM = {}; // { dimension_id: { functions: [], anomalies: [] } }
+    let FALLBACK_CONCEPTS = { function: [], anomaly: [] };
     try {
         const res = await fetch("data/concepts.json");
-        CONCEPTS = await res.json();
+        const conceptsData = await res.json();
+        // New format: { dimensions: { "DIM-xxx": { functions: [...], anomalies: [...] } }, fallback: {...} }
+        if (conceptsData.dimensions) {
+            CONCEPTS_BY_DIM = conceptsData.dimensions;
+            FALLBACK_CONCEPTS = conceptsData.fallback || { function: [], anomaly: [] };
+        } else {
+            // Old format: top-level function/anomaly arrays
+            FALLBACK_CONCEPTS = {
+                function: conceptsData.function || [],
+                anomaly: conceptsData.anomaly || []
+            };
+        }
     } catch (e) {
-        console.warn("No se pudo cargar concepts.json — usando CONFIG.concepts como fallback:", e);
-        // Fallback: pull from legacy CONFIG.concepts if available
-        CONCEPTS = {
-            function: (CONFIG.concepts?.function || []).map(f =>
-                typeof f === "string" ? f : (f.text || "")
-            ).filter(Boolean),
-            anomaly: (CONFIG.concepts?.anomaly || []).map(a =>
-                typeof a === "string" ? a : (a.text || "")
-            ).filter(Boolean)
-        };
+        console.warn("No se pudo cargar concepts.json:", e);
+        // Keep empty fallback
     }
 
     /* ─────────────────────────────────────────────
@@ -135,52 +137,34 @@ async function loadApp(name, el, data) {
     const mbtiDesc = key => CONFIG.mbti_descriptions?.[key] || "";
     const getDim   = id  => dims.find(d => d.id === id) || null;
 
-    /** Find a class object by name — searches CLASSES first, then CONFIG.classes fallback. */
     const getClass = name =>
         CLASSES.find(c => c.name === name) ||
         CONFIG.classes?.find(c => c.name === name) ||
         null;
 
-    /** Description string for a class name. */
     const classDesc = name => getClass(name)?.description || "";
 
-    /**
-     * Returns the passive and active pools for a given class name.
-     * Falls back to global CONFIG pools if the class has none defined,
-     * then to a hardcoded last-resort entry.
-     */
     function getClassSkills(className) {
         const cls = getClass(className);
-
         const passivePool = cls?.passive_pool?.length > 0
             ? cls.passive_pool
             : (CONFIG.passive_pool?.length > 0
                 ? CONFIG.passive_pool
                 : [CONFIG._fallback_passive || "Detecta cambios en el ambiente antes de que sean visibles"]);
-
         const rawActivePool = cls?.active_pool?.length > 0
             ? cls.active_pool
             : (CONFIG.active_pool?.length > 0
                 ? CONFIG.active_pool
                 : [CONFIG._fallback_active || { base: "Acción reflexiva", paths: [] }]);
-
-        // Normalize: entries can be plain strings (legacy) or { base, paths } objects
         const activePool = rawActivePool.map(entry =>
             typeof entry === "string" ? { base: entry, paths: [] } : entry
         );
-
         return { passivePool, activePool };
     }
 
-    /**
-     * Populate the class <select> element.
-     * If dimEntry has suggested_classes, shows them in a prioritized optgroup.
-     * dimEntry may be null — in that case shows a flat list of all classes.
-     */
     function refreshClassSelect(selectEl, hintEl, dimEntry) {
         selectEl.innerHTML = "";
         const suggested = dimEntry?.suggested_classes || [];
-
         if (suggested.length > 0) {
             const grpSuggested = document.createElement("optgroup");
             grpSuggested.label = "▸ Sugeridas por esta dimensión";
@@ -191,7 +175,6 @@ async function loadApp(name, el, data) {
                 grpSuggested.appendChild(o);
             });
             selectEl.appendChild(grpSuggested);
-
             const grpOther = document.createElement("optgroup");
             grpOther.label = "◦ Otras clases";
             CLASSES.filter(c => !suggested.includes(c.name)).forEach(c => {
@@ -209,11 +192,48 @@ async function loadApp(name, el, data) {
                 selectEl.appendChild(o);
             });
         }
-
         if (hintEl) {
             const d = classDesc(selectEl.value);
             hintEl.textContent = d ? "↳ " + d : "";
         }
+    }
+
+    // Helper to pick a concept based on dimension
+    function getDimensionConcepts(dimEntry) {
+        if (!dimEntry) return null;
+        const dimId = dimEntry.id;
+        const dimConcepts = CONCEPTS_BY_DIM[dimId];
+        if (dimConcepts && dimConcepts.functions && dimConcepts.anomalies) {
+            const functions = dimConcepts.functions;
+            const anomalies = dimConcepts.anomalies;
+            if (functions.length && anomalies.length) {
+                const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+                return [rand(functions), rand(anomalies)];
+            }
+        }
+        // Fallback to generic concepts
+        if (FALLBACK_CONCEPTS.function.length && FALLBACK_CONCEPTS.anomaly.length) {
+            const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+            return [rand(FALLBACK_CONCEPTS.function), rand(FALLBACK_CONCEPTS.anomaly)];
+        }
+        return null;
+    }
+
+    // Helper to render a weapon item (string or object)
+    function renderWeaponItem(weapon) {
+        if (typeof weapon === 'string') {
+            return `<li>${escapeHtml(weapon)}</li>`;
+        }
+        const name = weapon.name || '?';
+        const type = weapon.type || 'herramienta';
+        const desc = weapon.description || '';
+        const damage = weapon.damage || 0;
+        const effect = weapon.effect || '';
+        return `<li>
+            <strong>${escapeHtml(name)}</strong> <span class="weapon-type">(${escapeHtml(type)})</span><br>
+            ${desc ? `<span class="weapon-desc">${escapeHtml(desc)}</span><br>` : ''}
+            <span class="weapon-stats">Daño: ${damage} | Efecto: ${escapeHtml(effect)}</span>
+        </li>`;
     }
 
     /* =========================
@@ -224,38 +244,29 @@ async function loadApp(name, el, data) {
 
         el.innerHTML = `
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; height:100%;">
-
             <div class="panel">
                 <h3>Generador</h3>
-
                 <div class="panel" style="margin-top:6px">
                     <label>Género</label>
                     <select id="gender"></select>
-
                     <label id="lbl-class">Clase</label>
                     <select id="class"></select>
                     <div id="class-hint" class="field-hint"></div>
-
                     <label id="lbl-mbti">MBTI</label>
                     <select id="mbti"></select>
                     <div id="mbti-hint" class="field-hint"></div>
                 </div>
-
                 <button id="generate" style="margin-top:6px;">Generar</button>
-
                 <div class="panel" id="result" style="margin-top:6px;">
                     <p style="color:var(--text-muted);">Sin generación aún.</p>
                 </div>
             </div>
-
             <div class="panel scroll" id="preview">
                 <p style="color:var(--text-muted);">Esperando generación...</p>
             </div>
-
         </div>
         `;
 
-        // Populate gender and MBTI selects
         const fillSelect = (id, arr) => {
             const sel = el.querySelector("#" + id);
             arr.forEach(v => {
@@ -267,12 +278,10 @@ async function loadApp(name, el, data) {
         fillSelect("gender", CONFIG.genders);
         fillSelect("mbti",   CONFIG.mbti);
 
-        // Populate class select (no dimension pre-selected yet)
         const classSelect = el.querySelector("#class");
         const classHint   = el.querySelector("#class-hint");
         refreshClassSelect(classSelect, classHint, null);
 
-        // Class hint + tooltip (dynamic — shows skill examples)
         const updateClassHint = () => {
             const d = classDesc(classSelect.value);
             classHint.textContent = d ? "↳ " + d : "";
@@ -291,7 +300,6 @@ async function loadApp(name, el, data) {
         if (tt("class")) Tooltip.bind(el.querySelector("#lbl-class"), tt("class"));
         updateClassHint();
 
-        // MBTI hint + tooltip
         const mbtiSelect = el.querySelector("#mbti");
         const mbtiHint   = el.querySelector("#mbti-hint");
         const updateMbtiHint = () => {
@@ -306,12 +314,7 @@ async function loadApp(name, el, data) {
         const rand = arr => arr[Math.floor(Math.random() * arr.length)];
 
         el.querySelector("#generate").onclick = () => {
-
-            // 1. Pick random dimension (immutable)
             const dimEntry = dims.length ? rand(dims) : null;
-
-            // 2. Resolve class — respect user's selection if it's suggested by this dimension,
-            //    otherwise pick randomly from the dimension's suggested pool.
             const suggested = dimEntry?.suggested_classes || [];
             const userClass = classSelect.value;
             const isUserClassSuggested = suggested.length === 0 || suggested.includes(userClass);
@@ -325,20 +328,19 @@ async function loadApp(name, el, data) {
                 classAutoAssigned = chosenClass !== userClass;
             }
 
-            // 3. Get skill pools from the chosen class
             const { passivePool, activePool } = getClassSkills(chosenClass);
-
-            // 4. Pick concepts from CONCEPTS (strings, not objects)
-            const fnPool = CONCEPTS.function?.length > 0 ? CONCEPTS.function : ["Trabaja en algo sin nombre"];
-            const anPool = CONCEPTS.anomaly?.length  > 0 ? CONCEPTS.anomaly  : ["Su presencia altera levemente el ambiente"];
-            const concepts = [rand(fnPool), rand(anPool)];
-
-            // 5. Pick passive and active
-            const passive     = rand(passivePool);
+            const passive = rand(passivePool);
             const activeEntry = rand(activePool);
             const activePaths = activeEntry.paths?.length >= 2
                 ? [activeEntry.paths[0], activeEntry.paths[1]]
                 : (activeEntry.paths || []);
+
+            // Get concepts based on dimension
+            let concepts = getDimensionConcepts(dimEntry);
+            if (!concepts) {
+                // Ultimate fallback
+                concepts = ["Trabaja en algo sin nombre", "Su presencia altera levemente el ambiente"];
+            }
 
             const hunter = {
                 id:           "H-" + Date.now(),
@@ -356,15 +358,13 @@ async function loadApp(name, el, data) {
                 images: []
             };
 
-            // Update class select to reflect the dimension's suggestions for the next generation
             refreshClassSelect(classSelect, classHint, dimEntry);
-            // Keep the assigned class selected in the dropdown
             if ([...classSelect.options].some(o => o.value === chosenClass)) {
                 classSelect.value = chosenClass;
             }
             updateClassHint();
 
-            // ── Result panel ─────────────────────────────
+            // Result panel
             el.querySelector("#result").innerHTML = `
                 ${classAutoAssigned
                 ? `<div style="margin-bottom:8px; padding:5px 8px; background:#1a1200; border:1px solid var(--accent-warning); font-size:10px; color:var(--accent-warning);">
@@ -397,7 +397,7 @@ async function loadApp(name, el, data) {
                 Tooltip.bind(rEl.querySelector("#res-dim-name"), dimEntry.tagline || dimEntry.description || "");
             }
 
-            // ── Preview panel ────────────────────────────
+            // Preview panel
             const cdesc = classDesc(hunter.class);
             const mdesc = mbtiDesc(hunter.mbti);
             const classObj = getClass(hunter.class);
@@ -406,7 +406,7 @@ async function loadApp(name, el, data) {
                 ? `<div class="panel" style="margin-top:6px;">
                        <h3>Armas / Herramientas típicas</h3>
                        <ul class="weapons-list">
-                           ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
+                           ${weapons.map(w => renderWeaponItem(w)).join("")}
                        </ul>
                    </div>`
                 : "";
@@ -414,7 +414,6 @@ async function loadApp(name, el, data) {
             el.querySelector("#preview").innerHTML = `
                 <div class="panel">
                     <h3>${escapeHtml(hunter.id)}</h3>
-
                     <div class="panel" style="margin-top:6px;">
                         <p>
                             <b id="prev-class">${escapeHtml(hunter.class)}</b>
@@ -423,7 +422,6 @@ async function loadApp(name, el, data) {
                         </p>
                         <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(hunter.gender)}</p>
                     </div>
-
                     ${dimEntry ? `
                     <div class="panel" style="margin-top:6px; border-left:3px solid var(--accent-primary);">
                         <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen</div>
@@ -432,7 +430,6 @@ async function loadApp(name, el, data) {
                 ? `<p style="font-size:10px; color:var(--text-muted); margin-top:4px; font-style:italic;">${escapeHtml(dimEntry.description)}</p>`
                 : ""}
                     </div>` : ""}
-
                     <div class="panel" style="margin-top:6px;">
                         <h3 id="prev-concepts-h">Conceptos</h3>
                         <div class="concept-row">
@@ -444,16 +441,13 @@ async function loadApp(name, el, data) {
                             <span>${escapeHtml(concepts[1])}</span>
                         </div>
                     </div>
-
                     <div class="panel" style="margin-top:6px;">
                         <p><b id="prev-passive-lbl">Pasiva:</b> ${escapeHtml(passive)}</p>
                     </div>
-
                     <div class="panel" style="margin-top:6px;">
                         <h3 id="prev-active-lbl">Habilidad Activa</h3>
                         ${renderSkillTreeHTML(hunter.active)}
                     </div>
-
                     ${weaponsHtml}
                 </div>
             `;
@@ -478,10 +472,8 @@ async function loadApp(name, el, data) {
 
     if (name === "editor") {
 
-        // ── No hunter passed: show selector ──────────
         if (!data) {
             let huntersList = [];
-
             const renderSelector = async () => {
                 try {
                     const res = await fetch("data/files.json");
@@ -505,7 +497,6 @@ async function loadApp(name, el, data) {
                         </div>
                     </div>
                 `;
-
                 const selectEl = el.querySelector("#hunterSelect");
                 if (huntersList.length === 0) {
                     selectEl.innerHTML = '<option value="">No hay Hunters disponibles</option>';
@@ -524,10 +515,8 @@ async function loadApp(name, el, data) {
                         el.querySelector("#selectorPreview").innerHTML = "<p>Selecciona un Hunter para ver vista previa.</p>";
                         return;
                     }
-
                     const isNewSchema = hunter.dimension_id !== undefined && hunter.dimension_id !== null;
                     const dimEntry    = isNewSchema ? getDim(hunter.dimension_id) : null;
-
                     const fnText = hunter.concepts?.[0] || "—";
                     const aeText = isNewSchema ? null : (hunter.concepts?.[1] || "—");
                     const anText = isNewSchema ? (hunter.concepts?.[1] || "—") : (hunter.concepts?.[2] || "—");
@@ -542,13 +531,11 @@ async function loadApp(name, el, data) {
                                 <span id="sel-mbti">${escapeHtml(hunter.mbti)}</span>
                             </p>
                             <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(hunter.gender || "")}</p>
-
                             ${dimEntry ? `
                             <div style="margin:8px 0; padding:6px 10px; background:#0a0c10; border-left:3px solid var(--accent-primary);">
                                 <div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">DIMENSIÓN DE ORIGEN</div>
                                 <span id="sel-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span>
                             </div>` : ""}
-
                             <h3 id="sel-concepts-h" style="margin-top:10px;">Conceptos</h3>
                             <div class="concept-row">
                                 <span class="concept-label" id="sel-fn">FN</span>
@@ -563,10 +550,8 @@ async function loadApp(name, el, data) {
                                 <span class="concept-label" id="sel-an">AN</span>
                                 <span>${escapeHtml(anText)}</span>
                             </div>
-
                             <h3 style="margin-top:10px;">Descripción</h3>
                             <p>${escapeHtml(hunter.description || "Sin descripción.")}</p>
-
                             <h3 style="margin-top:10px;">Habilidades</h3>
                             <p><b id="sel-passive-lbl">Pasiva:</b> ${escapeHtml(hunter.passive || "—")}</p>
                             <div style="margin-top:6px;">
@@ -575,7 +560,6 @@ async function loadApp(name, el, data) {
                             </div>
                         </div>
                     `;
-
                     const cdesc = classDesc(hunter.class);
                     const mdesc = mbtiDesc(hunter.mbti);
                     if (cdesc)           Tooltip.bind(previewDiv.querySelector("#sel-class"),       cdesc);
@@ -599,15 +583,12 @@ async function loadApp(name, el, data) {
                 el.querySelector("#refreshListBtn").onclick = () => renderSelector();
                 el.querySelector("#editConfigBtn").onclick  = () => openApp("editor", { _type: "dataConfig" });
             };
-
             renderSelector();
             return;
         }
 
-        // ── data.json config editor ───────────────────
         if (data._type === "dataConfig") {
             let configJson = "";
-
             const loadConfig = async () => {
                 try {
                     const res = await fetch("data/data.json");
@@ -618,7 +599,6 @@ async function loadApp(name, el, data) {
                 }
                 renderConfigEditor();
             };
-
             const renderConfigEditor = () => {
                 el.innerHTML = `
                     <div class="split split-50" style="height:100%;">
@@ -642,7 +622,6 @@ async function loadApp(name, el, data) {
                         </div>
                     </div>
                 `;
-
                 el.querySelector("#configJson").value = configJson;
                 const textarea   = el.querySelector("#configJson");
                 const previewDiv = el.querySelector("#configPreview");
@@ -650,26 +629,20 @@ async function loadApp(name, el, data) {
                 el.querySelector("#previewConfigBtn").onclick = () => {
                     try {
                         const nc = JSON.parse(textarea.value);
-
                         previewDiv.innerHTML = `
                             <div class="panel">
                                 <h3>Vista previa de data.json</h3>
-
                                 <h4>Géneros (${nc.genders?.length || 0})</h4>
                                 <ul>${nc.genders?.map(g => `<li>${escapeHtml(g)}</li>`).join("") || "<li>No definido</li>"}</ul>
-
                                 <h4>MBTI (${nc.mbti?.length || 0})</h4>
                                 <ul>${nc.mbti?.map(m => `<li><b>${escapeHtml(m)}</b>: ${escapeHtml(nc.mbti_descriptions?.[m] || "—")}</li>`).join("") || "<li>No definido</li>"}</ul>
-
                                 <h4>Tooltips de atributos</h4>
                                 <ul>${Object.entries(nc.attribute_tooltips || {}).map(([k, v]) =>
                             `<li><b>${escapeHtml(k)}:</b> <span style="color:var(--text-muted);">${escapeHtml(v)}</span></li>`
                         ).join("") || "<li>No definido</li>"}</ul>
-
                                 <div style="margin-top:10px; padding:8px; background:#0a0c10; border:1px solid var(--border-light); font-size:10px; color:var(--text-muted);">
                                     Clases cargadas desde <code>classes.json</code>: <b>${CLASSES.length}</b><br>
-                                    Funciones en <code>concepts.json</code>: <b>${CONCEPTS.function?.length || 0}</b><br>
-                                    Anomalías en <code>concepts.json</code>: <b>${CONCEPTS.anomaly?.length || 0}</b>
+                                    Funciones en <code>concepts.json</code>: según dimensión.
                                 </div>
                             </div>
                         `;
@@ -677,7 +650,6 @@ async function loadApp(name, el, data) {
                         previewDiv.innerHTML = `<div class="panel" style="color:#ff6b6b;">Error en JSON: ${escapeHtml(e.message)}</div>`;
                     }
                 };
-
                 el.querySelector("#downloadConfigBtn").onclick = () => {
                     try {
                         const nc = JSON.parse(textarea.value);
@@ -692,18 +664,15 @@ async function loadApp(name, el, data) {
                         alert("JSON inválido: " + e.message);
                     }
                 };
-
                 el.querySelector("#resetConfigBtn").onclick = () => loadConfig();
             };
-
             loadConfig();
             return;
         }
 
-        // ── Hunter editor ─────────────────────────────
+        // Hunter editor
         const h = data;
 
-        // Normalize active
         if (typeof h.active === "string") {
             h.active = { base: h.active, paths: [] };
         } else if (!h.active) {
@@ -711,11 +680,9 @@ async function loadApp(name, el, data) {
         }
         if (!Array.isArray(h.active.paths)) h.active.paths = [];
 
-        // Detect schema version
         const isNewSchema = h.dimension_id !== undefined && h.dimension_id !== null;
         const dimEntry    = isNewSchema ? getDim(h.dimension_id) : null;
 
-        // Concepts block differs by schema
         const conceptsFormHTML = isNewSchema ? `
             <div class="panel">
                 <h3 id="ed-concepts-h">Conceptos</h3>
@@ -723,7 +690,6 @@ async function loadApp(name, el, data) {
                 <input id="concept0" placeholder="qué hace el Hunter en el mundo...">
                 <label id="ed-an-lbl">Anomalía</label>
                 <input id="concept1" placeholder="rasgo inexplicable o contradicción...">
-
                 <div style="margin-top:10px; padding:8px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);">
                     <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen — Inmutable</div>
                     <div id="ed-dim-name" style="color:var(--accent-warning); font-weight:bold; font-size:13px;">${escapeHtml(dimEntry?.name || h.dimension_id)}</div>
@@ -746,13 +712,8 @@ async function loadApp(name, el, data) {
 
         el.innerHTML = `
         <div class="split split-30-70">
-
-            <!-- LEFT: FORM -->
             <div class="stack">
-
                 <h3>${escapeHtml(h.id)}</h3>
-
-                <!-- BASIC INFO -->
                 <div class="panel">
                     <p>
                         <b id="ed-class">${escapeHtml(h.class)}</b>
@@ -761,38 +722,26 @@ async function loadApp(name, el, data) {
                     </p>
                     <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(h.gender)}</p>
                 </div>
-
-                <!-- CONCEPTS (schema-aware) -->
                 ${conceptsFormHTML}
-
-                <!-- IMAGES -->
                 <div class="panel">
                     <h3>Imágenes (URLs de Imgur)</h3>
                     <textarea id="imgs" placeholder="una url por línea" style="min-height:60px;"></textarea>
                 </div>
-
-                <!-- DESCRIPTION -->
                 <div class="panel">
                     <h3>Descripción</h3>
                     <textarea id="desc" style="min-height:70px;"></textarea>
                 </div>
-
-                <!-- ABILITIES -->
                 <div class="panel">
                     <h3>Habilidades</h3>
-
                     <label id="ed-passive-lbl">Pasiva</label>
                     <input id="passive">
-
                     <div style="margin-top:10px; padding-top:8px; border-top:1px solid var(--border-light);">
                         <label id="ed-active-lbl" style="margin-bottom:6px;">Activa — Árbol de habilidad</label>
-
                         <div class="active-fields">
                             <label style="margin-top:0; font-size:9px; letter-spacing:1.5px;">
                                 <span class="skill-badge skill-badge-base" style="font-size:9px;">BASE</span>
                             </label>
                             <input id="active-base" placeholder="habilidad principal...">
-
                             <div style="border-left:2px solid var(--accent-primary); margin-left:14px; padding-left:10px; margin-top:4px; display:flex; flex-direction:column; gap:4px;">
                                 <label style="margin-top:0; font-size:9px; letter-spacing:1.5px;">
                                     <span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA I</span>
@@ -806,23 +755,16 @@ async function loadApp(name, el, data) {
                         </div>
                     </div>
                 </div>
-
-                <!-- ACTIONS -->
                 <div style="display:flex; gap:6px; flex-wrap:wrap;">
                     <button id="update">Actualizar</button>
                     <button id="download">Descargar JSON</button>
                     <button id="copy">Copiar JSON</button>
                 </div>
-
             </div>
-
-            <!-- RIGHT: PREVIEW -->
             <div class="panel scroll" id="preview"></div>
-
         </div>
         `;
 
-        // Set field values
         el.querySelector("#concept0").value     = h.concepts?.[0] || "";
         el.querySelector("#concept1").value     = h.concepts?.[1] || "";
         if (!isNewSchema && el.querySelector("#concept2")) {
@@ -835,7 +777,6 @@ async function loadApp(name, el, data) {
         el.querySelector("#active-path0").value = h.active?.paths?.[0] || "";
         el.querySelector("#active-path1").value = h.active?.paths?.[1] || "";
 
-        // Bind tooltips to form labels (classDesc now uses CLASSES via helper)
         const cdesc = classDesc(h.class);
         const mdesc = mbtiDesc(h.mbti);
         if (cdesc)           Tooltip.bind(el.querySelector("#ed-class"),       cdesc);
@@ -850,13 +791,11 @@ async function loadApp(name, el, data) {
             Tooltip.bind(el.querySelector("#ed-dim-name"), dimEntry.description || "");
         }
 
-        // Build final hunter object from form
         function build() {
             const paths = [
                 el.querySelector("#active-path0").value.trim(),
                 el.querySelector("#active-path1").value.trim()
             ].filter(Boolean);
-
             const built = {
                 ...h,
                 description: el.querySelector("#desc").value,
@@ -868,7 +807,6 @@ async function loadApp(name, el, data) {
                     paths
                 }
             };
-
             if (isNewSchema) {
                 built.concepts = [
                     el.querySelector("#concept0").value.trim(),
@@ -882,14 +820,11 @@ async function loadApp(name, el, data) {
                     el.querySelector("#concept2")?.value.trim() || ""
                 ];
             }
-
             return built;
         }
 
-        // Render live preview
         function render() {
             const d = build();
-
             const fnText = d.concepts?.[0] || "—";
             let aeText = null, anText;
             if (isNewSchema) {
@@ -898,15 +833,13 @@ async function loadApp(name, el, data) {
                 aeText = d.concepts?.[1] || "—";
                 anText = d.concepts?.[2] || "—";
             }
-
-            // Weapons for current class
             const currentClassObj = getClass(d.class);
             const weapons = currentClassObj?.weapons || [];
             const weaponsHtml = weapons.length
                 ? `<div class="panel" style="margin-top:6px;">
                        <h3>Armas / Herramientas típicas</h3>
                        <ul class="weapons-list">
-                           ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
+                           ${weapons.map(w => renderWeaponItem(w)).join("")}
                        </ul>
                    </div>`
                 : "";
@@ -914,18 +847,13 @@ async function loadApp(name, el, data) {
             el.querySelector("#preview").innerHTML = `
             <div class="panel">
                 <h3>${escapeHtml(d.id)}</h3>
-
                 <div style="display:grid; grid-template-columns:220px 1fr; gap:6px; margin-top:6px;">
-
-                    <!-- IMAGE -->
                     <div class="panel">
                         ${d.images[0]
                 ? `<img src="${escapeHtml(d.images[0])}" style="width:100%; image-rendering:pixelated;">`
                 : `<div style="height:200px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`
             }
                     </div>
-
-                    <!-- INFO -->
                     <div class="panel">
                         <div class="panel">
                             <p>
@@ -935,13 +863,11 @@ async function loadApp(name, el, data) {
                             </p>
                             <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(d.gender)}</p>
                         </div>
-
                         ${dimEntry ? `
                         <div style="margin-top:6px; padding:6px 10px; background:#0a0c10; border-left:3px solid var(--accent-primary);">
                             <div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">DIMENSIÓN DE ORIGEN</div>
                             <span id="prev-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span>
                         </div>` : ""}
-
                         <div class="panel" style="margin-top:6px;">
                             <h3 id="prev-concepts-h">Conceptos</h3>
                             <div class="concept-row">
@@ -959,25 +885,20 @@ async function loadApp(name, el, data) {
                             </div>
                         </div>
                     </div>
-
                 </div>
-
                 <div class="panel" style="margin-top:6px;">
                     <h3>Descripción</h3>
                     <p>${escapeHtml(d.description || "Sin descripción.")}</p>
                 </div>
-
                 <div class="panel" style="margin-top:6px;">
                     <h3>Habilidades</h3>
                     <p style="margin-bottom:8px;"><b id="prev-passive-lbl">Pasiva:</b> ${escapeHtml(d.passive || "—")}</p>
                     <p style="margin-bottom:6px;"><b id="prev-active-lbl">Activa</b></p>
                     ${renderSkillTreeHTML(d.active)}
                 </div>
-
                 ${weaponsHtml}
             </div>
             `;
-
             const pEl    = el.querySelector("#preview");
             const pcdesc = classDesc(d.class);
             const pmdesc = mbtiDesc(d.mbti);
@@ -998,7 +919,6 @@ async function loadApp(name, el, data) {
             navigator.clipboard.writeText(JSON.stringify(build(), null, 2));
             alert("JSON copiado al portapapeles");
         };
-
         render();
     }
 
@@ -1011,12 +931,10 @@ async function loadApp(name, el, data) {
         let hunterFiles    = [];
         let expandHunters  = true;
         let expandDims     = true;
-        let selectedItem   = null; // { type: 'hunter'|'dimension', data: obj }
+        let selectedItem   = null;
 
         el.innerHTML = `
         <div style="display:flex; height:100%; overflow:hidden; gap:0;">
-
-            <!-- LEFT: FILE TREE -->
             <div id="ftree" style="
                 width:260px;
                 min-width:260px;
@@ -1040,8 +958,6 @@ async function loadApp(name, el, data) {
                 ">Explorador</div>
                 <div id="ftree-body" style="flex:1; overflow-y:auto; padding:8px 0;"></div>
             </div>
-
-            <!-- RIGHT: VIEWER -->
             <div id="fviewer" style="
                 flex:1;
                 overflow-y:auto;
@@ -1053,21 +969,15 @@ async function loadApp(name, el, data) {
                     Selecciona un archivo del explorador.
                 </p>
             </div>
-
         </div>
         `;
 
         const treeBody = el.querySelector("#ftree-body");
         const viewer   = el.querySelector("#fviewer");
 
-        /* ── Tree rendering ──────────────────────────── */
-
         function renderTree() {
             treeBody.innerHTML = "";
-
-            // ── HUNTERS SECTION ──
             const hunterSec = document.createElement("div");
-
             const hunterHdr = document.createElement("div");
             hunterHdr.style.cssText = `
                 padding:6px 14px;
@@ -1089,7 +999,6 @@ async function loadApp(name, el, data) {
             `;
             hunterHdr.onclick = () => { expandHunters = !expandHunters; renderTree(); };
             hunterSec.appendChild(hunterHdr);
-
             if (expandHunters) {
                 if (hunterFiles.length === 0) {
                     const empty = document.createElement("div");
@@ -1117,18 +1026,15 @@ async function loadApp(name, el, data) {
                             gap:6px;
                         `;
                         item.title = h.id;
-
                         const dimInfo = h.dimension_id ? getDim(h.dimension_id) : null;
                         item.innerHTML = `
                             <span style="color:var(--accent-primary); font-size:9px;">◆</span>
                             <span style="overflow:hidden; text-overflow:ellipsis;">${escapeHtml(h.id)}</span>
                         `;
-
                         const tipText = dimInfo
                             ? `${h.class} — ${dimInfo.name}`
                             : (h.class || h.id);
                         Tooltip.bind(item, tipText);
-
                         item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
                         item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
                         item.onclick = () => {
@@ -1141,15 +1047,10 @@ async function loadApp(name, el, data) {
                 }
             }
             treeBody.appendChild(hunterSec);
-
-            // Divider
             const divider = document.createElement("div");
             divider.style.cssText = "border-top:1px solid #1a1d24; margin:6px 0;";
             treeBody.appendChild(divider);
-
-            // ── DIMENSIONS SECTION ──
             const dimSec = document.createElement("div");
-
             const dimHdr = document.createElement("div");
             dimHdr.style.cssText = `
                 padding:6px 14px;
@@ -1171,7 +1072,6 @@ async function loadApp(name, el, data) {
             `;
             dimHdr.onclick = () => { expandDims = !expandDims; renderTree(); };
             dimSec.appendChild(dimHdr);
-
             if (expandDims) {
                 if (dims.length === 0) {
                     const empty = document.createElement("div");
@@ -1200,7 +1100,6 @@ async function loadApp(name, el, data) {
                             gap:6px;
                         `;
                         item.title = d.name;
-
                         item.innerHTML = `
                             <span style="color:var(--accent-primary); font-size:9px;">⬡</span>
                             <span style="overflow:hidden; text-overflow:ellipsis; flex:1;">${escapeHtml(d.name)}</span>
@@ -1208,10 +1107,7 @@ async function loadApp(name, el, data) {
                             ? `<span style="color:var(--accent-primary); font-size:9px; background:#0a0c10; padding:1px 5px; border:1px solid var(--border-light); flex-shrink:0;">${count}</span>`
                             : ""}
                         `;
-
-                        // Tooltip: mostrar tagline si existe, sino descripción
                         Tooltip.bind(item, d.tagline || d.description || d.name);
-
                         item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
                         item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
                         item.onclick = () => {
@@ -1226,8 +1122,6 @@ async function loadApp(name, el, data) {
             treeBody.appendChild(dimSec);
         }
 
-        /* ── Viewer rendering ─────────────────────────── */
-
         function renderViewer() {
             if (!selectedItem) {
                 viewer.innerHTML = `<p style="color:var(--text-muted); margin-top:40px; text-align:center; font-size:11px;">Selecciona un archivo del explorador.</p>`;
@@ -1238,7 +1132,6 @@ async function loadApp(name, el, data) {
         }
 
         function renderHunterView(h) {
-            // Normalize active
             if (typeof h.active === "string") h.active = { base: h.active, paths: [] };
             else if (!h.active) h.active = { base: "", paths: [] };
             if (!Array.isArray(h.active.paths)) h.active.paths = [];
@@ -1250,14 +1143,13 @@ async function loadApp(name, el, data) {
             const aeText = hunterIsNew ? null : (h.concepts?.[1] || "—");
             const anText = hunterIsNew ? (h.concepts?.[1] || "—") : (h.concepts?.[2] || "—");
 
-            // Weapons for this hunter's class
             const classObj = getClass(h.class);
             const weapons = classObj?.weapons || [];
             const weaponsHtml = weapons.length
                 ? `<div class="panel" style="margin-top:8px;">
                        <h3>Armas / Herramientas típicas</h3>
                        <ul class="weapons-list">
-                           ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
+                           ${weapons.map(w => renderWeaponItem(w)).join("")}
                        </ul>
                    </div>`
                 : "";
@@ -1265,18 +1157,13 @@ async function loadApp(name, el, data) {
             viewer.innerHTML = `
             <div class="panel">
                 <h3>${escapeHtml(h.id)}</h3>
-
                 <div style="display:grid; grid-template-columns:200px 1fr; gap:10px; margin-top:8px;">
-
-                    <!-- Image -->
                     <div class="panel" style="padding:8px;">
                         ${h.images?.[0]
                 ? `<img src="${escapeHtml(h.images[0])}" style="width:100%; image-rendering:pixelated;">`
                 : `<div style="height:180px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`
             }
                     </div>
-
-                    <!-- Info -->
                     <div class="panel">
                         <p style="margin-bottom:4px;">
                             <b id="fv-class">${escapeHtml(h.class)}</b>
@@ -1284,13 +1171,11 @@ async function loadApp(name, el, data) {
                             <span id="fv-mbti">${escapeHtml(h.mbti)}</span>
                         </p>
                         <p style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">${escapeHtml(h.gender || "")}</p>
-
                         ${hunterDim ? `
                         <div style="margin-bottom:10px; padding:6px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);">
                             <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen</div>
                             <span id="fv-dim" style="color:var(--accent-warning); font-weight:bold; font-size:12px; cursor:pointer; text-decoration:underline dotted var(--accent-primary);">${escapeHtml(hunterDim.name)}</span>
                         </div>` : ""}
-
                         <h3 id="fv-concepts-h" style="font-size:11px; margin-bottom:6px;">Conceptos</h3>
                         <div class="concept-row">
                             <span class="concept-label" id="fv-fn">FN</span>
@@ -1306,30 +1191,24 @@ async function loadApp(name, el, data) {
                             <span>${escapeHtml(anText)}</span>
                         </div>
                     </div>
-
                 </div>
-
                 <div class="panel" style="margin-top:8px;">
                     <h3>Descripción</h3>
                     <p>${escapeHtml(h.description || "Sin descripción.")}</p>
                 </div>
-
                 <div class="panel" style="margin-top:8px;">
                     <h3>Habilidades</h3>
                     <p style="margin-bottom:8px;"><b id="fv-passive-lbl">Pasiva:</b> ${escapeHtml(h.passive || "—")}</p>
                     <p style="margin-bottom:6px;"><b id="fv-active-lbl">Activa — Árbol de habilidad</b></p>
                     ${renderSkillTreeHTML(h.active)}
                 </div>
-
                 ${weaponsHtml}
-
                 <div style="margin-top:10px; display:flex; gap:6px;">
                     <button id="fv-edit-btn">Abrir en Editor</button>
                     ${hunterDim ? `<button id="fv-goto-dim">Ver dimensión: ${escapeHtml(hunterDim.name)}</button>` : ""}
                 </div>
             </div>
             `;
-
             const cdesc = classDesc(h.class);
             const mdesc = mbtiDesc(h.mbti);
             if (cdesc) Tooltip.bind(viewer.querySelector("#fv-class"), cdesc);
@@ -1341,9 +1220,7 @@ async function loadApp(name, el, data) {
             if (tt("anomaly")   && viewer.querySelector("#fv-an")) Tooltip.bind(viewer.querySelector("#fv-an"), tt("anomaly"));
             if (tt("passive"))   Tooltip.bind(viewer.querySelector("#fv-passive-lbl"), tt("passive"));
             if (tt("active"))    Tooltip.bind(viewer.querySelector("#fv-active-lbl"),  tt("active"));
-
             viewer.querySelector("#fv-edit-btn").onclick = () => openApp("editor", h);
-
             if (hunterDim) {
                 viewer.querySelector("#fv-goto-dim").onclick = () => {
                     selectedItem = { type: "dimension", data: hunterDim };
@@ -1355,15 +1232,12 @@ async function loadApp(name, el, data) {
 
         function renderDimensionView(d) {
             const related = hunterFiles.filter(h => h.dimension_id === d.id);
-
-            // Resolve suggested class objects for display
             const suggestedClassObjs = (d.suggested_classes || [])
                 .map(name => getClass(name))
                 .filter(Boolean);
 
             viewer.innerHTML = `
             <div class="panel">
-
                 <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
                     <div>
                         <h3 class="dimension-title" style="margin-bottom:2px;">${escapeHtml(d.name)}</h3>
@@ -1380,32 +1254,31 @@ async function loadApp(name, el, data) {
                         white-space:nowrap;
                     ">${related.length} Hunter${related.length !== 1 ? "s" : ""}</div>
                 </div>
-
                 ${d.image ? `
                 <div class="panel" style="margin-bottom:10px; padding:8px; text-align:center;">
                     <img src="${escapeHtml(d.image)}" style="max-width:100%; max-height:220px; image-rendering:pixelated;">
                 </div>` : ""}
-
                 <div class="panel" style="margin-bottom:8px;">
                     <h3 style="font-size:11px;">Descripción</h3>
                     <p>${escapeHtml(d.description || "Sin descripción.")}</p>
                 </div>
-
                 ${d.lore ? `
                 <div class="panel" style="margin-bottom:8px; border-left:3px solid var(--accent-warning);">
                     <h3 style="font-size:11px; color:var(--accent-primary);">Lore</h3>
                     <p style="font-style:italic; line-height:1.75;">${escapeHtml(d.lore)}</p>
                 </div>` : ""}
-
                 ${suggestedClassObjs.length > 0 ? `
                 <div class="panel" style="margin-bottom:8px;">
                     <h3 style="font-size:11px;">Clases sugeridas para esta dimensión</h3>
                     <div id="dim-class-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div>
                 </div>` : ""}
-
+                ${d.suggested_enemies && d.suggested_enemies.length ? `
+                <div class="panel" style="margin-bottom:8px;">
+                    <h3 style="font-size:11px;">Enemigos comunes</h3>
+                    <div id="dim-enemies-list" style="display:flex; flex-direction:column; gap:6px; margin-top:4px;"></div>
+                </div>` : ""}
                 <div class="panel" style="margin-top:8px;">
                     <h3 style="font-size:11px;">Hunters de esta dimensión</h3>
-
                     ${related.length === 0
                 ? `<p style="color:var(--text-muted); font-style:italic; font-size:11px;">
                             Ningún hunter registrado en esta dimensión todavía.
@@ -1413,79 +1286,107 @@ async function loadApp(name, el, data) {
                 : `<div id="dim-hunter-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div>`
             }
                 </div>
-
             </div>
             `;
 
-            // Tooltip para el nombre de la dimensión (muestra tagline)
             const dimTitle = viewer.querySelector(".dimension-title");
             if (dimTitle && d.tagline) {
                 Tooltip.bind(dimTitle, d.tagline);
             }
 
-            // Render suggested classes with expandable details
+            // Render suggested classes with weapons
             if (suggestedClassObjs.length > 0) {
                 const classList = viewer.querySelector("#dim-class-list");
                 classList.className = "dim-class-list";
                 suggestedClassObjs.forEach(cls => {
-                    // Build active skill tree HTML
                     const activeTreeHtml = (cls.active_pool && cls.active_pool.length > 0)
                         ? renderSkillTreeHTML(cls.active_pool[0])
                         : `<div class="skill-node" style="color:var(--text-muted); font-style:italic;">Sin habilidad activa definida.</div>`;
-
-                    // Weapons list (unified class weapons-list)
                     const weapons = cls.weapons || [];
                     const weaponsHtml = weapons.length
                         ? `<div>
-                   <h4 class="class-section-title">Armas / Herramientas</h4>
-                   <ul class="weapons-list">
-                       ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
-                   </ul>
-               </div>`
+                           <h4 class="class-section-title">Armas / Herramientas</h4>
+                           <ul class="weapons-list">
+                               ${weapons.map(w => renderWeaponItem(w)).join("")}
+                           </ul>
+                       </div>`
                         : "";
-
-                    // Passive list
                     const passives = cls.passive_pool || [];
                     const passivesHtml = passives.length
                         ? `<div>
-                   <h4 class="class-section-title">Pasivas</h4>
-                   <ul class="class-passives-list">
-                       ${passives.map(p => `<li>${escapeHtml(p)}</li>`).join("")}
-                   </ul>
-               </div>`
+                           <h4 class="class-section-title">Pasivas</h4>
+                           <ul class="class-passives-list">
+                               ${passives.map(p => `<li>${escapeHtml(p)}</li>`).join("")}
+                           </ul>
+                       </div>`
                         : "";
-
-                    // Create details element with classes
                     const details = document.createElement("details");
                     details.className = "class-card";
-
                     const summary = document.createElement("summary");
-                    summary.innerHTML = `
-            <span class="arrow">▶</span>
-            <span>${escapeHtml(cls.name)}</span>
-        `;
-
+                    summary.innerHTML = `<span class="arrow">▶</span><span>${escapeHtml(cls.name)}</span>`;
                     const content = document.createElement("div");
                     content.className = "class-content";
                     content.innerHTML = `
-            <div class="class-description">${escapeHtml(cls.description)}</div>
-            ${passivesHtml}
-            <div style="margin-top: 10px;">
-                <h4 class="class-section-title">Habilidad Activa</h4>
-                ${activeTreeHtml}
-            </div>
-            ${weaponsHtml}
-        `;
-
+                        <div class="class-description">${escapeHtml(cls.description)}</div>
+                        ${passivesHtml}
+                        <div style="margin-top: 10px;">
+                            <h4 class="class-section-title">Habilidad Activa</h4>
+                            ${activeTreeHtml}
+                        </div>
+                        ${weaponsHtml}
+                    `;
                     details.addEventListener("toggle", () => {
                         const arrow = summary.querySelector(".arrow");
                         if (details.open) arrow.textContent = "▼";
                         else arrow.textContent = "▶";
                     });
-
                     details.appendChild(summary);
                     details.appendChild(content);
                     classList.appendChild(details);
+                });
+            }
+
+            // Render enemies with expandable stats
+            if (d.suggested_enemies && d.suggested_enemies.length) {
+                const enemiesList = viewer.querySelector("#dim-enemies-list");
+                d.suggested_enemies.forEach(enemy => {
+                    const details = document.createElement("details");
+                    details.className = "enemy-card";
+                    const summary = document.createElement("summary");
+                    summary.innerHTML = `
+                        <span class="arrow">▶</span>
+                        <strong>${escapeHtml(enemy.name)}</strong>
+                        <span class="enemy-types">[${enemy.type.map(escapeHtml).join(', ')}]</span>
+                    `;
+                    const content = document.createElement("div");
+                    content.className = "enemy-content";
+                    // Stats grid
+                    const stats = enemy.stats || {};
+                    content.innerHTML = `
+                        <div class="enemy-stats-grid">
+                            <div>HP: ${stats.hp ?? '?'}</div>
+                            <div>MP: ${stats.mp ?? '?'}</div>
+                            <div>Speed: ${stats.speed ?? '?'}</div>
+                            <div>Strength: ${stats.strength ?? '?'}</div>
+                            <div>Magic: ${stats.magicpower ?? '?'}</div>
+                            <div>Defense: ${stats.defense ?? '?'}</div>
+                            <div>M.Def: ${stats.magicdefense ?? '?'}</div>
+                        </div>
+                        <div class="enemy-abilities-list">
+                            <h4>Habilidades</h4>
+                            <ul>
+                                ${(enemy.abilities || []).map(ab => `<li>${escapeHtml(ab)}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                    details.addEventListener("toggle", () => {
+                        const arrow = summary.querySelector(".arrow");
+                        if (details.open) arrow.textContent = "▼";
+                        else arrow.textContent = "▶";
+                    });
+                    details.appendChild(summary);
+                    details.appendChild(content);
+                    enemiesList.appendChild(details);
                 });
             }
 
@@ -1522,8 +1423,6 @@ async function loadApp(name, el, data) {
             }
         }
 
-        /* ── Load data & init ─────────────────────────── */
-
         async function loadData() {
             try {
                 const res = await fetch("data/files.json");
@@ -1539,7 +1438,6 @@ async function loadApp(name, el, data) {
             renderTree();
             renderViewer();
         }
-
         loadData();
     }
 
@@ -1551,59 +1449,47 @@ async function loadApp(name, el, data) {
         el.innerHTML = `
         <div class="panel">
             <h3>Hunter Association — Correo Interno</h3>
-
             <div class="panel" style="margin-top:8px;">
                 <p><b>De:</b> Hunter Association — Terminal de Control</p>
                 <p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.0)</p>
             </div>
-
             <div class="panel" style="margin-top:8px; line-height:1.75;">
                 <p>
                     Operador,<br><br>
-
                     El flujo de trabajo es el siguiente:<br><br>
-
                     <b>1. BUSCADOR</b><br>
                     Selecciona Género y MBTI. La Clase puede elegirse manualmente o dejarse en cualquier valor:
                     el sistema la ajustará automáticamente a las clases sugeridas por la Dimensión asignada.<br>
                     Si tu clase ya es compatible, se respeta. Si no, el sistema elige una compatible y lo indica.<br>
                     Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN),
                     una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase elegida.<br><br>
-
                     <b>2. DIMENSIONES DE ORIGEN</b><br>
                     Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>
                     Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>
                     Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>
                     Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br>
-
                     <b>3. CLASES</b><br>
                     Las clases no son roles de combate: son oficios cotidianos.<br>
                     Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>
                     El Buscador solo usa las habilidades de la clase elegida, nunca un pool genérico.<br><br>
-
                     <b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>
                     Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>
                     Las rutas son expansiones o variaciones de la base, definidas por clase.<br>
                     Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br>
-
                     <b>5. ARCHIVOS DE DATOS</b><br>
                     <code>data/data.json</code> — Géneros, MBTI y tooltips de atributos.<br>
                     <code>data/classes.json</code> — Clases con sus pools de habilidades.<br>
-                    <code>data/concepts.json</code> — 30 funciones y 50 anomalías.<br>
-                    <code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code>.<br>
+                    <code>data/concepts.json</code> — Ahora organizado por dimensión (funciones y anomalías temáticas).<br>
+                    <code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br>
                     <code>data/files.json</code> — Hunters registrados.<br><br>
-
                     <b>6. EDITOR</b><br>
                     Modifica descripción, conceptos (FN + AN), habilidades e imágenes.<br>
                     La Dimensión de Origen es de solo lectura.<br>
                     Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>.<br><br>
-
                     <b>Glosario de badges:</b><br>
                     &nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>
                     &nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br>
-
                     <b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>
-
                     — Hunter Association
                 </p>
             </div>
