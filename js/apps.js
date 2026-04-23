@@ -246,7 +246,7 @@ async function loadApp(name, el, data) {
             if (tt("function"))  Tooltip.bind(rEl.querySelector("#lbl-fn"), tt("function"));
             if (tt("anomaly"))   Tooltip.bind(rEl.querySelector("#lbl-an"), tt("anomaly"));
             if (dimEntry && rEl.querySelector("#res-dim-name")) {
-                Tooltip.bind(rEl.querySelector("#res-dim-name"), dimEntry.description || "");
+                Tooltip.bind(rEl.querySelector("#res-dim-name"), dimEntry.tagline || dimEntry.description || "");
             }
 
             // ── Preview panel ────────────────────────────
@@ -301,8 +301,7 @@ async function loadApp(name, el, data) {
             const pEl = el.querySelector("#preview");
             if (cdesc)           Tooltip.bind(pEl.querySelector("#prev-class"),       cdesc);
             if (mdesc)           Tooltip.bind(pEl.querySelector("#prev-mbti"),        mdesc);
-            if (dimEntry && pEl.querySelector("#prev-dim")) Tooltip.bind(pEl.querySelector("#prev-dim"), dimEntry.description || "");
-            if (tt("concepts"))  Tooltip.bind(pEl.querySelector("#prev-concepts-h"),  tt("concepts"));
+            if (dimEntry && pEl.querySelector("#prev-dim")) Tooltip.bind(pEl.querySelector("#prev-dim"), dimEntry.tagline || dimEntry.description || "");            if (tt("concepts"))  Tooltip.bind(pEl.querySelector("#prev-concepts-h"),  tt("concepts"));
             if (tt("function"))  Tooltip.bind(pEl.querySelector("#prev-fn"),          tt("function"));
             if (tt("anomaly"))   Tooltip.bind(pEl.querySelector("#prev-an"),          tt("anomaly"));
             if (tt("passive"))   Tooltip.bind(pEl.querySelector("#prev-passive-lbl"), tt("passive"));

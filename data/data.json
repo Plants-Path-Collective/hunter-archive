@@ -56,24 +56,12 @@
   "concepts": {
     "function": [
       {
-        "text": "Archiva eventos que no ocurrieron"
-      },
-      {
-        "text": "Vende recuerdos ilegales"
-      },
-      {
-        "text": "Roba fragmentos de sueños ajenos"
+        "text": "Trabajo o hobby, funcion dentro de su dimension"
       }
     ],
     "anomaly": [
       {
-        "text": "Sus lágrimas son monedas antiguas"
-      },
-      {
-        "text": "La diosa lo guía en su fe ciega"
-      },
-      {
-        "text": "Su voz se vuelve tangible en la realidad"
+        "text": "Cualidad de su personalidad"
       }
     ]
   },
@@ -87,52 +75,11 @@
   ],
   "active_pool": [
     {
-      "base": "Sobrecarga de energía (daño en área)",
+      "base": "Habilidad base",
       "paths": [
-        "Pulso continuo: el daño persiste durante 2 turnos",
-        "Núcleo colapsado: concentra en un punto para daño máximo"
-      ]
-    },
-    {
-      "base": "Invocar aliado temporal (criatura de sombra)",
-      "paths": [
-        "Fusión táctica: absorber la sombra para buff de ataque propio",
-        "Fragmentación: invocar dos sombras menores en lugar de una"
-      ]
-    },
-    {
-      "base": "Manipular memoria de un objetivo",
-      "paths": [
-        "Borrado profundo: elimina memoria a largo plazo del objetivo",
-        "Implante falso: inserta un recuerdo fabricado creíble"
-      ]
-    },
-    {
-      "base": "Teletransportarse a un punto visto",
-      "paths": [
-        "Arrastre: puede llevar a un aliado adyacente en el salto",
-        "Señal persistente: puede regresar al punto marcado por 3 turnos"
-      ]
-    },
-    {
-      "base": "Crear ilusión realista (rango medio)",
-      "paths": [
-        "Ilusión autónoma: la ilusión actúa de forma independiente 1 turno",
-        "Multiplicación: crea tres copias menores simultáneas"
-      ]
-    },
-    {
-      "base": "Curar a un aliado con sangre propia",
-      "paths": [
-        "Transfusión inversa: parte de la curación daña al enemigo más cercano",
-        "Sangre corrosiva: el aliado curado gana veneno pasivo por 2 turnos"
-      ]
-    },
-    {
-      "base": "Tijera independiente (corta todo mientras se crea)",
-      "paths": [
-        "Tijeras gemelas: invoca un par de corte dual simultáneo",
-        "Filo eterno: el corte persiste como trampa en el entorno"
+        "Evolución1",
+        "Evolución2",
+        "Evolución3"
       ]
     }
   ]
