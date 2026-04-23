@@ -400,6 +400,16 @@ async function loadApp(name, el, data) {
             // ── Preview panel ────────────────────────────
             const cdesc = classDesc(hunter.class);
             const mdesc = mbtiDesc(hunter.mbti);
+            const classObj = getClass(hunter.class);
+            const weapons = classObj?.weapons || [];
+            const weaponsHtml = weapons.length
+                ? `<div class="panel" style="margin-top:6px;">
+                       <h3>Armas / Herramientas típicas</h3>
+                       <ul class="weapons-list">
+                           ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
+                       </ul>
+                   </div>`
+                : "";
 
             el.querySelector("#preview").innerHTML = `
                 <div class="panel">
@@ -443,6 +453,8 @@ async function loadApp(name, el, data) {
                         <h3 id="prev-active-lbl">Habilidad Activa</h3>
                         ${renderSkillTreeHTML(hunter.active)}
                     </div>
+
+                    ${weaponsHtml}
                 </div>
             `;
 
@@ -887,6 +899,18 @@ async function loadApp(name, el, data) {
                 anText = d.concepts?.[2] || "—";
             }
 
+            // Weapons for current class
+            const currentClassObj = getClass(d.class);
+            const weapons = currentClassObj?.weapons || [];
+            const weaponsHtml = weapons.length
+                ? `<div class="panel" style="margin-top:6px;">
+                       <h3>Armas / Herramientas típicas</h3>
+                       <ul class="weapons-list">
+                           ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
+                       </ul>
+                   </div>`
+                : "";
+
             el.querySelector("#preview").innerHTML = `
             <div class="panel">
                 <h3>${escapeHtml(d.id)}</h3>
@@ -949,6 +973,8 @@ async function loadApp(name, el, data) {
                     <p style="margin-bottom:6px;"><b id="prev-active-lbl">Activa</b></p>
                     ${renderSkillTreeHTML(d.active)}
                 </div>
+
+                ${weaponsHtml}
             </div>
             `;
 
@@ -1046,7 +1072,7 @@ async function loadApp(name, el, data) {
             hunterHdr.style.cssText = `
                 padding:6px 14px;
                 cursor:pointer;
-                font-size:10px;
+                font-size:12px;
                 letter-spacing:1.5px;
                 color:var(--text-secondary);
                 text-transform:uppercase;
@@ -1223,6 +1249,18 @@ async function loadApp(name, el, data) {
             const aeText = hunterIsNew ? null : (h.concepts?.[1] || "—");
             const anText = hunterIsNew ? (h.concepts?.[1] || "—") : (h.concepts?.[2] || "—");
 
+            // Weapons for this hunter's class
+            const classObj = getClass(h.class);
+            const weapons = classObj?.weapons || [];
+            const weaponsHtml = weapons.length
+                ? `<div class="panel" style="margin-top:8px;">
+                       <h3>Armas / Herramientas típicas</h3>
+                       <ul class="weapons-list">
+                           ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
+                       </ul>
+                   </div>`
+                : "";
+
             viewer.innerHTML = `
             <div class="panel">
                 <h3>${escapeHtml(h.id)}</h3>
@@ -1282,6 +1320,8 @@ async function loadApp(name, el, data) {
                     ${renderSkillTreeHTML(h.active)}
                 </div>
 
+                ${weaponsHtml}
+
                 <div style="margin-top:10px; display:flex; gap:6px;">
                     <button id="fv-edit-btn">Abrir en Editor</button>
                     ${hunterDim ? `<button id="fv-goto-dim">Ver dimensión: ${escapeHtml(hunterDim.name)}</button>` : ""}
@@ -1325,7 +1365,7 @@ async function loadApp(name, el, data) {
 
                 <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
                     <div>
-                        <h3 style="margin-bottom:2px;">${escapeHtml(d.name)}</h3>
+                        <h3 class="dimension-title" style="margin-bottom:2px;">${escapeHtml(d.name)}</h3>
                         <span style="font-size:9px; color:var(--text-muted); letter-spacing:1px;">${escapeHtml(d.id)}</span>
                     </div>
                     <div style="
@@ -1376,27 +1416,75 @@ async function loadApp(name, el, data) {
             </div>
             `;
 
-            // Render suggested classes
+            // Tooltip para el nombre de la dimensión (muestra tagline)
+            const dimTitle = viewer.querySelector(".dimension-title");
+            if (dimTitle && d.tagline) {
+                Tooltip.bind(dimTitle, d.tagline);
+            }
+
+            // Render suggested classes with expandable details
             if (suggestedClassObjs.length > 0) {
                 const classList = viewer.querySelector("#dim-class-list");
+                classList.className = "dim-class-list"; // asegurar clase
                 suggestedClassObjs.forEach(cls => {
-                    const row = document.createElement("div");
-                    row.style.cssText = `
-                        padding:6px 10px;
-                        background:#0d0f14;
-                        border:1px solid var(--border-light);
-                        border-left:2px solid var(--accent-primary);
-                        font-size:11px;
-                    `;
-                    const exPassive = cls.passive_pool?.[0] || "";
-                    const exActive  = cls.active_pool?.[0]?.base || "";
-                    row.innerHTML = `
-                        <div style="color:var(--accent-warning); font-weight:bold; margin-bottom:3px;">${escapeHtml(cls.name)}</div>
-                        <div style="color:var(--text-muted); font-size:10px;">${escapeHtml(cls.description)}</div>
-                        ${exPassive ? `<div style="color:var(--text-muted); font-size:9px; margin-top:4px; font-style:italic;">Pasiva: "${escapeHtml(exPassive)}"</div>` : ""}
-                        ${exActive  ? `<div style="color:var(--text-muted); font-size:9px; font-style:italic;">Activa: "${escapeHtml(exActive)}"</div>` : ""}
-                    `;
-                    classList.appendChild(row);
+                    // Build active skill tree HTML
+                    const activeTreeHtml = (cls.active_pool && cls.active_pool.length > 0)
+                        ? renderSkillTreeHTML(cls.active_pool[0])
+                        : `<div class="skill-node" style="color:var(--text-muted); font-style:italic;">Sin habilidad activa definida.</div>`;
+
+                    // Weapons list
+                    const weapons = cls.weapons || [];
+                    const weaponsHtml = weapons.length
+                        ? `<div>
+                   <h4 class="class-section-title">⚔️ Armas / Herramientas</h4>
+                   <ul class="class-weapons-list">
+                       ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
+                   </ul>
+               </div>`
+                        : "";
+
+                    // Passive list
+                    const passives = cls.passive_pool || [];
+                    const passivesHtml = passives.length
+                        ? `<div>
+                   <h4 class="class-section-title">🌀 Pasivas</h4>
+                   <ul class="class-passives-list">
+                       ${passives.map(p => `<li>${escapeHtml(p)}</li>`).join("")}
+                   </ul>
+               </div>`
+                        : "";
+
+                    // Create details element with classes
+                    const details = document.createElement("details");
+                    details.className = "class-card";
+
+                    const summary = document.createElement("summary");
+                    summary.innerHTML = `
+            <span class="arrow">▶</span>
+            <span>${escapeHtml(cls.name)}</span>
+        `;
+
+                    const content = document.createElement("div");
+                    content.className = "class-content";
+                    content.innerHTML = `
+            <div class="class-description">${escapeHtml(cls.description)}</div>
+            ${passivesHtml}
+            <div style="margin-top: 10px;">
+                <h4 class="class-section-title">⚡ Habilidad Activa</h4>
+                ${activeTreeHtml}
+            </div>
+            ${weaponsHtml}
+        `;
+
+                    details.addEventListener("toggle", () => {
+                        const arrow = summary.querySelector(".arrow");
+                        if (details.open) arrow.textContent = "▼";
+                        else arrow.textContent = "▶";
+                    });
+
+                    details.appendChild(summary);
+                    details.appendChild(content);
+                    classList.appendChild(details);
                 });
             }
 

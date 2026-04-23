@@ -829,4 +829,256 @@ h3[data-tooltip] {
 .wm-task-btn.wm-minimized:hover {
     opacity: 1;
 }
- 
+
+/* =========================
+   WEAPONS LIST STYLES
+========================= */
+
+.weapons-list {
+    margin: 4px 0 0 0;
+    padding-left: 20px;
+    list-style-type: none;
+}
+
+.weapons-list li {
+    margin-bottom: 6px;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    position: relative;
+    line-height: var(--line-tight);
+}
+
+.weapons-list li::before {
+    content: "• ";
+    font-size: 11px;
+    color: var(--accent-primary);
+    position: absolute;
+    left: -18px;
+    top: 0;
+}
+
+/* Optional: compact variant */
+.weapons-list.compact li {
+    margin-bottom: 2px;
+}
+
+/* For dimension class weapons display */
+.dim-weapons-list {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: var(--font-xs);
+    color: var(--text-muted);
+}
+
+.dim-weapons-list span {
+    color: var(--accent-primary);
+}
+
+/* =========================
+   FILE EXPLORER - DIMENSION VIEW CLASSES
+   (Expandable cards for suggested classes)
+========================= */
+
+.dim-class-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.class-card {
+    background: #0d0f14;
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--accent-primary);
+    transition: all 0.05s ease;
+}
+
+.class-card summary {
+    padding: 10px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--accent-warning);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    background: #111318;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.class-card summary::-webkit-details-marker {
+    display: none;
+}
+
+.class-card summary .arrow {
+    font-size: 14px;
+    transition: transform 0.05s;
+}
+
+.class-card[open] summary .arrow {
+    transform: rotate(90deg);
+}
+
+.class-card .class-content {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border-light);
+}
+
+.class-description {
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.class-section-title {
+    font-size: 10px;
+    margin: 0 0 4px 0;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.class-passives-list,
+.class-weapons-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.class-passives-list li,
+.class-weapons-list li {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+.class-weapons-list li::before {
+    content: "⚔️ ";
+    position: relative;
+    left: -2px;
+    margin-right: 4px;
+    font-size: 9px;
+    color: var(--accent-primary);
+}
+
+/* =========================
+   GENERATOR / EDITOR PREVIEW
+   Weapons list styling (consistent)
+========================= */
+
+.weapons-list {
+    margin: 4px 0 0 0;
+    padding-left: 20px;
+    list-style-type: none;
+}
+
+.weapons-list li {
+    margin-bottom: 6px;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    position: relative;
+    line-height: var(--line-tight);
+}
+
+.weapons-list li::before {
+    content: "⚔️ ";
+    position: absolute;
+    left: -18px;
+    top: 0;
+    font-size: 9px;
+    color: var(--accent-primary);
+}
+
+/* =========================
+   UTILITY CLASSES FOR INLINE REPLACEMENT
+========================= */
+
+.panel-dim-info {
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: #0a0c10;
+    border-left: 3px solid var(--accent-primary);
+}
+
+.dim-origin-label {
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dim-origin-name {
+    color: var(--accent-warning);
+    font-weight: bold;
+}
+
+.warning-badge {
+    background: #1a1200;
+    border: 1px solid var(--accent-warning);
+    color: var(--accent-warning);
+    padding: 5px 8px;
+    font-size: 10px;
+    margin-bottom: 8px;
+}
+
+/* For result panel dimension block */
+.result-dim-block {
+    margin-top: 8px;
+    padding: 7px 10px;
+    background: #0a0c10;
+    border: 1px solid var(--accent-primary);
+    border-left: 3px solid var(--accent-primary);
+}
+
+.result-dim-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+}
+
+.result-dim-name {
+    color: var(--accent-warning);
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.result-dim-note {
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-style: italic;
+}
+
+.dim-class-card {
+    margin-bottom: 8px;
+    background: #0d0f14;
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--accent-primary);
+    transition: all 0.05s ease;
+}
+
+.dim-class-summary {
+    padding: 10px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--accent-warning);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    background: #111318;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dim-class-summary::-webkit-details-marker {
+    display: none;
+}
+
+.dim-class-content {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border-light);
+}
