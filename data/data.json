@@ -1,9 +1,10 @@
-﻿{
+{
   "genders": [
     "Masculino",
     "Femenino",
     "No binario",
-    "Agénero"
+    "Agénero",
+    "Andrógino"
   ],
   "mbti": [
     "Analista",
@@ -17,70 +18,13 @@
     "Centinela": "Prácticos y organizados. Guardianes del orden estructural y la estabilidad operativa.",
     "Explorador": "Adaptables e impulsivos. Observadores del entorno con capacidad de respuesta inmediata."
   },
-  "classes": [
-    {
-      "name": "Artista Marcial",
-      "description": "Combatiente cuerpo a cuerpo que perfecciona el arte del conflicto físico. Su cuerpo es su única arma y su mayor activo."
-    },
-    {
-      "name": "Artillero",
-      "description": "Especialista en armamento de fuego y de largo alcance. Controla el campo de batalla desde la distancia con precisión calculada."
-    },
-    {
-      "name": "Arcanista",
-      "description": "Manipulador de fuerzas arcanas y energías no documentadas. Opera en los límites del conocimiento conocido, usualmente ligado a algún elemento de la naturaleza o una deidad."
-    },
-    {
-      "name": "Tejedor",
-      "description": "Entreteje la realidad para crear constructos. Su poder reside en los espacios entre lo que existe. Maneja la realidad a su antojo, cambiando las propiedades físicas de lo que le rodea."
-    },
-    {
-      "name": "Ludópata",
-      "description": "Convierte cada situación en un juego con reglas propias. Impredecible, caótico y siempre calculando el siguiente movimiento. Usa el azar a su favor, no le importa el resultado, siempre saldrá ganando."
-    },
-    {
-      "name": "Usurpador",
-      "description": "Absorbe y replica las capacidades de otros. Prospera en el caos y la ambigüedad de identidad."
-    }
-  ],
   "attribute_tooltips": {
     "mbti": "Arquetipo psicológico del Hunter. Define su patrón de toma de decisiones y respuesta emocional ante situaciones críticas.",
-    "class": "Rol operativo del Hunter dentro de la Asociación. Determina su enfoque en combate, misiones y especialización.",
+    "class": "Oficio o profesión del Hunter. No es un rol de combate: es lo que hacía antes de que todo se volviera extraño.",
     "concepts": "Fragmentos de identidad extraídos del archivo multidimensional. Definen la esencia narrativa completa del Hunter.",
-    "function": "Qué hace el Hunter en el mundo. Su propósito funcional o rol en el tejido de la realidad.",
-    "aesthetic": "Atmósfera visual y sensorial asociada al Hunter. Cómo se percibe su presencia y el entorno que habita.",
-    "anomaly": "Rasgo inexplicable que distingue al Hunter. Una contradicción activa con las leyes de la realidad normal.",
+    "function": "Qué hace el Hunter en su vida cotidiana. Su ocupación, hobby o rutina que define su lugar en el mundo.",
+    "anomaly": "Rasgo inexplicable que distingue al Hunter. Una pequeña contradicción activa con las leyes de la realidad normal.",
     "passive": "Capacidad siempre activa. Opera de forma autónoma sin requerir activación consciente del Hunter.",
     "active": "Habilidad de uso deliberado y sus rutas de evolución. La base define el núcleo del poder; las rutas, sus posibles expansiones."
-  },
-  "concepts": {
-    "function": [
-      {
-        "text": "Trabajo o hobby, funcion dentro de su dimension"
-      }
-    ],
-    "anomaly": [
-      {
-        "text": "Cualidad de su personalidad"
-      }
-    ]
-  },
-  "passive_pool": [
-    "Percepción extrasensorial (ver invisibilidad)",
-    "Adaptación a cualquier entorno extremo",
-    "Suerte sobrenatural (reroll fallos)",
-    "Aura intimidante (enemigos cercanos temen)",
-    "Inmunidad a venenos y enfermedades",
-    "Paso silencioso (no genera ruido)"
-  ],
-  "active_pool": [
-    {
-      "base": "Habilidad base",
-      "paths": [
-        "Evolución1",
-        "Evolución2",
-        "Evolución3"
-      ]
-    }
-  ]
+  }
 }

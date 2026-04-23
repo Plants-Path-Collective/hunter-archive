@@ -1,0 +1,322 @@
+[
+  {
+    "name": "Panadero",
+    "description": "Domina el tiempo y la temperatura como nadie más. Su trabajo es pura alquimia silenciosa: transforma lo crudo en algo que alimenta, consuela y desentierra recuerdos.",
+    "passive_pool": [
+      "Calcula instintivamente el tiempo exacto sin mirar ningún reloj",
+      "Los cuchillos siempre caen del lado del filo hacia el exterior, nunca hacia él",
+      "Detecta el punto exacto de cocción de cualquier cosa con solo olerlo"
+    ],
+    "active_pool": [
+      {
+        "base": "Hornear un pan que revela un recuerdo oculto al primer mordisco",
+        "paths": [
+          "Miga del arrepentimiento — el recuerdo pertenece al que lo horneó, no al que lo come",
+          "Hogaza del olvido — quien lo come olvida un dolor específico durante exactamente una hora"
+        ]
+      },
+      {
+        "base": "Crear una masa que absorbe el tiempo de un espacio (lo ralentiza mientras fermenta)",
+        "paths": [
+          "Fermentación infinita — el área queda suspendida hasta que el pan se hornea",
+          "Corteza de urgencia — al romperse, el tiempo del área se comprime en un instante"
+        ]
+      },
+      {
+        "base": "Amasar en silencio para que el ruido de un lugar desaparezca por una hora",
+        "paths": [
+          "Silencio selectivo — solo una persona en el área deja de ser escuchada",
+          "Mudo de lugar — el espacio entero deja de existir acústicamente para el exterior"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Archivista",
+    "description": "Custodia lo que no debería existir y cataloga lo que todos prefieren olvidar. Su poder reside en el orden, la paciencia y la certeza de que todo deja huella.",
+    "passive_pool": [
+      "Recuerda la ubicación exacta de todo objeto que haya tocado alguna vez",
+      "Puede leer texto borrado, tachado o destruido si estuvo en el mismo espacio",
+      "Detecta si algo ha sido movido o alterado aunque sea mínimamente"
+    ],
+    "active_pool": [
+      {
+        "base": "Catalogar un evento como 'no ocurrido': lo borra de la memoria colectiva del área durante 24 horas",
+        "paths": [
+          "Reclasificación permanente — el evento desaparece del registro de una sola persona para siempre",
+          "Archivo sellado — el evento solo puede ser recordado por quien lo vivió, no por testigos"
+        ]
+      },
+      {
+        "base": "Abrir un expediente sobre una persona: durante una hora conoce todo lo que esa persona hizo ese día",
+        "paths": [
+          "Expediente extendido — el acceso cubre la última semana completa",
+          "Expediente anticipado — el acceso muestra lo que esa persona hará en las próximas dos horas"
+        ]
+      },
+      {
+        "base": "Crear una copia física de un recuerdo como documento tangible que otros pueden leer",
+        "paths": [
+          "Copia certificada — el documento es irrefutable; quien lo lea lo acepta como verdad propia",
+          "Borrador — el documento muestra el recuerdo tal como debería haber sido, no como fue"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Electricista",
+    "description": "Ve el mundo como un circuito: flujos, cortes, resistencias. Conecta lo que no debería estar unido y desconecta lo que todos dan por estable.",
+    "passive_pool": [
+      "Siente los cortes de luz antes de que ocurran con varios minutos de antelación",
+      "Nunca recibe una descarga eléctrica, aunque lo intente",
+      "Intuye si un edificio o espacio tiene 'carga acumulada' de eventos pasados"
+    ],
+    "active_pool": [
+      {
+        "base": "Cablear emocionalmente un espacio: amplifica las emociones de quienes lo habiten durante una hora",
+        "paths": [
+          "Cortocircuito emocional — las emociones se invierten: el miedo se vuelve valentía, la ira se vuelve calma",
+          "Sobrecarga — las emociones se amplifican al triple pero se descargan todas a la vez al salir del espacio"
+        ]
+      },
+      {
+        "base": "Interrumpir la 'corriente' de una persona: su próxima decisión importante queda en suspenso por diez minutos",
+        "paths": [
+          "Fusible quemado — la decisión suspendida desaparece; la persona olvida que iba a tomarla",
+          "Redireccionamiento — puede sustituir la decisión suspendida por una que él elija"
+        ]
+      },
+      {
+        "base": "Encender algo que lleva mucho tiempo apagado: un negocio cerrado, una conversación interrumpida, una relación cortada",
+        "paths": [
+          "Corriente alterna — lo que enciende funciona solo intermitentemente, creando patrones impredecibles",
+          "Corriente continua — funciona de forma estable pero consume el doble de energía de quien lo activa"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Jardinero",
+    "description": "Trabaja con el tiempo largo de las plantas: décadas comprimidas en una poda, generaciones en una semilla. Sabe que todo crece hacia la luz aunque nunca la haya visto.",
+    "passive_pool": [
+      "Las plantas bajo su cuidado directo no mueren de causas naturales mientras esté cerca",
+      "Detecta qué le falta a un ser vivo (agua, sol, atención, espacio) con solo mirarlo",
+      "Su presencia hace que las semillas germinan en horas en lugar de días"
+    ],
+    "active_pool": [
+      {
+        "base": "Injertar dos plantas de entornos incompatibles para crear un híbrido que no debería existir",
+        "paths": [
+          "Injerto de memoria — el híbrido absorbe y puede transmitir los recuerdos del suelo donde creció",
+          "Injerto de frontera — el híbrido marca un límite; nada que no sea invitado puede cruzarlo"
+        ]
+      },
+      {
+        "base": "Acelerar el ciclo vital de un objeto o lugar (lo envejece décadas en minutos)",
+        "paths": [
+          "Ciclo completo — el objeto o lugar alcanza su punto de máxima plenitud antes de marchitarse",
+          "Poda selectiva — elige qué aspectos envejecen y cuáles permanecen en su estado original"
+        ]
+      },
+      {
+        "base": "Plantar una intención en el suelo: quien pise ese terreno sentirá el impulso de completarla",
+        "paths": [
+          "Raíz profunda — la intención dura hasta que alguien la cumple, independientemente del tiempo",
+          "Flor de temporada — la intención es poderosa pero dura solo hasta el próximo amanecer"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Taxista",
+    "description": "Conoce la ciudad como nadie: sus atajos, sus horarios, sus secretos. Lleva a las personas donde necesitan estar, aunque ellas mismas no lo sepan todavía.",
+    "passive_pool": [
+      "Siempre encuentra la ruta más rápida, incluso en ciudades o lugares que nunca visitó",
+      "Nunca se pierde, aunque el entorno cambie o sea completamente desconocido",
+      "Sabe instintivamente cuándo alguien está a punto de entrar en pánico o tomar una mala decisión"
+    ],
+    "active_pool": [
+      {
+        "base": "Llevar a un pasajero a donde realmente necesita ir, no a donde pidió",
+        "paths": [
+          "Destino literal — lo lleva al lugar físico donde resolverá su problema más urgente",
+          "Destino emocional — lo lleva al lugar donde está la persona que más necesita ver"
+        ]
+      },
+      {
+        "base": "Crear una ruta que no existe en el mapa: un atajo que acorta no el espacio sino el tiempo",
+        "paths": [
+          "Ruta exprés — el trayecto tarda lo mismo pero la persona llega habiendo procesado horas de pensamiento",
+          "Ruta larga — el trayecto parece breve pero el mundo exterior avanza varias horas mientras dura"
+        ]
+      },
+      {
+        "base": "Hacer que un viaje sea completamente privado: nadie recuerda haber visto ese taxi ni a sus ocupantes",
+        "paths": [
+          "Invisibilidad de tránsito — aplica solo al vehículo mientras se mueve",
+          "Borrón de ruta — nadie puede recordar el origen ni el destino del viaje, incluidos los pasajeros"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Sastre",
+    "description": "Cada prenda es una segunda piel, un argumento, una promesa. Mide sin tocar y cose sin error. Lo que fabrica no solo viste: transforma.",
+    "passive_pool": [
+      "Intuye las medidas exactas de cualquier persona con solo verla durante un segundo",
+      "Detecta si una prenda fue hecha con intención dañina o con afecto genuino",
+      "Sus costuras nunca se descosen solas; solo se deshacen si él lo decide"
+    ],
+    "active_pool": [
+      {
+        "base": "Coser una prenda que protege a quien la usa de una emoción específica (miedo, culpa, vergüenza)",
+        "paths": [
+          "Forro blindado — la protección es total pero la emoción se acumula y se libera al quitarse la prenda",
+          "Tela permeable — filtra la emoción: el portador la siente a la mitad de su intensidad"
+        ]
+      },
+      {
+        "base": "Descosir la 'costura' entre dos personas: cortar el vínculo emocional que las une temporalmente",
+        "paths": [
+          "Corte limpio — el vínculo desaparece por completo durante 24 horas sin dolor ni rastro",
+          "Deshilachado — el vínculo se debilita progresivamente durante una semana antes de romperse"
+        ]
+      },
+      {
+        "base": "Tomar las medidas de un lugar para 'adaptarlo': el espacio se ajusta físicamente a las necesidades de quien lo habita",
+        "paths": [
+          "Talla única — el ajuste beneficia a una sola persona; para el resto el espacio parece igual",
+          "Alta costura — el ajuste es permanente pero requiere que nadie observe el proceso"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Barista",
+    "description": "Prepara lo que la gente necesita, no lo que pide. Lee el estado de ánimo antes de que la persona abra la boca y sirve la respuesta en una taza.",
+    "passive_pool": [
+      "Intuye lo que una persona necesita beber antes de que lo pida, con una precisión perturbadora",
+      "Detecta si alguien está mintiendo por el modo en que sostiene un vaso o taza",
+      "Su presencia reduce el nivel de estrés ambiental de cualquier espacio cerrado"
+    ],
+    "active_pool": [
+      {
+        "base": "Preparar una bebida que hace aflorar el recuerdo más honesto del bebedor en los próximos diez minutos",
+        "paths": [
+          "Recuerdo involuntario — el bebedor lo verbaliza sin poder evitarlo",
+          "Recuerdo proyectado — el recuerdo es visible para todos en la habitación como una imagen flotante"
+        ]
+      },
+      {
+        "base": "Servir algo que conecta emocionalmente a dos personas que lo beben al mismo tiempo",
+        "paths": [
+          "Empatía temporal — durante una hora sienten exactamente lo mismo aunque estén separados",
+          "Comprensión mutua — cada uno entiende perfectamente el punto de vista del otro, sin necesidad de hablar"
+        ]
+      },
+      {
+        "base": "Crear una bebida que hace que quien la tome no pueda ser recordado por nadie durante el resto del día",
+        "paths": [
+          "Amnesia de fondo — solo quienes no lo conocen previamente no pueden recordarlo",
+          "Presencia fantasma — es recordado pero nadie puede describir ningún rasgo físico suyo"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Técnico de Ascensores",
+    "description": "Vive entre pisos. Conoce los espacios que nadie habita: el hueco entre plantas, el momento entre subir y bajar. Experto en transiciones.",
+    "passive_pool": [
+      "Siente qué piso 'necesita' una persona antes de que pulse el botón",
+      "Detecta si un espacio ha sido usado para algo que sus ocupantes preferirían ocultar",
+      "Nunca queda atrapado en ningún sitio por más de treinta segundos"
+    ],
+    "active_pool": [
+      {
+        "base": "Detener un ascensor entre pisos para crear un espacio temporalmente fuera del tiempo y del registro",
+        "paths": [
+          "Burbuja de tránsito — el tiempo fuera se detiene; puede durar indefinidamente mientras permanezcan dentro",
+          "Espacio liminal — el lugar existe entre dos realidades; lo dicho dentro no puede ser probado fuera"
+        ]
+      },
+      {
+        "base": "Conectar dos plantas que no están físicamente relacionadas: abrir la puerta del tercer piso y que lleve al decimocuarto",
+        "paths": [
+          "Conexión permanente — el desvío dura hasta que él lo deshaga manualmente",
+          "Conexión de emergencia — solo funciona cuando alguien lo necesita urgentemente, no a voluntad"
+        ]
+      },
+      {
+        "base": "Hacer que alguien 'suba' o 'baje' emocionalmente con un trayecto en ascensor: llega al destino en un estado radicalmente distinto",
+        "paths": [
+          "Subida — llega calmado, seguro, con claridad sobre lo que debe hacer",
+          "Bajada — llega vaciado de ansiedad pero también de urgencia; le cuesta actuar durante una hora"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Auditor Nocturno",
+    "description": "Trabaja cuando todos duermen. Revisa las cuentas, los registros, las inconsistencias. Todo número es una historia y él sabe cuáles no cuadran.",
+    "passive_pool": [
+      "Detecta inconsistencias en cualquier relato o cifra con una sola lectura, sin esfuerzo consciente",
+      "Permanece completamente alerta durante la noche; el sueño nunca lo sorprende",
+      "Recuerda con exactitud fotográfica cualquier documento que haya procesado, aunque sea brevemente"
+    ],
+    "active_pool": [
+      {
+        "base": "Emitir una 'factura de deudas emocionales' de una persona: el receptor ve con claridad todo lo que debe durante 24 horas",
+        "paths": [
+          "Auditoría completa — incluye deudas que la persona ni sabía que tenía",
+          "Balance parcial — muestra solo las deudas con una persona específica que él elija"
+        ]
+      },
+      {
+        "base": "Cuadrar las cuentas de un conflicto: ambas partes sienten que recibieron lo justo, aunque nada haya cambiado materialmente",
+        "paths": [
+          "Balance cero — la sensación de justicia dura permanentemente pero es puramente subjetiva",
+          "Asiento contable — genera un cambio real y pequeño en cada parte que simbólicamente salda la deuda"
+        ]
+      },
+      {
+        "base": "Registrar un evento como 'gasto no recuperable': todos los implicados lo asumen como pérdida y dejan de intentar revertirlo",
+        "paths": [
+          "Amortización — el proceso es gradual; tardan una semana en aceptarlo del todo",
+          "Baja inmediata — la aceptación es instantánea pero produce un duelo breve e inevitable"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Agente de Atención",
+    "description": "Ha escuchado todo. Voces furiosas, voces que lloran, voces que mienten y voces que piden ayuda sin saber cómo pedirla. Sabe exactamente qué decir y exactamente cuándo callarse.",
+    "passive_pool": [
+      "Recuerda con precisión absoluta toda conversación que haya escuchado, aunque fuera de fondo",
+      "Detecta el estado emocional real de una persona por el ritmo y el tono de su voz, no por las palabras",
+      "Puede mantener varias conversaciones simultáneas sin perder hilo en ninguna"
+    ],
+    "active_pool": [
+      {
+        "base": "Poner a alguien 'en espera': su percepción del tiempo se detiene mientras dura la llamada; el mundo sigue sin ellos",
+        "paths": [
+          "Espera indefinida — el efecto dura hasta que él decide transferirlos de vuelta",
+          "Música de espera — el sujeto en pausa experimenta el tiempo detenido pero vive una experiencia interna completa"
+        ]
+      },
+      {
+        "base": "Escalar una situación al 'departamento correcto': redirige un problema hacia la persona exacta que puede resolverlo, aunque esa persona no lo sepa aún",
+        "paths": [
+          "Escalado urgente — la persona correcta siente una compulsión inmediata e inexplicable de actuar",
+          "Transferencia silenciosa — el conocimiento sobre el problema aparece en la mente del receptor sin que sepa de dónde vino"
+        ]
+      },
+      {
+        "base": "Cerrar un ticket: declarar que un conflicto, problema o situación ha sido resuelto, y que todos los implicados lo sientan así",
+        "paths": [
+          "Cierre satisfecho — todos quedan conformes aunque nada se haya resuelto realmente",
+          "Cierre con seguimiento — el problema se declara resuelto pero deja un recordatorio que reaparece en 72 horas"
+        ]
+      }
+    ]
+  }
+]
