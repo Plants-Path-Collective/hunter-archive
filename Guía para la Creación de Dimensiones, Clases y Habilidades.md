@@ -43,8 +43,22 @@ Cada dimensión es un mundo con su propia lógica, estética y conflicto. Se con
     "Clase3 (rol)"
   ],
   "suggested_enemies": [
-    { "name": "...", "type": ["..."], "stats": {...}, "abilities": [...] },
-    ...
+    {
+      "name": "Nombre del enemigo",
+      "type": ["tipo elemental", "tipo criatura"],
+      "stats": {
+        "hp": 0,
+        "mp": 0,
+        "speed": 0,
+        "strength": 0,
+        "magicpower": 0,
+        "defense": 0,
+        "magicdefense": 0,
+        "evasion": 0,
+        "accuracy": 0
+      },
+      "abilities": ["habilidad 1", "habilidad 2"]
+    }
   ]
 }
 ```
@@ -66,6 +80,41 @@ Cada dimensión es un mundo con su propia lógica, estética y conflicto. Se con
 * Incluye un detalle único: un tipo de tecnología, un recurso especial, una regla física alterada.
 * Si la dimensión tiene seres no humanos, describe su biología y sociedad.
 * Sugiere al menos 5 enemigos típicos (ver sección 9).
+
+## 1.6 Conceptos por dimensión
+
+Cada dimensión debe tener su propio conjunto de funciones (qué hace un Hunter en el mundo) y anomalías (rasgos inexplicables o contradicciones). Estos conceptos se utilizan en el Generador para crear personajes coherentes con la dimensión.
+
+Formato en concepts.json:
+
+```json
+{
+  "dimensions": {
+    "DIM-XXXXXXXXXXXXX": {
+      "functions": [
+        "Función 1",
+        "Función 2",
+        "Función 3",
+        "Función 4",
+        "Función 5"
+      ],
+      "anomalies": [
+        "Anomalía 1",
+        "Anomalía 2",
+        "Anomalía 3",
+        "Anomalía 4",
+        "Anomalía 5"
+      ]
+    }
+  }
+}
+```
+
+Directrices:
+
+* Las funciones deben ser oficios, roles o actividades cotidianas que tengan sentido en la dimensión.
+* Las anomalías deben ser rasgos únicos, imposibles o contradictorios que afecten la narrativa (no necesariamente mecánicas de combate), están ligados a la personalidad del Hunter.
+* Cada dimensión requiere mínimo 5 funciones y 5 anomalías. Se pueden ampliar.
 
 ---
 
@@ -289,12 +338,13 @@ Simula un combate de 3 turnos. ¿La clase puede hacer algo interesante en cada t
 - [ ] Escribir **tagline** (una frase que describa el universo brevemente).
 - [ ] Redactar **descripción** (describe a grandes rasgos como funciona la dimension).
 - [ ] Redactar **lore** (describe la narrativa de la dimension, contando la historia de sus habitantes y sucesos importantes).
+- [ ] Crear conceptos temáticos (5 funciones y 5 anomalías) y añadirlos a concepts.json.
 - [ ] Definir **suggested_classes** (clases sugeridas para dicha dimension).
 - [ ] Definir **suggested_enemies** (al menos 5 enemigos típicos de la dimensión).
 - [ ] Crear las tres clases siguiendo la estructura.
 - [ ] Verificar que las habilidades sean coherentes con la dimensión.
 - [ ] Verificar que todo sea programable y útil en combate por turnos.
-- [ ] Añadir la dimensión a `dimensions.json` y las clases a `classes.json`.
+- [ ] Añadir la dimensión a `dimensions.json`, las clases a `classes.json` y los conceptos a `concepts.json`.
 
 ---
 
@@ -318,15 +368,17 @@ Simula un combate de 3 turnos. ¿La clase puede hacer algo interesante en cada t
 
 ### 8.2 Estadísticas de las unidades (aliados y enemigos)
 
-| Stat | Descripción |
-|------|-------------|
-| `hp` | Puntos de vida. Al llegar a 0, la unidad muere. |
-| `mp` | Puntos de magia. Se consumen al usar habilidades activas. |
-| `speed` | Velocidad. Determina la frecuencia de llenado de la barra de acción. |
-| `strength` | Fuerza física. Afecta al daño del comando **Atacar** y habilidades físicas. |
-| `magicpower` | Poder mágico. Afecta al daño o curación de las **Skills**. |
-| `defense` | Defensa física. Reduce el daño de ataques físicos. |
-| `magicdefense` | Defensa mágica. Reduce el daño de habilidades mágicas enemigas. |
+| Stat           | Descripción                                                                 |
+|----------------|-----------------------------------------------------------------------------|
+| hp             | Puntos de vida. Al llegar a 0, la unidad muere.                             |
+| mp             | Puntos de magia. Se consumen al usar habilidades activas.                  |
+| speed          | Velocidad. Determina la frecuencia de llenado de la barra de acción.       |
+| strength       | Fuerza física. Afecta al daño del comando Atacar y habilidades físicas.    |
+| magicpower     | Poder mágico. Afecta al daño o curación de las Skills.                     |
+| defense        | Defensa física. Reduce el daño de ataques físicos.                         |
+| magicdefense   | Defensa mágica. Reduce el daño de habilidades mágicas enemigas.            |
+| evasion        | Probabilidad de esquivar ataques físicos o mágicos.                        |
+| accuracy       | Precisión para acertar ataques.                                            |
 
 ### 8.3 Diseño de enemigos por dimensión
 
@@ -424,37 +476,35 @@ Al crear una nueva dimensión, además de las clases, deberás **diseñar al men
 
 ### Tipos Elementales
 
-| Tipo | Descripción | Ejemplo de enemigo | Ventaja | Desventaja |
-|------|-------------|--------------------|---------|-------------|
-| Fuego | Daño por calor, puede quemar | Ave Solar | hielo, planta | agua, tierra |
-| Hielo | Daño por congelación, ralentiza | Golem de Hielo | planta, tierra | fuego, roca |
-| Tierra | Daño físico contundente, puede aturdir | Golem de Arena | fuego, eléctrico | hielo, volador |
-| Viento | Daño por corte, aumenta evasión | Arpía de la Tormenta | eléctrico, agua | roca, hielo |
-| Agua | Daño por presión, puede curar | Tritón del Abismo | fuego, tierra | eléctrico, planta |
-| Eléctrico | Daño por descarga, paraliza | Pez Globo de Frecuencias | agua, volador | tierra, viento |
-| Luz | Daño sagrado, cura | Jaguar de Cristal | oscuro, fantasma | ninguno |
-| Oscuro | Daño corruptor, roba vida | Espectro de la Luna | luz, psíquico | ninguno |
-| Veneno | Daño por toxicidad, deterioro | Cobra de Hueso | planta, tierra | fuego, luz |
-| Psíquico | Daño mental, confunde | Esfinge de Arena | lucha, veneno | oscuro, bicho |
-| Roca | Daño por impacto, alta defensa | Golem de Sal | fuego, volador | agua, planta |
-| Planta | Daño por crecimiento, absorbe vida | Jaguar de Cristal (?) | agua, tierra | fuego, hielo |
+| Tipo   | Ventaja contra     | Desventaja contra |
+|--------|------------------|-------------------|
+| Fuego  | Hielo, Planta     | Agua, Tierra      |
+| Agua   | Fuego, Tierra     | Rayo, Planta      |
+| Tierra | Rayo, Fuego       | Agua, Hielo       |
+| Aire   | Tierra, Planta    | Rayo, Hielo       |
+| Rayo   | Agua, Aire        | Tierra, Metal     |
+| Hielo  | Agua, Tierra      | Fuego, Aire       |
+| Planta | Agua, Tierra      | Fuego, Hielo      |
+| Metal  | Hielo, Tierra     | Rayo, Fuego       |
+
+Los tipos pueden ser: fuego, agua, tierra, aire, rayo, hielo, planta, metal.  
+Las ventajas/desventajas son unidireccionales (el tipo A tiene ventaja sobre B, pero B no necesariamente tiene ventaja sobre A).
 
 ### Tipos de Criatura
 
-| Tipo | Descripción | Ejemplo | Características |
-|------|-------------|---------|------------------|
-| Humanoide | Seres con forma humanoide | Guerrero de Obsidiana | Pueden usar armas y armaduras |
-| Bestia | Animales o criaturas salvajes | Jaguar de Cristal | Alta velocidad y fuerza |
-| Volador | Criaturas que vuelan | Ave Solar | Inmunes a ataques de tierra, +evasión |
-| Coloso | Seres gigantes de gran tamaño | Gigante de Hielo Vivo | Mucho HP, baja speed, alto daño |
-| Elemental | Seres compuestos de un elemento puro | Golem de Gas | Inmunes a críticos, fuertes vs su opuesto |
-| Fantasma | Seres intangibles o espirituales | Espectro de la Luna | Inmunes a daño físico normal, débiles a luz |
-| Máquina | Constructos mecánicos | Taladro de Montaña | Alta defensa, inmunes a veneno y sueño |
-| Arena | Seres compuestos de arena o polvo | Esfinge de Arena | Absorben daño de agua? (depende del diseño) |
-| Fisión | Seres que se dividen al recibir daño | Fragmento Fractal | Se multiplican, débiles a área |
-| Élite | Versiones mejoradas de enemigos comunes | Núcleo Congelado | Stats elevadas, habilidades especiales |
-| Líquido | Seres fluidos o amorfos | Kuroyū Salvaje | Resistentes a daño físico, débiles a frío |
-| Sigilo | Enemigos rápidos y evasivos | Shinobi de la Sombra | Alta evasion, baja defensa |
+| Tipo      | Descripción                                                                 |
+|-----------|-----------------------------------------------------------------------------|
+| Volador   | Puede evadir ataques terrestres, vulnerable a rayos y redes.               |
+| Coloso    | Alta resistencia y daño, pero lento y fácil de golpear.                    |
+| Élite     | Estadísticas mejoradas, aparece en grupos reducidos.                       |
+| Bestia    | Ataques físicos fuertes, poca defensa mágica.                              |
+| Espectro  | Inmune a ataques físicos normales, vulnerable a magia sagrada.             |
+| Dragón    | Alta resistencia a magia, aliento elemental poderoso.                      |
+| Humanoide | Seres con forma humanoide (pueden usar armas/armaduras).                   |
+| Máquina   | Constructos mecánicos, alta defensa, inmunes a veneno/sueño.               |
+| Elemental | Seres compuestos de un elemento puro, inmunes a críticos.                  |
+| Líquido   | Seres fluidos o amorfos, resistentes a daño físico, débiles a frío.        |
+| Sigilo    | Enemigos rápidos y evasivos, baja defensa pero alta evasión.               |
 
 **Nota**: Los tipos pueden combinarse (ej. `["fuego", "volador"]`). Las ventajas/desventajas son orientativas y pueden ajustarse por balance.
 

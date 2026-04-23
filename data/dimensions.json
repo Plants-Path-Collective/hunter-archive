@@ -16,31 +16,31 @@
         {
           "name": "Guerrero de Obsidiana",
           "type": ["tierra", "humanoide"],
-          "stats": { "hp": 90, "mp": 20, "speed": 40, "strength": 20, "magicpower": 5, "defense": 25, "magicdefense": 10 },
+          "stats": { "hp": 90, "mp": 20, "speed": 40, "strength": 20, "magicpower": 5, "defense": 25, "magicdefense": 10, "evasion": 0, "accuracy": 0},
           "abilities": ["Golpe de obsidiana (daño físico + 10% de sangrado)", "Escudo de cristal (reduce daño mágico 30% por 3 turnos)"]
         },
         {
           "name": "Sacrificador de Sangre",
           "type": ["oscuro", "humanoide"],
-          "stats": { "hp": 70, "mp": 50, "speed": 60, "strength": 10, "magicpower": 25, "defense": 15, "magicdefense": 20 },
+          "stats": { "hp": 70, "mp": 50, "speed": 60, "strength": 10, "magicpower": 25, "defense": 15, "magicdefense": 20, "evasion": 0, "accuracy": 0},
           "abilities": ["Ritual de sangre (daño mágico y roba 10 hp)", "Maldición lunar (reduce speed de un aliado un 20%)"]
         },
         {
           "name": "Jaguar de Cristal",
           "type": ["bestia", "luz"],
-          "stats": { "hp": 110, "mp": 10, "speed": 70, "strength": 22, "magicpower": 0, "defense": 20, "magicdefense": 15 },
+          "stats": { "hp": 110, "mp": 10, "speed": 70, "strength": 22, "magicpower": 0, "defense": 20, "magicdefense": 15, "evasion": 0, "accuracy": 0},
           "abilities": ["Zarpazo reluciente (daño físico, ignora 10 de defensa)", "Aullido de cristal (aumenta su speed un 30% por 2 turnos)"]
         },
         {
           "name": "Ave Solar",
           "type": ["fuego", "volador"],
-          "stats": { "hp": 80, "mp": 40, "speed": 65, "strength": 12, "magicpower": 18, "defense": 12, "magicdefense": 18 },
+          "stats": { "hp": 80, "mp": 40, "speed": 65, "strength": 12, "magicpower": 18, "defense": 12, "magicdefense": 18, "evasion": 0, "accuracy": 0},
           "abilities": ["Llamarada (daño de fuego a un enemigo)", "Escudo de luz (protege a un aliado del próximo ataque)"]
         },
         {
           "name": "Espectro de la Luna",
           "type": ["fantasma", "oscuridad"],
-          "stats": { "hp": 60, "mp": 60, "speed": 50, "strength": 5, "magicpower": 28, "defense": 10, "magicdefense": 25 },
+          "stats": { "hp": 60, "mp": 60, "speed": 50, "strength": 5, "magicpower": 28, "defense": 10, "magicdefense": 25, "evasion": 0, "accuracy": 0},
           "abilities": ["Toque lunar (daño mágico + 20% de dormir)", "Desvanecerse (se vuelve intangible por 2 turnos, no puede atacar)"]
         }
       ]
@@ -61,31 +61,31 @@
         {
           "name": "Sirena de Cuerdas",
           "type": ["agua", "sonido"],
-          "stats": { "hp": 75, "mp": 45, "speed": 55, "strength": 8, "magicpower": 22, "defense": 12, "magicdefense": 18 },
+          "stats": { "hp": 75, "mp": 45, "speed": 55, "strength": 8, "magicpower": 22, "defense": 12, "magicdefense": 18, "evasion": 0, "accuracy": 0},
           "abilities": ["Canto hipnótico (puede dormir a un enemigo)", "Eco punzante (daño de sonido a un aliado y a un enemigo)"]
         },
         {
           "name": "Tritón del Abismo",
           "type": ["agua", "guerrero"],
-          "stats": { "hp": 120, "mp": 15, "speed": 45, "strength": 25, "magicpower": 5, "defense": 28, "magicdefense": 12 },
+          "stats": { "hp": 120, "mp": 15, "speed": 45, "strength": 25, "magicpower": 5, "defense": 28, "magicdefense": 12, "evasion": 0, "accuracy": 0},
           "abilities": ["Golpe de marea (daño físico, empuja al enemigo)", "Burbuja protectora (reduce daño un 20% por 2 turnos)"]
         },
         {
           "name": "Cangrejo Resonante",
           "type": ["bestia", "tierra"],
-          "stats": { "hp": 90, "mp": 30, "speed": 35, "strength": 18, "magicpower": 10, "defense": 35, "magicdefense": 20 },
+          "stats": { "hp": 90, "mp": 30, "speed": 35, "strength": 18, "magicpower": 10, "defense": 35, "magicdefense": 20, "evasion": 0, "accuracy": 0},
           "abilities": ["Pinza vibradora (daño físico + 10% de aturdir)", "Caparazón resonante (rebota 15% del daño recibido)"]
         },
         {
           "name": "Pez Globo de Frecuencias",
           "type": ["agua", "explosivo"],
-          "stats": { "hp": 50, "mp": 60, "speed": 30, "strength": 5, "magicpower": 30, "defense": 8, "magicdefense": 8 },
+          "stats": { "hp": 50, "mp": 60, "speed": 30, "strength": 5, "magicpower": 30, "defense": 8, "magicdefense": 8, "evasion": 0, "accuracy": 0},
           "abilities": ["Inflar (se prepara, explota al siguiente turno causando daño masivo)", "Escape rápido (aumenta speed un 50% por 1 turno)"]
         },
         {
           "name": "Arpía de la Tormenta",
           "type": ["volador", "electricidad"],
-          "stats": { "hp": 85, "mp": 40, "speed": 70, "strength": 15, "magicpower": 20, "defense": 15, "magicdefense": 15 },
+          "stats": { "hp": 85, "mp": 40, "speed": 70, "strength": 15, "magicpower": 20, "defense": 15, "magicdefense": 15, "evasion": 0, "accuracy": 0},
           "abilities": ["Rayo de la tormenta (daño eléctrico a un enemigo)", "Canto de confusión (confunde a un enemigo por 2 turnos)"]
         }
       ]
@@ -106,31 +106,31 @@
         {
           "name": "Minero de Vapor",
           "type": ["humanoide", "fuego"],
-          "stats": { "hp": 95, "mp": 25, "speed": 40, "strength": 22, "magicpower": 8, "defense": 25, "magicdefense": 10 },
+          "stats": { "hp": 95, "mp": 25, "speed": 40, "strength": 22, "magicpower": 8, "defense": 25, "magicdefense": 10, "evasion": 0, "accuracy": 0},
           "abilities": ["Martillo de vapor (daño físico, puede quemar)", "Escape de gas (crea una nube que reduce precisión)"]
         },
         {
           "name": "Taladro de Montaña",
           "type": ["máquina", "tierra"],
-          "stats": { "hp": 130, "mp": 0, "speed": 30, "strength": 30, "magicpower": 0, "defense": 35, "magicdefense": 15 },
+          "stats": { "hp": 130, "mp": 0, "speed": 30, "strength": 30, "magicpower": 0, "defense": 35, "magicdefense": 15, "evasion": 0, "accuracy": 0},
           "abilities": ["Perforación (daño físico, ignora 15 de defensa)", "Vibración (reduce speed de todos los aliados un 10%)"]
         },
         {
           "name": "Golem de Gas",
           "type": ["elemental", "viento"],
-          "stats": { "hp": 100, "mp": 40, "speed": 35, "strength": 15, "magicpower": 20, "defense": 20, "magicdefense": 25 },
+          "stats": { "hp": 100, "mp": 40, "speed": 35, "strength": 15, "magicpower": 20, "defense": 20, "magicdefense": 25, "evasion": 0, "accuracy": 0},
           "abilities": ["Explosión de gas (daño de área, puede aturdir)", "Fusión (se divide en dos Golems más pequeños al 50% de vida)"]
         },
         {
           "name": "Ave de los Picos",
           "type": ["volador", "hielo"],
-          "stats": { "hp": 70, "mp": 35, "speed": 80, "strength": 12, "magicpower": 18, "defense": 10, "magicdefense": 15 },
+          "stats": { "hp": 70, "mp": 35, "speed": 80, "strength": 12, "magicpower": 18, "defense": 10, "magicdefense": 15, "evasion": 0, "accuracy": 0},
           "abilities": ["Picotazo helado (daño físico + 10% congelar)", "Vuelo rasante (aumenta evasión un 30% por 2 turnos)"]
         },
         {
           "name": "Monje Caído",
           "type": ["humanoide", "oscuridad"],
-          "stats": { "hp": 85, "mp": 55, "speed": 50, "strength": 12, "magicpower": 24, "defense": 18, "magicdefense": 22 },
+          "stats": { "hp": 85, "mp": 55, "speed": 50, "strength": 12, "magicpower": 24, "defense": 18, "magicdefense": 22, "evasion": 0, "accuracy": 0},
           "abilities": ["Toque corrupto (daño mágico + 20% de envenenar)", "Sifón de gas (roba 10 mp al enemigo)"]
         }
       ]
@@ -151,31 +151,31 @@
         {
           "name": "Momia de Arena",
           "type": ["muerto viviente", "tierra"],
-          "stats": { "hp": 110, "mp": 20, "speed": 25, "strength": 20, "magicpower": 10, "defense": 28, "magicdefense": 18 },
+          "stats": { "hp": 110, "mp": 20, "speed": 25, "strength": 20, "magicpower": 10, "defense": 28, "magicdefense": 18, "evasion": 0, "accuracy": 0},
           "abilities": ["Garra de vendas (daño físico + 10% de parálisis)", "Tormenta de arena (reduce precisión de todos)"]
         },
         {
           "name": "Escarabajo Fósil",
           "type": ["bestia", "tierra"],
-          "stats": { "hp": 80, "mp": 15, "speed": 45, "strength": 18, "magicpower": 5, "defense": 35, "magicdefense": 15 },
+          "stats": { "hp": 80, "mp": 15, "speed": 45, "strength": 18, "magicpower": 5, "defense": 35, "magicdefense": 15, "evasion": 0, "accuracy": 0},
           "abilities": ["Embestida (daño físico, empuja al enemigo)", "Caparazón blindado (reduce daño físico 30% por 2 turnos)"]
         },
         {
           "name": "Cobra de Hueso",
           "type": ["bestia", "veneno"],
-          "stats": { "hp": 65, "mp": 40, "speed": 70, "strength": 10, "magicpower": 20, "defense": 12, "magicdefense": 20 },
+          "stats": { "hp": 65, "mp": 40, "speed": 70, "strength": 10, "magicpower": 20, "defense": 12, "magicdefense": 20, "evasion": 0, "accuracy": 0},
           "abilities": ["Mordedura venenosa (daño físico + 30% de envenenar)", "Mirada petrificante (puede aturdir a un enemigo)"]
         },
         {
           "name": "Avispa del Desierto",
           "type": ["volador", "veneno"],
-          "stats": { "hp": 55, "mp": 25, "speed": 85, "strength": 14, "magicpower": 8, "defense": 8, "magicdefense": 12 },
+          "stats": { "hp": 55, "mp": 25, "speed": 85, "strength": 14, "magicpower": 8, "defense": 8, "magicdefense": 12, "evasion": 0, "accuracy": 0},
           "abilities": ["Aguijón tóxico (daño físico + 20% de envenenar)", "Vuelo rápido (aumenta evasión un 40% por 1 turno)"]
         },
         {
           "name": "Esfinge de Arena",
           "type": ["constructo", "arena"],
-          "stats": { "hp": 150, "mp": 50, "speed": 30, "strength": 25, "magicpower": 15, "defense": 30, "magicdefense": 25 },
+          "stats": { "hp": 150, "mp": 50, "speed": 30, "strength": 25, "magicpower": 15, "defense": 30, "magicdefense": 25, "evasion": 0, "accuracy": 0},
           "abilities": ["Arenas movedizas (daño de área + reduce speed)", "Enigma (confunde a un enemigo, requiere acertijo para cancelar)"]
         }
       ]
@@ -196,31 +196,31 @@
         {
           "name": "Vikingo del Odio",
           "type": ["humanoide", "oscuridad"],
-          "stats": { "hp": 100, "mp": 20, "speed": 50, "strength": 24, "magicpower": 6, "defense": 22, "magicdefense": 12 },
+          "stats": { "hp": 100, "mp": 20, "speed": 50, "strength": 24, "magicpower": 6, "defense": 22, "magicdefense": 12, "evasion": 0, "accuracy": 0},
           "abilities": ["Lanza de ira (daño físico + 20% de confundir)", "Grito de batalla (aumenta fuerza del clan un 15%)"]
         },
         {
           "name": "Sirena de Salmuera",
           "type": ["agua", "sonido"],
-          "stats": { "hp": 70, "mp": 55, "speed": 60, "strength": 8, "magicpower": 26, "defense": 12, "magicdefense": 22 },
+          "stats": { "hp": 70, "mp": 55, "speed": 60, "strength": 8, "magicpower": 26, "defense": 12, "magicdefense": 22, "evasion": 0, "accuracy": 0},
           "abilities": ["Canto amargo (daño mágico + 10% de tristeza, reduce ataque)", "Escamas de sal (refleja 20% de daño mágico)"]
         },
         {
           "name": "Golem de Sal",
           "type": ["elemental", "tierra"],
-          "stats": { "hp": 140, "mp": 0, "speed": 25, "strength": 28, "magicpower": 0, "defense": 40, "magicdefense": 30 },
+          "stats": { "hp": 140, "mp": 0, "speed": 25, "strength": 28, "magicpower": 0, "defense": 40, "magicdefense": 30, "evasion": 0, "accuracy": 0},
           "abilities": ["Puño de cristal (daño físico, puede romper escudos)", "Absorción de sal (recupera 10 hp por turno)"]
         },
         {
           "name": "Cangrejo de Rencor",
           "type": ["bestia", "agua"],
-          "stats": { "hp": 85, "mp": 15, "speed": 40, "strength": 20, "magicpower": 8, "defense": 35, "magicdefense": 15 },
+          "stats": { "hp": 85, "mp": 15, "speed": 40, "strength": 20, "magicpower": 8, "defense": 35, "magicdefense": 15, "evasion": 0, "accuracy": 0},
           "abilities": ["Pinza vengativa (daño físico, si recibe daño previo, duplica daño)", "Caparazón de amargura (reduce daño crítico un 50%)"]
         },
         {
           "name": "Espectro de Desesperación",
           "type": ["fantasma", "oscuridad"],
-          "stats": { "hp": 60, "mp": 70, "speed": 55, "strength": 4, "magicpower": 30, "defense": 10, "magicdefense": 25 },
+          "stats": { "hp": 60, "mp": 70, "speed": 55, "strength": 4, "magicpower": 30, "defense": 10, "magicdefense": 25, "evasion": 0, "accuracy": 0},
           "abilities": ["Toque de congelación emocional (daño mágico + reduce speed)", "Lamento eterno (todos los enemigos pierden 5 mp por turno)"]
         }
       ]
@@ -241,31 +241,31 @@
         {
           "name": "Samurái Rebelde",
           "type": ["humanoide", "oscuridad"],
-          "stats": { "hp": 105, "mp": 30, "speed": 55, "strength": 25, "magicpower": 8, "defense": 20, "magicdefense": 15 },
+          "stats": { "hp": 105, "mp": 30, "speed": 55, "strength": 25, "magicpower": 8, "defense": 20, "magicdefense": 15, "evasion": 0, "accuracy": 0},
           "abilities": ["Katana de alquitrán (daño físico + 10% de quemar)", "Corte gaseoso (daño de área, ignora 10 de defensa)"]
         },
         {
           "name": "Kuroyū Salvaje",
           "type": ["elemental", "líquido"],
-          "stats": { "hp": 120, "mp": 40, "speed": 35, "strength": 18, "magicpower": 15, "defense": 25, "magicdefense": 20 },
+          "stats": { "hp": 120, "mp": 40, "speed": 35, "strength": 18, "magicpower": 15, "defense": 25, "magicdefense": 20, "evasion": 0, "accuracy": 0},
           "abilities": ["Marea negra (daño de área, reduce speed)", "Solidificar (se vuelve inmune a daño físico por 1 turno)"]
         },
         {
           "name": "Shinobi de la Sombra",
           "type": ["humanoide", "sigilo"],
-          "stats": { "hp": 75, "mp": 45, "speed": 80, "strength": 18, "magicpower": 14, "defense": 15, "magicdefense": 18 },
+          "stats": { "hp": 75, "mp": 45, "speed": 80, "strength": 18, "magicpower": 14, "defense": 15, "magicdefense": 18, "evasion": 0, "accuracy": 0},
           "abilities": ["Daga intangible (daño físico, ignora escudos)", "Humo negro (reduce precisión de los enemigos un 20%)"]
         },
         {
           "name": "Kraken de Alquitrán (bebé)",
           "type": ["bestia", "agua"],
-          "stats": { "hp": 150, "mp": 25, "speed": 30, "strength": 28, "magicpower": 10, "defense": 30, "magicdefense": 20 },
+          "stats": { "hp": 150, "mp": 25, "speed": 30, "strength": 28, "magicpower": 10, "defense": 30, "magicdefense": 20, "evasion": 0, "accuracy": 0},
           "abilities": ["Tentáculo pegajoso (daño físico + 20% de inmovilizar)", "Escupitajo de alquitrán (daño de área + reduce speed)"]
         },
         {
           "name": "Relojero del Shogun",
           "type": ["máquina", "humanoide"],
-          "stats": { "hp": 90, "mp": 60, "speed": 45, "strength": 12, "magicpower": 22, "defense": 18, "magicdefense": 22 },
+          "stats": { "hp": 90, "mp": 60, "speed": 45, "strength": 12, "magicpower": 22, "defense": 18, "magicdefense": 22, "evasion": 0, "accuracy": 0},
           "abilities": ["Tiempo prestado (retrasa la acción de un enemigo)", "Engranaje explosivo (daño de área, puede aturdir)"]
         }
       ]
@@ -286,31 +286,31 @@
         {
           "name": "Espectro de Pergamino",
           "type": ["fantasma", "arena"],
-          "stats": { "hp": 65, "mp": 65, "speed": 50, "strength": 5, "magicpower": 28, "defense": 12, "magicdefense": 22 },
+          "stats": { "hp": 65, "mp": 65, "speed": 50, "strength": 5, "magicpower": 28, "defense": 12, "magicdefense": 22, "evasion": 0, "accuracy": 0},
           "abilities": ["Página maldita (daño mágico + 20% de silenciar)", "Desvanecer (se vuelve intangible por 2 turnos)"]
         },
         {
           "name": "Golem de Arena",
           "type": ["elemental", "tierra"],
-          "stats": { "hp": 130, "mp": 0, "speed": 25, "strength": 26, "magicpower": 0, "defense": 35, "magicdefense": 25 },
+          "stats": { "hp": 130, "mp": 0, "speed": 25, "strength": 26, "magicpower": 0, "defense": 35, "magicdefense": 25, "evasion": 0, "accuracy": 0},
           "abilities": ["Puño de grano (daño físico, puede cegar)", "Regeneración de arena (recupera 5 hp por turno)"]
         },
         {
           "name": "Lector Oscuro",
           "type": ["humanoide", "oscuridad"],
-          "stats": { "hp": 85, "mp": 50, "speed": 55, "strength": 12, "magicpower": 22, "defense": 15, "magicdefense": 20 },
+          "stats": { "hp": 85, "mp": 50, "speed": 55, "strength": 12, "magicpower": 22, "defense": 15, "magicdefense": 20, "evasion": 0, "accuracy": 0},
           "abilities": ["Soplo corrupto (daño mágico, puede envenenar)", "Robo de recuerdo (copia una habilidad pasiva del enemigo por 3 turnos)"]
         },
         {
           "name": "Avispa de Cristal",
           "type": ["volador", "arena"],
-          "stats": { "hp": 55, "mp": 30, "speed": 85, "strength": 14, "magicpower": 12, "defense": 10, "magicdefense": 12 },
+          "stats": { "hp": 55, "mp": 30, "speed": 85, "strength": 14, "magicpower": 12, "defense": 10, "magicdefense": 12, "evasion": 0, "accuracy": 0},
           "abilities": ["Aguijón de sílice (daño físico + 10% de sangrado)", "Enjambre (invoca 2 avispas menores)"]
         },
         {
           "name": "Momia del Sultán",
           "type": ["muerto viviente", "arena"],
-          "stats": { "hp": 120, "mp": 35, "speed": 30, "strength": 22, "magicpower": 15, "defense": 28, "magicdefense": 18 },
+          "stats": { "hp": 120, "mp": 35, "speed": 30, "strength": 22, "magicpower": 15, "defense": 28, "magicdefense": 18, "evasion": 0, "accuracy": 0},
           "abilities": ["Maldición de arena (daño de área + reduce defensa)", "Vendaje opresivo (inmoviliza a un enemigo por 2 turnos)"]
         }
       ]
@@ -331,31 +331,31 @@
         {
           "name": "Golem de Hielo",
           "type": ["hielo", "elemental"],
-          "stats": { "hp": 120, "mp": 20, "speed": 30, "strength": 25, "magicpower": 5, "defense": 30, "magicdefense": 15 },
+          "stats": { "hp": 120, "mp": 20, "speed": 30, "strength": 25, "magicpower": 5, "defense": 30, "magicdefense": 15, "evasion": 0, "accuracy": 0},
           "abilities": ["Golpe glacial (daño físico + 10% congelar)", "Fusión parcial (recupera 10 hp por turno)"]
         },
         {
           "name": "Fragmento Fractal",
           "type": ["hielo", "fisión"],
-          "stats": { "hp": 60, "mp": 40, "speed": 60, "strength": 10, "magicpower": 20, "defense": 10, "magicdefense": 10 },
+          "stats": { "hp": 60, "mp": 40, "speed": 60, "strength": 10, "magicpower": 20, "defense": 10, "magicdefense": 10, "evasion": 0, "accuracy": 0},
           "abilities": ["División: al recibir daño, se divide en dos fragmentos más débiles", "Ráfaga de escarcha (daño mágico a todos)"]
         },
         {
           "name": "Cristal Resonante",
           "type": ["hielo", "sonido"],
-          "stats": { "hp": 80, "mp": 50, "speed": 45, "strength": 8, "magicpower": 25, "defense": 12, "magicdefense": 20 },
+          "stats": { "hp": 80, "mp": 50, "speed": 45, "strength": 8, "magicpower": 25, "defense": 12, "magicdefense": 20, "evasion": 0, "accuracy": 0},
           "abilities": ["Vibración aturdidora (reduce speed de un aliado)", "Eco helado (daño mágico y silencia)"]
         },
         {
           "name": "Gigante de Hielo Vivo",
           "type": ["hielo", "coloso"],
-          "stats": { "hp": 200, "mp": 10, "speed": 20, "strength": 40, "magicpower": 0, "defense": 40, "magicdefense": 25 },
+          "stats": { "hp": 200, "mp": 10, "speed": 20, "strength": 40, "magicpower": 0, "defense": 40, "magicdefense": 25, "evasion": 0, "accuracy": 0},
           "abilities": ["Aplastar (daño físico alto, baja precisión)", "Grito de glaciar (reduce defensa de todos los aliados)"]
         },
         {
           "name": "Núcleo Congelado",
           "type": ["hielo", "élite"],
-          "stats": { "hp": 150, "mp": 60, "speed": 50, "strength": 15, "magicpower": 35, "defense": 20, "magicdefense": 30 },
+          "stats": { "hp": 150, "mp": 60, "speed": 50, "strength": 15, "magicpower": 35, "defense": 20, "magicdefense": 30, "evasion": 0, "accuracy": 0},
           "abilities": ["Absorción térmica (roba mp)", "Tormenta de hielo (daño masivo, requiere 2 turnos de carga)"]
         }
       ]
