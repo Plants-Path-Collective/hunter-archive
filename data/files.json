@@ -1,3 +1,23 @@
 ﻿[
-  
+  {
+    "id": "H-1776905099832",
+    "gender": "Masculino",
+    "class": "Tejedor",
+    "mbti": "Analista",
+    "dimension_id": "dim_001",
+    "concepts": [
+      "Vende recuerdos ilegales",
+      "La diosa lo guía en su fe ciega"
+    ],
+    "passive": "Percepción extrasensorial (ver invisibilidad)",
+    "active": {
+      "base": "Manipular memoria de un objetivo",
+      "paths": [
+        "Borrado profundo: elimina memoria a largo plazo del objetivo",
+        "Implante falso: inserta un recuerdo fabricado creíble"
+      ]
+    },
+    "description": "",
+    "images": []
+  }
 ]

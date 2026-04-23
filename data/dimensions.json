@@ -1,0 +1,53 @@
+{
+  "dimensions": [
+    {
+      "id": "dim_001",
+      "name": "Nexus Umbra",
+      "description": "Una dimensión de oscuridad perpetua donde la luz existe únicamente como memoria colectiva.",
+      "lore": "Los hunters del Nexus Umbra desarrollaron sistemas sensoriales que trascienden la visión. Sus cuerpos procesan el entorno a través de campos de presión y resonancia emocional. La luz, para ellos, es una abstracción — un concepto aprendido, nunca experimentado.",
+      "image": ""
+    },
+    {
+      "id": "dim_002",
+      "name": "Arco Estático",
+      "description": "Un plano donde el tiempo se fracturó en bucles de eventos congelados.",
+      "lore": "Navegar el Arco Estático requiere moverse entre momentos fijos. Sus nativos aprendieron a leer el tejido roto del tiempo y a volverse invisibles entre sus grietas. Para ellos, el presente no existe — solo existen puntos de anclaje y los espacios entre ellos.",
+      "image": ""
+    },
+    {
+      "id": "dim_003",
+      "name": "Meridiano Rojo",
+      "description": "Dimensión saturada de energía residual de conflictos extintos hace milenios.",
+      "lore": "El Meridiano Rojo produce hunters forjados por generaciones de guerra constante. La violencia no es emoción sino idioma primario, herramienta de comunicación tan válida como cualquier otra. Sus cicatrices son archivos, no heridas.",
+      "image": ""
+    },
+    {
+      "id": "dim_004",
+      "name": "Vacío Espejo",
+      "description": "Dimensión de reflexiones infinitas donde la identidad se fragmenta y reconstruye en cada iteración.",
+      "lore": "Ningún hunter del Vacío Espejo tiene un yo definitivo. Sus personalidades son capas superpuestas de versiones posibles de sí mismos. Esta ambigüedad ontológica no es debilidad — es su arma más eficiente en campo.",
+      "image": ""
+    },
+    {
+      "id": "dim_005",
+      "name": "Corriente Blanca",
+      "description": "Un plano de información pura sin sustrato físico. Todo existe como datos flotantes en flujo constante.",
+      "lore": "Los hunters de la Corriente Blanca procesan el mundo como estructuras de información. Leen patrones invisibles para otros y anticipan colapsos de sistema antes de que ocurran. La materia, para ellos, es solo una capa de abstracción sobre datos más profundos.",
+      "image": ""
+    },
+    {
+      "id": "dim_006",
+      "name": "Fosa del Eco",
+      "description": "Una caverna-dimensión infinita donde cada acción genera resonancias que persisten durante décadas.",
+      "lore": "Los nativos de la Fosa del Eco nunca actúan sin calcular su resonancia futura. Esta disciplina extrema los convierte en hunters de precisión casi sobrehumana — cada movimiento es la consecuencia inevitable de una decisión tomada años antes.",
+      "image": ""
+    },
+    {
+      "id": "dim_007",
+      "name": "Límite Amarillo",
+      "description": "Dimensión fronteriza entre lo que existe y lo que aún no ha decidido existir.",
+      "lore": "El Límite Amarillo produce hunters que operan en estados de probabilidad. No manipulan lo que es, sino lo que todavía podría ser — interviniendo en el momento exacto antes de la cristalización de la realidad. Su poder depende de nunca observar demasiado pronto.",
+      "image": ""
+    }
+  ]
+}

@@ -21,7 +21,6 @@ function escapeHtml(str) {
 
 /**
  * Renders a skill tree (base + paths) as an HTML string.
- * Used in Generator preview, Editor preview, and File Viewer.
  */
 function renderSkillTreeHTML(active) {
     const base  = active?.base  || "—";
@@ -59,7 +58,7 @@ function renderSkillTreeHTML(active) {
 async function loadApp(name, el, data) {
 
     /* ─────────────────────────────────────────────
-       Load data.json once
+       Load data.json
     ───────────────────────────────────────────── */
     let CONFIG = {
         genders: [],
@@ -78,10 +77,23 @@ async function loadApp(name, el, data) {
         console.warn("No se pudo cargar data.json:", e);
     }
 
+    /* ─────────────────────────────────────────────
+       Load dimensions.json
+    ───────────────────────────────────────────── */
+    let DIMENSIONS = { dimensions: [] };
+    try {
+        const res = await fetch("data/dimensions.json");
+        DIMENSIONS = await res.json();
+    } catch (e) {
+        console.warn("No se pudo cargar dimensions.json:", e);
+    }
+    const dims = DIMENSIONS.dimensions || [];
+
     // Helpers
     const tt        = key       => CONFIG.attribute_tooltips?.[key] || "";
     const classDesc = className => CONFIG.classes?.find(c => c.name === className)?.description || "";
     const mbtiDesc  = mbtiKey   => CONFIG.mbti_descriptions?.[mbtiKey] || "";
+    const getDim    = id        => dims.find(d => d.id === id) || null;
 
     /* =========================
        GENERADOR
@@ -95,7 +107,6 @@ async function loadApp(name, el, data) {
             "Percepción extrasensorial (ver invisibilidad)"
         ];
 
-        // active_pool: supports both new {base, paths[]} format and legacy string format
         const activePool = CONFIG.active_pool?.length
             ? CONFIG.active_pool.map(entry =>
                 typeof entry === "string"
@@ -103,8 +114,8 @@ async function loadApp(name, el, data) {
                     : entry
             )
             : [
-                { base: "Golpe dimensional (ignora armadura)", paths: ["Ampliar radio", "Carga triple"] },
-                { base: "Sobrecarga de energía (daño en área)",  paths: ["Pulso continuo", "Núcleo colapsado"] }
+                { base: "Golpe dimensional (ignora armadura)", paths: [] },
+                { base: "Sobrecarga de energía (daño en área)",  paths: [] }
             ];
 
         el.innerHTML = `
@@ -140,7 +151,6 @@ async function loadApp(name, el, data) {
         </div>
         `;
 
-        // Populate selects
         const fillSelect = (id, arr) => {
             const sel = el.querySelector("#" + id);
             arr.forEach(v => {
@@ -154,10 +164,8 @@ async function loadApp(name, el, data) {
         fillSelect("class",  CONFIG.classes.map(c => c.name));
         fillSelect("mbti",   CONFIG.mbti);
 
-        // Tooltip + inline hint: Clase
         const classSelect = el.querySelector("#class");
         const classHint   = el.querySelector("#class-hint");
-
         const updateClassHint = () => {
             const d = classDesc(classSelect.value);
             classHint.textContent = d ? "↳ " + d : "";
@@ -167,10 +175,8 @@ async function loadApp(name, el, data) {
         if (tt("class")) Tooltip.bind(el.querySelector("#lbl-class"), tt("class"));
         updateClassHint();
 
-        // Tooltip + inline hint: MBTI
         const mbtiSelect = el.querySelector("#mbti");
         const mbtiHint   = el.querySelector("#mbti-hint");
-
         const updateMbtiHint = () => {
             const d = mbtiDesc(mbtiSelect.value);
             mbtiHint.textContent = d ? "↳ " + d : "";
@@ -180,30 +186,31 @@ async function loadApp(name, el, data) {
         if (tt("mbti")) Tooltip.bind(el.querySelector("#lbl-mbti"), tt("mbti"));
         updateMbtiHint();
 
-        // Random helper
         const rand = arr => arr[Math.floor(Math.random() * arr.length)];
 
-        // Generate button
         el.querySelector("#generate").onclick = () => {
 
+            // Pick random dimension (immutable assignment)
+            const dimEntry = dims.length ? rand(dims) : null;
+
+            // Only function + anomaly concepts (aesthetic replaced by dimension)
             const concepts = [
                 rand(CONFIG.concepts.function).text,
-                rand(CONFIG.concepts.aesthetic).text,
                 rand(CONFIG.concepts.anomaly).text
             ];
             const passive = rand(passivePool);
 
-            // Pick a random active entry from the pool (object with base + paths)
             const activeEntry = rand(activePool);
             const activePaths = activeEntry.paths?.length >= 2
                 ? [activeEntry.paths[0], activeEntry.paths[1]]
                 : (activeEntry.paths || []);
 
             const hunter = {
-                id:       "H-" + Date.now(),
-                gender:   el.querySelector("#gender").value,
-                class:    classSelect.value,
-                mbti:     mbtiSelect.value,
+                id:           "H-" + Date.now(),
+                gender:       el.querySelector("#gender").value,
+                class:        classSelect.value,
+                mbti:         mbtiSelect.value,
+                dimension_id: dimEntry?.id || null,
                 concepts,
                 passive,
                 active: {
@@ -214,29 +221,35 @@ async function loadApp(name, el, data) {
                 images: []
             };
 
-            // Result panel
+            // ── Result panel ─────────────────────────────
             el.querySelector("#result").innerHTML = `
                 <div class="concept-row">
                     <span class="concept-label" id="lbl-fn">FN</span>
                     <span>${escapeHtml(concepts[0])}</span>
                 </div>
                 <div class="concept-row">
-                    <span class="concept-label" id="lbl-ae">AE</span>
+                    <span class="concept-label" id="lbl-an">AN</span>
                     <span>${escapeHtml(concepts[1])}</span>
                 </div>
-                <div class="concept-row">
-                    <span class="concept-label" id="lbl-an">AN</span>
-                    <span>${escapeHtml(concepts[2])}</span>
-                </div>
-                <button id="to-editor" style="margin-top:8px;">Abrir en Editor</button>
+                ${dimEntry
+                ? `<div style="margin-top:8px; padding:7px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);">
+                        <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px;">DIMENSIÓN DE ORIGEN</div>
+                        <div id="res-dim-name" style="color:var(--accent-warning); font-weight:bold; font-size:12px;">${escapeHtml(dimEntry.name)}</div>
+                        <div style="font-size:9px; color:var(--text-muted); margin-top:2px; font-style:italic;">[asignación inmutable]</div>
+                       </div>`
+                : `<div style="margin-top:8px; color:var(--text-muted); font-size:10px; font-style:italic;">No hay dimensiones cargadas.<br>Añade dimensions.json al directorio data/.</div>`
+            }
+                <button id="to-editor" style="margin-top:10px;">Abrir en Editor</button>
             `;
 
             const rEl = el.querySelector("#result");
             if (tt("function"))  Tooltip.bind(rEl.querySelector("#lbl-fn"), tt("function"));
-            if (tt("aesthetic")) Tooltip.bind(rEl.querySelector("#lbl-ae"), tt("aesthetic"));
             if (tt("anomaly"))   Tooltip.bind(rEl.querySelector("#lbl-an"), tt("anomaly"));
+            if (dimEntry && rEl.querySelector("#res-dim-name")) {
+                Tooltip.bind(rEl.querySelector("#res-dim-name"), dimEntry.description || "");
+            }
 
-            // Preview panel
+            // ── Preview panel ────────────────────────────
             const cdesc = classDesc(hunter.class);
             const mdesc = mbtiDesc(hunter.mbti);
 
@@ -253,6 +266,15 @@ async function loadApp(name, el, data) {
                         <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(hunter.gender)}</p>
                     </div>
 
+                    ${dimEntry ? `
+                    <div class="panel" style="margin-top:6px; border-left:3px solid var(--accent-primary);">
+                        <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen</div>
+                        <span id="prev-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span>
+                        ${dimEntry.description
+                ? `<p style="font-size:10px; color:var(--text-muted); margin-top:4px; font-style:italic;">${escapeHtml(dimEntry.description)}</p>`
+                : ""}
+                    </div>` : ""}
+
                     <div class="panel" style="margin-top:6px;">
                         <h3 id="prev-concepts-h">Conceptos</h3>
                         <div class="concept-row">
@@ -260,12 +282,8 @@ async function loadApp(name, el, data) {
                             <span>${escapeHtml(concepts[0])}</span>
                         </div>
                         <div class="concept-row">
-                            <span class="concept-label" id="prev-ae">AE</span>
-                            <span>${escapeHtml(concepts[1])}</span>
-                        </div>
-                        <div class="concept-row">
                             <span class="concept-label" id="prev-an">AN</span>
-                            <span>${escapeHtml(concepts[2])}</span>
+                            <span>${escapeHtml(concepts[1])}</span>
                         </div>
                     </div>
 
@@ -283,9 +301,9 @@ async function loadApp(name, el, data) {
             const pEl = el.querySelector("#preview");
             if (cdesc)           Tooltip.bind(pEl.querySelector("#prev-class"),       cdesc);
             if (mdesc)           Tooltip.bind(pEl.querySelector("#prev-mbti"),        mdesc);
+            if (dimEntry && pEl.querySelector("#prev-dim")) Tooltip.bind(pEl.querySelector("#prev-dim"), dimEntry.description || "");
             if (tt("concepts"))  Tooltip.bind(pEl.querySelector("#prev-concepts-h"),  tt("concepts"));
             if (tt("function"))  Tooltip.bind(pEl.querySelector("#prev-fn"),          tt("function"));
-            if (tt("aesthetic")) Tooltip.bind(pEl.querySelector("#prev-ae"),          tt("aesthetic"));
             if (tt("anomaly"))   Tooltip.bind(pEl.querySelector("#prev-an"),          tt("anomaly"));
             if (tt("passive"))   Tooltip.bind(pEl.querySelector("#prev-passive-lbl"), tt("passive"));
             if (tt("active"))    Tooltip.bind(pEl.querySelector("#prev-active-lbl"),  tt("active"));
@@ -300,7 +318,7 @@ async function loadApp(name, el, data) {
 
     if (name === "editor") {
 
-        // No hunter passed: show selector
+        // ── No hunter passed: show selector ──────────
         if (!data) {
             let huntersList = [];
 
@@ -346,6 +364,15 @@ async function loadApp(name, el, data) {
                         el.querySelector("#selectorPreview").innerHTML = "<p>Selecciona un Hunter para ver vista previa.</p>";
                         return;
                     }
+
+                    const isNewSchema = hunter.dimension_id !== undefined && hunter.dimension_id !== null;
+                    const dimEntry    = isNewSchema ? getDim(hunter.dimension_id) : null;
+
+                    // Determine concepts to display based on schema
+                    const fnText = hunter.concepts?.[0] || "—";
+                    const aeText = isNewSchema ? null : (hunter.concepts?.[1] || "—");
+                    const anText = isNewSchema ? (hunter.concepts?.[1] || "—") : (hunter.concepts?.[2] || "—");
+
                     const previewDiv = el.querySelector("#selectorPreview");
                     previewDiv.innerHTML = `
                         <div class="panel">
@@ -357,18 +384,25 @@ async function loadApp(name, el, data) {
                             </p>
                             <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(hunter.gender || "")}</p>
 
+                            ${dimEntry ? `
+                            <div style="margin:8px 0; padding:6px 10px; background:#0a0c10; border-left:3px solid var(--accent-primary);">
+                                <div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">DIMENSIÓN DE ORIGEN</div>
+                                <span id="sel-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span>
+                            </div>` : ""}
+
                             <h3 id="sel-concepts-h" style="margin-top:10px;">Conceptos</h3>
                             <div class="concept-row">
                                 <span class="concept-label" id="sel-fn">FN</span>
-                                <span>${escapeHtml(hunter.concepts?.[0] || "—")}</span>
+                                <span>${escapeHtml(fnText)}</span>
                             </div>
+                            ${aeText !== null ? `
                             <div class="concept-row">
                                 <span class="concept-label" id="sel-ae">AE</span>
-                                <span>${escapeHtml(hunter.concepts?.[1] || "—")}</span>
-                            </div>
+                                <span>${escapeHtml(aeText)}</span>
+                            </div>` : ""}
                             <div class="concept-row">
                                 <span class="concept-label" id="sel-an">AN</span>
-                                <span>${escapeHtml(hunter.concepts?.[2] || "—")}</span>
+                                <span>${escapeHtml(anText)}</span>
                             </div>
 
                             <h3 style="margin-top:10px;">Descripción</h3>
@@ -387,10 +421,11 @@ async function loadApp(name, el, data) {
                     const mdesc = mbtiDesc(hunter.mbti);
                     if (cdesc)           Tooltip.bind(previewDiv.querySelector("#sel-class"),       cdesc);
                     if (mdesc)           Tooltip.bind(previewDiv.querySelector("#sel-mbti"),        mdesc);
+                    if (dimEntry && previewDiv.querySelector("#sel-dim")) Tooltip.bind(previewDiv.querySelector("#sel-dim"), dimEntry.description || "");
                     if (tt("concepts"))  Tooltip.bind(previewDiv.querySelector("#sel-concepts-h"),  tt("concepts"));
-                    if (tt("function"))  Tooltip.bind(previewDiv.querySelector("#sel-fn"),          tt("function"));
-                    if (tt("aesthetic")) Tooltip.bind(previewDiv.querySelector("#sel-ae"),          tt("aesthetic"));
-                    if (tt("anomaly"))   Tooltip.bind(previewDiv.querySelector("#sel-an"),          tt("anomaly"));
+                    if (tt("function")  && previewDiv.querySelector("#sel-fn"))  Tooltip.bind(previewDiv.querySelector("#sel-fn"),  tt("function"));
+                    if (aeText !== null && tt("aesthetic") && previewDiv.querySelector("#sel-ae")) Tooltip.bind(previewDiv.querySelector("#sel-ae"), tt("aesthetic"));
+                    if (tt("anomaly")   && previewDiv.querySelector("#sel-an"))  Tooltip.bind(previewDiv.querySelector("#sel-an"),  tt("anomaly"));
                     if (tt("passive"))   Tooltip.bind(previewDiv.querySelector("#sel-passive-lbl"), tt("passive"));
                     if (tt("active"))    Tooltip.bind(previewDiv.querySelector("#sel-active-lbl"),  tt("active"));
                 });
@@ -410,7 +445,7 @@ async function loadApp(name, el, data) {
             return;
         }
 
-        // data.json config editor
+        // ── data.json config editor ───────────────────
         if (data._type === "dataConfig") {
             let configJson = "";
 
@@ -474,10 +509,9 @@ async function loadApp(name, el, data) {
                                 </li>`).join("") || "<li>No definido</li>"}</ul>
                                 <h4>Conceptos</h4>
                                 <p><b>Función:</b> ${nc.concepts?.function?.map(f => escapeHtml(f.text)).join(", ") || "—"}</p>
-                                <p><b>Estética:</b> ${nc.concepts?.aesthetic?.map(a => escapeHtml(a.text)).join(", ") || "—"}</p>
                                 <p><b>Anomalía:</b> ${nc.concepts?.anomaly?.map(a => escapeHtml(a.text)).join(", ") || "—"}</p>
                                 <h4>Habilidades pasivas (${nc.passive_pool?.length || 0})</h4>
-                                <ul>${nc.passive_pool?.slice(0,5).map(p => `<li>${escapeHtml(p)}</li>`).join("") || "<li>No definido</li>"}${nc.passive_pool?.length > 5 ? "<li style='color:var(--text-muted)'>…y ${nc.passive_pool.length - 5} más</li>" : ""}</ul>
+                                <ul>${nc.passive_pool?.slice(0,5).map(p => `<li>${escapeHtml(p)}</li>`).join("") || "<li>No definido</li>"}${nc.passive_pool?.length > 5 ? `<li style='color:var(--text-muted)'>…y ${nc.passive_pool.length - 5} más</li>` : ""}</ul>
                                 <h4>Habilidades activas (${nc.active_pool?.length || 0})</h4>
                                 <ul>${activePoolHTML}</ul>
                             </div>
@@ -496,7 +530,7 @@ async function loadApp(name, el, data) {
                         a.download = "data.json";
                         a.click();
                         URL.revokeObjectURL(a.href);
-                        alert("data.json descargado. Reemplaza el archivo original en la carpeta data/");
+                        alert("data.json descargado. Reemplaza el archivo en la carpeta data/");
                     } catch (e) {
                         alert("JSON inválido: " + e.message);
                     }
@@ -512,15 +546,46 @@ async function loadApp(name, el, data) {
         // ── Hunter editor ─────────────────────────────
         const h = data;
 
-        // Normalize active field (support legacy string format)
+        // Normalize active
         if (typeof h.active === "string") {
             h.active = { base: h.active, paths: [] };
         } else if (!h.active) {
             h.active = { base: "", paths: [] };
         }
-        if (!Array.isArray(h.active.paths)) {
-            h.active.paths = [];
-        }
+        if (!Array.isArray(h.active.paths)) h.active.paths = [];
+
+        // Detect schema version
+        const isNewSchema = h.dimension_id !== undefined && h.dimension_id !== null;
+        const dimEntry    = isNewSchema ? getDim(h.dimension_id) : null;
+
+        // Concepts block differs by schema
+        const conceptsFormHTML = isNewSchema ? `
+            <div class="panel">
+                <h3 id="ed-concepts-h">Conceptos</h3>
+                <label id="ed-fn-lbl">Función</label>
+                <input id="concept0" placeholder="qué hace el Hunter en el mundo...">
+                <label id="ed-an-lbl">Anomalía</label>
+                <input id="concept1" placeholder="rasgo inexplicable o contradicción...">
+
+                <div style="margin-top:10px; padding:8px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);">
+                    <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen — Inmutable</div>
+                    <div id="ed-dim-name" style="color:var(--accent-warning); font-weight:bold; font-size:13px;">${escapeHtml(dimEntry?.name || h.dimension_id)}</div>
+                    ${dimEntry?.description
+            ? `<div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-style:italic;">${escapeHtml(dimEntry.description)}</div>`
+            : ""}
+                </div>
+            </div>
+        ` : `
+            <div class="panel">
+                <h3 id="ed-concepts-h">Conceptos</h3>
+                <label id="ed-fn-lbl">Función</label>
+                <input id="concept0" placeholder="qué hace el Hunter en el mundo...">
+                <label id="ed-ae-lbl">Estética</label>
+                <input id="concept1" placeholder="atmósfera visual o entorno...">
+                <label id="ed-an-lbl">Anomalía</label>
+                <input id="concept2" placeholder="rasgo inexplicable o contradicción...">
+            </div>
+        `;
 
         el.innerHTML = `
         <div class="split split-30-70">
@@ -540,16 +605,8 @@ async function loadApp(name, el, data) {
                     <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(h.gender)}</p>
                 </div>
 
-                <!-- CONCEPTS — EDITABLE -->
-                <div class="panel">
-                    <h3 id="ed-concepts-h">Conceptos</h3>
-                    <label id="ed-fn-lbl">Función</label>
-                    <input id="concept0" placeholder="qué hace el Hunter en el mundo...">
-                    <label id="ed-ae-lbl">Estética</label>
-                    <input id="concept1" placeholder="atmósfera visual o entorno...">
-                    <label id="ed-an-lbl">Anomalía</label>
-                    <input id="concept2" placeholder="rasgo inexplicable o contradicción...">
-                </div>
+                <!-- CONCEPTS (schema-aware) -->
+                ${conceptsFormHTML}
 
                 <!-- IMAGES -->
                 <div class="panel">
@@ -609,13 +666,15 @@ async function loadApp(name, el, data) {
         `;
 
         // Set field values
-        el.querySelector("#concept0").value    = h.concepts?.[0] || "";
-        el.querySelector("#concept1").value    = h.concepts?.[1] || "";
-        el.querySelector("#concept2").value    = h.concepts?.[2] || "";
-        el.querySelector("#imgs").value        = (h.images || []).join("\n");
-        el.querySelector("#desc").value        = h.description || "";
-        el.querySelector("#passive").value     = h.passive || "";
-        el.querySelector("#active-base").value = h.active?.base  || "";
+        el.querySelector("#concept0").value     = h.concepts?.[0] || "";
+        el.querySelector("#concept1").value     = h.concepts?.[1] || "";
+        if (!isNewSchema && el.querySelector("#concept2")) {
+            el.querySelector("#concept2").value = h.concepts?.[2] || "";
+        }
+        el.querySelector("#imgs").value         = (h.images || []).join("\n");
+        el.querySelector("#desc").value         = h.description || "";
+        el.querySelector("#passive").value      = h.passive || "";
+        el.querySelector("#active-base").value  = h.active?.base  || "";
         el.querySelector("#active-path0").value = h.active?.paths?.[0] || "";
         el.querySelector("#active-path1").value = h.active?.paths?.[1] || "";
 
@@ -625,11 +684,14 @@ async function loadApp(name, el, data) {
         if (cdesc)           Tooltip.bind(el.querySelector("#ed-class"),       cdesc);
         if (mdesc)           Tooltip.bind(el.querySelector("#ed-mbti"),        mdesc);
         if (tt("concepts"))  Tooltip.bind(el.querySelector("#ed-concepts-h"),  tt("concepts"));
-        if (tt("function"))  Tooltip.bind(el.querySelector("#ed-fn-lbl"),      tt("function"));
-        if (tt("aesthetic")) Tooltip.bind(el.querySelector("#ed-ae-lbl"),      tt("aesthetic"));
-        if (tt("anomaly"))   Tooltip.bind(el.querySelector("#ed-an-lbl"),      tt("anomaly"));
+        if (tt("function")  && el.querySelector("#ed-fn-lbl")) Tooltip.bind(el.querySelector("#ed-fn-lbl"), tt("function"));
+        if (!isNewSchema && tt("aesthetic") && el.querySelector("#ed-ae-lbl")) Tooltip.bind(el.querySelector("#ed-ae-lbl"), tt("aesthetic"));
+        if (tt("anomaly")   && el.querySelector("#ed-an-lbl")) Tooltip.bind(el.querySelector("#ed-an-lbl"), tt("anomaly"));
         if (tt("passive"))   Tooltip.bind(el.querySelector("#ed-passive-lbl"), tt("passive"));
         if (tt("active"))    Tooltip.bind(el.querySelector("#ed-active-lbl"),  tt("active"));
+        if (isNewSchema && dimEntry && el.querySelector("#ed-dim-name")) {
+            Tooltip.bind(el.querySelector("#ed-dim-name"), dimEntry.description || "");
+        }
 
         // Build final hunter object from form
         function build() {
@@ -638,13 +700,8 @@ async function loadApp(name, el, data) {
                 el.querySelector("#active-path1").value.trim()
             ].filter(Boolean);
 
-            return {
+            const built = {
                 ...h,
-                concepts: [
-                    el.querySelector("#concept0").value.trim(),
-                    el.querySelector("#concept1").value.trim(),
-                    el.querySelector("#concept2").value.trim()
-                ],
                 description: el.querySelector("#desc").value,
                 images: el.querySelector("#imgs").value
                     .split("\n").map(v => v.trim()).filter(Boolean),
@@ -654,11 +711,39 @@ async function loadApp(name, el, data) {
                     paths
                 }
             };
+
+            if (isNewSchema) {
+                // New schema: fn + an; dimension_id is immutable
+                built.concepts = [
+                    el.querySelector("#concept0").value.trim(),
+                    el.querySelector("#concept1").value.trim()
+                ];
+                built.dimension_id = h.dimension_id;
+            } else {
+                // Legacy schema: fn + ae + an
+                built.concepts = [
+                    el.querySelector("#concept0").value.trim(),
+                    el.querySelector("#concept1").value.trim(),
+                    el.querySelector("#concept2")?.value.trim() || ""
+                ];
+            }
+
+            return built;
         }
 
         // Render live preview
         function render() {
             const d = build();
+
+            // Determine concepts display
+            const fnText = d.concepts?.[0] || "—";
+            let aeText = null, anText;
+            if (isNewSchema) {
+                anText = d.concepts?.[1] || "—";
+            } else {
+                aeText = d.concepts?.[1] || "—";
+                anText = d.concepts?.[2] || "—";
+            }
 
             el.querySelector("#preview").innerHTML = `
             <div class="panel">
@@ -670,7 +755,7 @@ async function loadApp(name, el, data) {
                     <div class="panel">
                         ${d.images[0]
                 ? `<img src="${escapeHtml(d.images[0])}" style="width:100%; image-rendering:pixelated;">`
-                : `<div style="height:200px; display:flex; align-items:center; justify-content:center; color:var(--text-muted);">Sin Imagen</div>`
+                : `<div style="height:200px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`
             }
                     </div>
 
@@ -685,19 +770,26 @@ async function loadApp(name, el, data) {
                             <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(d.gender)}</p>
                         </div>
 
+                        ${dimEntry ? `
+                        <div style="margin-top:6px; padding:6px 10px; background:#0a0c10; border-left:3px solid var(--accent-primary);">
+                            <div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">DIMENSIÓN DE ORIGEN</div>
+                            <span id="prev-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span>
+                        </div>` : ""}
+
                         <div class="panel" style="margin-top:6px;">
                             <h3 id="prev-concepts-h">Conceptos</h3>
                             <div class="concept-row">
                                 <span class="concept-label" id="prev-fn">FN</span>
-                                <span>${escapeHtml(d.concepts[0] || "—")}</span>
+                                <span>${escapeHtml(fnText)}</span>
                             </div>
+                            ${aeText !== null ? `
                             <div class="concept-row">
                                 <span class="concept-label" id="prev-ae">AE</span>
-                                <span>${escapeHtml(d.concepts[1] || "—")}</span>
-                            </div>
+                                <span>${escapeHtml(aeText)}</span>
+                            </div>` : ""}
                             <div class="concept-row">
                                 <span class="concept-label" id="prev-an">AN</span>
-                                <span>${escapeHtml(d.concepts[2] || "—")}</span>
+                                <span>${escapeHtml(anText)}</span>
                             </div>
                         </div>
                     </div>
@@ -718,16 +810,16 @@ async function loadApp(name, el, data) {
             </div>
             `;
 
-            // Re-bind tooltips after each render
             const pEl    = el.querySelector("#preview");
             const pcdesc = classDesc(d.class);
             const pmdesc = mbtiDesc(d.mbti);
             if (pcdesc)          Tooltip.bind(pEl.querySelector("#prev-class"),       pcdesc);
             if (pmdesc)          Tooltip.bind(pEl.querySelector("#prev-mbti"),        pmdesc);
+            if (dimEntry && pEl.querySelector("#prev-dim")) Tooltip.bind(pEl.querySelector("#prev-dim"), dimEntry.description || "");
             if (tt("concepts"))  Tooltip.bind(pEl.querySelector("#prev-concepts-h"),  tt("concepts"));
-            if (tt("function"))  Tooltip.bind(pEl.querySelector("#prev-fn"),          tt("function"));
-            if (tt("aesthetic")) Tooltip.bind(pEl.querySelector("#prev-ae"),          tt("aesthetic"));
-            if (tt("anomaly"))   Tooltip.bind(pEl.querySelector("#prev-an"),          tt("anomaly"));
+            if (tt("function")  && pEl.querySelector("#prev-fn")) Tooltip.bind(pEl.querySelector("#prev-fn"), tt("function"));
+            if (aeText !== null && tt("aesthetic") && pEl.querySelector("#prev-ae")) Tooltip.bind(pEl.querySelector("#prev-ae"), tt("aesthetic"));
+            if (tt("anomaly")   && pEl.querySelector("#prev-an")) Tooltip.bind(pEl.querySelector("#prev-an"), tt("anomaly"));
             if (tt("passive"))   Tooltip.bind(pEl.querySelector("#prev-passive-lbl"), tt("passive"));
             if (tt("active"))    Tooltip.bind(pEl.querySelector("#prev-active-lbl"),  tt("active"));
         }
@@ -739,187 +831,452 @@ async function loadApp(name, el, data) {
             alert("JSON copiado al portapapeles");
         };
 
-        render(); // Initial render
+        render();
     }
 
     /* =========================
-       ARCHIVOS
+       ARCHIVOS (FILE EXPLORER REWORK)
     ========================= */
 
     if (name === "files") {
 
-        let files     = [];
-        let openTabs  = [];
-        let activeTab = 0;
+        let hunterFiles    = [];
+        let expandHunters  = true;
+        let expandDims     = true;
+        let selectedItem   = null; // { type: 'hunter'|'dimension', data: obj }
 
         el.innerHTML = `
-        <div id="file-tabs" style="display:flex; gap:2px; margin-bottom:4px;"></div>
-        <div class="split split-30-70">
-            <div class="stack" id="file-sidebar"></div>
-            <div class="panel scroll" id="file-content"></div>
+        <div style="display:flex; height:100%; overflow:hidden; gap:0;">
+
+            <!-- LEFT: FILE TREE -->
+            <div id="ftree" style="
+                width:260px;
+                min-width:260px;
+                flex-shrink:0;
+                background:#0b0d12;
+                border-right:1px solid var(--border-light);
+                display:flex;
+                flex-direction:column;
+                overflow:hidden;
+            ">
+                <div style="
+                    padding:9px 14px;
+                    border-bottom:1px solid var(--border-light);
+                    font-size:10px;
+                    letter-spacing:2.5px;
+                    color:var(--accent-warning);
+                    font-weight:bold;
+                    text-transform:uppercase;
+                    flex-shrink:0;
+                    background:#08090d;
+                ">Explorador</div>
+                <div id="ftree-body" style="flex:1; overflow-y:auto; padding:8px 0;"></div>
+            </div>
+
+            <!-- RIGHT: VIEWER -->
+            <div id="fviewer" style="
+                flex:1;
+                overflow-y:auto;
+                padding:14px;
+                background:#111318;
+                min-width:0;
+            ">
+                <p style="color:var(--text-muted); margin-top:40px; text-align:center; font-size:11px;">
+                    Selecciona un archivo del explorador.
+                </p>
+            </div>
+
         </div>
         `;
 
-        const sidebar  = el.querySelector("#file-sidebar");
-        const content  = el.querySelector("#file-content");
-        const tabsEl   = el.querySelector("#file-tabs");
+        const treeBody = el.querySelector("#ftree-body");
+        const viewer   = el.querySelector("#fviewer");
 
-        async function loadFiles() {
-            const res = await fetch("data/files.json");
-            files = await res.json();
-            // Normalize active fields
-            files.forEach(h => {
-                if (typeof h.active === "string") {
-                    h.active = { base: h.active, paths: [] };
-                } else if (!h.active) {
-                    h.active = { base: "", paths: [] };
+        /* ── Tree rendering ──────────────────────────── */
+
+        function renderTree() {
+            treeBody.innerHTML = "";
+
+            // ── HUNTERS SECTION ──
+            const hunterSec = document.createElement("div");
+
+            const hunterHdr = document.createElement("div");
+            hunterHdr.style.cssText = `
+                padding:6px 14px;
+                cursor:pointer;
+                font-size:10px;
+                letter-spacing:1.5px;
+                color:var(--text-secondary);
+                text-transform:uppercase;
+                display:flex;
+                align-items:center;
+                gap:7px;
+                user-select:none;
+                border-bottom:1px solid #1a1d24;
+            `;
+            hunterHdr.innerHTML = `
+                <span style="color:var(--accent-primary); font-size:10px; width:8px;">${expandHunters ? "▼" : "▶"}</span>
+                <span>Hunters</span>
+                <span style="color:var(--text-muted); font-size:9px; margin-left:auto;">${hunterFiles.length}</span>
+            `;
+            hunterHdr.onclick = () => { expandHunters = !expandHunters; renderTree(); };
+            hunterSec.appendChild(hunterHdr);
+
+            if (expandHunters) {
+                if (hunterFiles.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.style.cssText = "padding:6px 14px 6px 28px; font-size:10px; color:var(--text-muted); font-style:italic;";
+                    empty.textContent = "Sin hunters registrados.";
+                    hunterSec.appendChild(empty);
+                } else {
+                    hunterFiles.forEach(h => {
+                        const isActive = selectedItem?.type === "hunter" && selectedItem?.data?.id === h.id;
+                        const item     = document.createElement("div");
+                        item.style.cssText = `
+                            padding:5px 14px 5px 28px;
+                            cursor:pointer;
+                            font-size:10px;
+                            font-family:monospace;
+                            letter-spacing:0.3px;
+                            color:${isActive ? "var(--accent-warning)" : "var(--text-muted)"};
+                            background:${isActive ? "#1a1d26" : "transparent"};
+                            border-left:2px solid ${isActive ? "var(--accent-warning)" : "transparent"};
+                            white-space:nowrap;
+                            overflow:hidden;
+                            text-overflow:ellipsis;
+                            display:flex;
+                            align-items:center;
+                            gap:6px;
+                        `;
+                        item.title = h.id;
+
+                        const dimInfo = h.dimension_id ? getDim(h.dimension_id) : null;
+                        item.innerHTML = `
+                            <span style="color:var(--accent-primary); font-size:9px;">◆</span>
+                            <span style="overflow:hidden; text-overflow:ellipsis;">${escapeHtml(h.id)}</span>
+                        `;
+
+                        const tipText = dimInfo
+                            ? `${h.class} — ${dimInfo.name}`
+                            : (h.class || h.id);
+                        Tooltip.bind(item, tipText);
+
+                        item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
+                        item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
+                        item.onclick = () => {
+                            selectedItem = { type: "hunter", data: h };
+                            renderTree();
+                            renderViewer();
+                        };
+                        hunterSec.appendChild(item);
+                    });
                 }
-                if (!Array.isArray(h.active.paths)) {
-                    h.active.paths = [];
+            }
+            treeBody.appendChild(hunterSec);
+
+            // Divider
+            const divider = document.createElement("div");
+            divider.style.cssText = "border-top:1px solid #1a1d24; margin:6px 0;";
+            treeBody.appendChild(divider);
+
+            // ── DIMENSIONS SECTION ──
+            const dimSec = document.createElement("div");
+
+            const dimHdr = document.createElement("div");
+            dimHdr.style.cssText = `
+                padding:6px 14px;
+                cursor:pointer;
+                font-size:10px;
+                letter-spacing:1.5px;
+                color:var(--text-secondary);
+                text-transform:uppercase;
+                display:flex;
+                align-items:center;
+                gap:7px;
+                user-select:none;
+                border-bottom:1px solid #1a1d24;
+            `;
+            dimHdr.innerHTML = `
+                <span style="color:var(--accent-primary); font-size:10px; width:8px;">${expandDims ? "▼" : "▶"}</span>
+                <span>Dimensiones</span>
+                <span style="color:var(--text-muted); font-size:9px; margin-left:auto;">${dims.length}</span>
+            `;
+            dimHdr.onclick = () => { expandDims = !expandDims; renderTree(); };
+            dimSec.appendChild(dimHdr);
+
+            if (expandDims) {
+                if (dims.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.style.cssText = "padding:6px 14px 6px 28px; font-size:10px; color:var(--text-muted); font-style:italic;";
+                    empty.textContent = "dimensions.json no encontrado.";
+                    dimSec.appendChild(empty);
+                } else {
+                    dims.forEach(d => {
+                        const isActive   = selectedItem?.type === "dimension" && selectedItem?.data?.id === d.id;
+                        const count      = hunterFiles.filter(h => h.dimension_id === d.id).length;
+                        const item       = document.createElement("div");
+                        item.style.cssText = `
+                            padding:5px 14px 5px 28px;
+                            cursor:pointer;
+                            font-size:10px;
+                            font-family:monospace;
+                            letter-spacing:0.3px;
+                            color:${isActive ? "var(--accent-warning)" : "var(--text-muted)"};
+                            background:${isActive ? "#1a1d26" : "transparent"};
+                            border-left:2px solid ${isActive ? "var(--accent-warning)" : "transparent"};
+                            white-space:nowrap;
+                            overflow:hidden;
+                            text-overflow:ellipsis;
+                            display:flex;
+                            align-items:center;
+                            gap:6px;
+                        `;
+                        item.title = d.name;
+
+                        item.innerHTML = `
+                            <span style="color:var(--accent-primary); font-size:9px;">⬡</span>
+                            <span style="overflow:hidden; text-overflow:ellipsis; flex:1;">${escapeHtml(d.name)}</span>
+                            ${count > 0
+                            ? `<span style="color:var(--accent-primary); font-size:9px; background:#0a0c10; padding:1px 5px; border:1px solid var(--border-light); flex-shrink:0;">${count}</span>`
+                            : ""}
+                        `;
+
+                        Tooltip.bind(item, d.description || d.name);
+
+                        item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
+                        item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
+                        item.onclick = () => {
+                            selectedItem = { type: "dimension", data: d };
+                            renderTree();
+                            renderViewer();
+                        };
+                        dimSec.appendChild(item);
+                    });
                 }
-            });
-            renderSidebar();
+            }
+            treeBody.appendChild(dimSec);
         }
 
-        function renderSidebar() {
-            sidebar.innerHTML = "";
-            files.forEach(h => {
-                const item = document.createElement("div");
-                item.textContent = h.id;
-                item.style.cursor = "pointer";
+        /* ── Viewer rendering ─────────────────────────── */
 
-                const cdesc = classDesc(h.class);
-                if (cdesc) Tooltip.bind(item, `${h.class}: ${cdesc}`);
-                else if (h.class) Tooltip.bind(item, h.class);
-
-                let clickTimer = null;
-                item.onclick = () => {
-                    if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; openFile(h); }
-                    else { clickTimer = setTimeout(() => clickTimer = null, 250); }
-                };
-
-                sidebar.appendChild(item);
-            });
-        }
-
-        function openFile(h) {
-            if (!openTabs.find(t => t.id === h.id)) openTabs.push(h);
-            activeTab = openTabs.findIndex(t => t.id === h.id);
-            renderTabs();
-            renderContent();
-        }
-
-        function renderTabs() {
-            tabsEl.innerHTML = "";
-            openTabs.forEach((h, i) => {
-                const tab = document.createElement("div");
-                tab.textContent = h.id;
-                tab.className = "tab";
-                if (i === activeTab) tab.classList.add("active");
-                tab.onclick = () => { activeTab = i; renderTabs(); renderContent(); };
-                tabsEl.appendChild(tab);
-            });
-        }
-
-        function renderContent() {
-            if (!openTabs.length) {
-                content.innerHTML = "<p style='color:var(--text-muted);'>Selecciona un archivo.</p>";
+        function renderViewer() {
+            if (!selectedItem) {
+                viewer.innerHTML = `<p style="color:var(--text-muted); margin-top:40px; text-align:center; font-size:11px;">Selecciona un archivo del explorador.</p>`;
                 return;
             }
+            if (selectedItem.type === "hunter")    renderHunterView(selectedItem.data);
+            if (selectedItem.type === "dimension") renderDimensionView(selectedItem.data);
+        }
 
-            const h = openTabs[activeTab];
+        function renderHunterView(h) {
+            // Normalize active
+            if (typeof h.active === "string") h.active = { base: h.active, paths: [] };
+            else if (!h.active) h.active = { base: "", paths: [] };
+            if (!Array.isArray(h.active.paths)) h.active.paths = [];
 
-            content.innerHTML = `
+            const hunterIsNew = h.dimension_id !== undefined && h.dimension_id !== null;
+            const hunterDim   = hunterIsNew ? getDim(h.dimension_id) : null;
+
+            const fnText = h.concepts?.[0] || "—";
+            const aeText = hunterIsNew ? null : (h.concepts?.[1] || "—");
+            const anText = hunterIsNew ? (h.concepts?.[1] || "—") : (h.concepts?.[2] || "—");
+
+            viewer.innerHTML = `
             <div class="panel">
-
                 <h3>${escapeHtml(h.id)}</h3>
 
-                <div style="display:grid; grid-template-columns:220px 1fr; gap:6px; margin-top:6px;">
+                <div style="display:grid; grid-template-columns:200px 1fr; gap:10px; margin-top:8px;">
 
-                    <!-- IMAGEN -->
-                    <div class="panel">
+                    <!-- Image -->
+                    <div class="panel" style="padding:8px;">
                         ${h.images?.[0]
                 ? `<img src="${escapeHtml(h.images[0])}" style="width:100%; image-rendering:pixelated;">`
-                : `<div style="height:200px; display:flex; align-items:center; justify-content:center; color:var(--text-muted);">Sin Imagen</div>`
+                : `<div style="height:180px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`
             }
                     </div>
 
-                    <!-- INFO PRINCIPAL -->
+                    <!-- Info -->
                     <div class="panel">
-                        <div class="panel">
-                            <p>
-                                <b id="fc-class">${escapeHtml(h.class)}</b>
-                                &nbsp;—&nbsp;
-                                <span id="fc-mbti">${escapeHtml(h.mbti)}</span>
-                            </p>
-                            <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(h.gender || "")}</p>
-                        </div>
+                        <p style="margin-bottom:4px;">
+                            <b id="fv-class">${escapeHtml(h.class)}</b>
+                            &nbsp;—&nbsp;
+                            <span id="fv-mbti">${escapeHtml(h.mbti)}</span>
+                        </p>
+                        <p style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">${escapeHtml(h.gender || "")}</p>
 
-                        <div class="panel" style="margin-top:6px;">
-                            <h3 id="fc-concepts-h">Conceptos</h3>
-                            <div class="concept-row">
-                                <span class="concept-label" id="fc-fn">FN</span>
-                                <span>${escapeHtml(h.concepts?.[0] || "—")}</span>
-                            </div>
-                            <div class="concept-row">
-                                <span class="concept-label" id="fc-ae">AE</span>
-                                <span>${escapeHtml(h.concepts?.[1] || "—")}</span>
-                            </div>
-                            <div class="concept-row">
-                                <span class="concept-label" id="fc-an">AN</span>
-                                <span>${escapeHtml(h.concepts?.[2] || "—")}</span>
-                            </div>
+                        ${hunterDim ? `
+                        <div style="margin-bottom:10px; padding:6px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);">
+                            <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen</div>
+                            <span id="fv-dim" style="color:var(--accent-warning); font-weight:bold; font-size:12px; cursor:pointer; text-decoration:underline dotted var(--accent-primary);">${escapeHtml(hunterDim.name)}</span>
+                        </div>` : ""}
+
+                        <h3 id="fv-concepts-h" style="font-size:11px; margin-bottom:6px;">Conceptos</h3>
+                        <div class="concept-row">
+                            <span class="concept-label" id="fv-fn">FN</span>
+                            <span>${escapeHtml(fnText)}</span>
+                        </div>
+                        ${aeText !== null ? `
+                        <div class="concept-row">
+                            <span class="concept-label" id="fv-ae">AE</span>
+                            <span>${escapeHtml(aeText)}</span>
+                        </div>` : ""}
+                        <div class="concept-row">
+                            <span class="concept-label" id="fv-an">AN</span>
+                            <span>${escapeHtml(anText)}</span>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- DESCRIPCIÓN -->
-                <div class="panel" style="margin-top:6px;">
+                <div class="panel" style="margin-top:8px;">
                     <h3>Descripción</h3>
                     <p>${escapeHtml(h.description || "Sin descripción.")}</p>
                 </div>
 
-                <!-- HABILIDADES -->
-                <div class="panel" style="margin-top:6px;">
+                <div class="panel" style="margin-top:8px;">
                     <h3>Habilidades</h3>
-
-                    <p style="margin-bottom:10px;">
-                        <b id="fc-passive-lbl">Pasiva:</b>
-                        ${escapeHtml(h.passive || "—")}
-                    </p>
-
-                    <div>
-                        <p style="margin-bottom:6px;">
-                            <b id="fc-active-lbl">Activa — Árbol de habilidad</b>
-                        </p>
-                        ${renderSkillTreeHTML(h.active)}
-                    </div>
+                    <p style="margin-bottom:8px;"><b id="fv-passive-lbl">Pasiva:</b> ${escapeHtml(h.passive || "—")}</p>
+                    <p style="margin-bottom:6px;"><b id="fv-active-lbl">Activa — Árbol de habilidad</b></p>
+                    ${renderSkillTreeHTML(h.active)}
                 </div>
 
-                <div style="margin-top:8px;">
-                    <button id="open-editor">Abrir en Editor</button>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <button id="fv-edit-btn">Abrir en Editor</button>
+                    ${hunterDim ? `<button id="fv-goto-dim">Ver dimensión: ${escapeHtml(hunterDim.name)}</button>` : ""}
                 </div>
-
             </div>
             `;
 
             // Bind tooltips
             const cdesc = classDesc(h.class);
             const mdesc = mbtiDesc(h.mbti);
-            if (cdesc)           Tooltip.bind(content.querySelector("#fc-class"),       cdesc);
-            if (mdesc)           Tooltip.bind(content.querySelector("#fc-mbti"),        mdesc);
-            if (tt("concepts"))  Tooltip.bind(content.querySelector("#fc-concepts-h"),  tt("concepts"));
-            if (tt("function"))  Tooltip.bind(content.querySelector("#fc-fn"),          tt("function"));
-            if (tt("aesthetic")) Tooltip.bind(content.querySelector("#fc-ae"),          tt("aesthetic"));
-            if (tt("anomaly"))   Tooltip.bind(content.querySelector("#fc-an"),          tt("anomaly"));
-            if (tt("passive"))   Tooltip.bind(content.querySelector("#fc-passive-lbl"), tt("passive"));
-            if (tt("active"))    Tooltip.bind(content.querySelector("#fc-active-lbl"),  tt("active"));
+            if (cdesc) Tooltip.bind(viewer.querySelector("#fv-class"), cdesc);
+            if (mdesc) Tooltip.bind(viewer.querySelector("#fv-mbti"), mdesc);
+            if (hunterDim && viewer.querySelector("#fv-dim")) Tooltip.bind(viewer.querySelector("#fv-dim"), hunterDim.description || "");
+            if (tt("concepts") && viewer.querySelector("#fv-concepts-h")) Tooltip.bind(viewer.querySelector("#fv-concepts-h"), tt("concepts"));
+            if (tt("function")  && viewer.querySelector("#fv-fn")) Tooltip.bind(viewer.querySelector("#fv-fn"), tt("function"));
+            if (aeText !== null && tt("aesthetic") && viewer.querySelector("#fv-ae")) Tooltip.bind(viewer.querySelector("#fv-ae"), tt("aesthetic"));
+            if (tt("anomaly")   && viewer.querySelector("#fv-an")) Tooltip.bind(viewer.querySelector("#fv-an"), tt("anomaly"));
+            if (tt("passive"))   Tooltip.bind(viewer.querySelector("#fv-passive-lbl"), tt("passive"));
+            if (tt("active"))    Tooltip.bind(viewer.querySelector("#fv-active-lbl"),  tt("active"));
 
-            content.querySelector("#open-editor").onclick = () => openApp("editor", h);
+            viewer.querySelector("#fv-edit-btn").onclick = () => openApp("editor", h);
+
+            if (hunterDim) {
+                viewer.querySelector("#fv-goto-dim").onclick = () => {
+                    selectedItem = { type: "dimension", data: hunterDim };
+                    renderTree();
+                    renderViewer();
+                };
+            }
         }
 
-        loadFiles();
+        function renderDimensionView(d) {
+            const related = hunterFiles.filter(h => h.dimension_id === d.id);
+
+            viewer.innerHTML = `
+            <div class="panel">
+
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+                    <div>
+                        <h3 style="margin-bottom:2px;">${escapeHtml(d.name)}</h3>
+                        <span style="font-size:9px; color:var(--text-muted); letter-spacing:1px;">${escapeHtml(d.id)}</span>
+                    </div>
+                    <div style="
+                        padding:4px 10px;
+                        background:#0a0c10;
+                        border:1px solid var(--accent-primary);
+                        font-size:10px;
+                        color:var(--accent-primary);
+                        letter-spacing:1px;
+                        text-transform:uppercase;
+                        white-space:nowrap;
+                    ">${related.length} Hunter${related.length !== 1 ? "s" : ""}</div>
+                </div>
+
+                ${d.image ? `
+                <div class="panel" style="margin-bottom:10px; padding:8px; text-align:center;">
+                    <img src="${escapeHtml(d.image)}" style="max-width:100%; max-height:220px; image-rendering:pixelated;">
+                </div>` : ""}
+
+                <div class="panel" style="margin-bottom:8px;">
+                    <h3 style="font-size:11px;">Descripción</h3>
+                    <p>${escapeHtml(d.description || "Sin descripción.")}</p>
+                </div>
+
+                ${d.lore ? `
+                <div class="panel" style="margin-bottom:8px; border-left:3px solid var(--accent-warning);">
+                    <h3 style="font-size:11px; color:var(--accent-primary);">Lore</h3>
+                    <p style="font-style:italic; line-height:1.75;">${escapeHtml(d.lore)}</p>
+                </div>` : ""}
+
+                <div class="panel" style="margin-top:8px;">
+                    <h3 style="font-size:11px;">Hunters de esta dimensión</h3>
+
+                    ${related.length === 0
+                ? `<p style="color:var(--text-muted); font-style:italic; font-size:11px;">
+                            Ningún hunter registrado en esta dimensión todavía.
+                          </p>`
+                : `<div id="dim-hunter-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div>`
+            }
+                </div>
+
+            </div>
+            `;
+
+            // Render related hunters list
+            if (related.length > 0) {
+                const list = viewer.querySelector("#dim-hunter-list");
+                related.forEach(h => {
+                    const row = document.createElement("div");
+                    row.style.cssText = `
+                        display:flex;
+                        align-items:center;
+                        gap:8px;
+                        padding:6px 10px;
+                        background:#0d0f14;
+                        border:1px solid var(--border-light);
+                        cursor:pointer;
+                        transition:background 0.05s;
+                    `;
+                    row.innerHTML = `
+                        <span class="concept-label" style="flex-shrink:0;">${escapeHtml(h.class)}</span>
+                        <span style="font-family:monospace; font-size:11px; color:var(--text-secondary);">${escapeHtml(h.id)}</span>
+                        <span style="font-size:10px; color:var(--text-muted); margin-left:auto;">${escapeHtml(h.mbti)} · ${escapeHtml(h.gender || "")}</span>
+                        <span style="font-size:10px; color:var(--accent-primary);">→</span>
+                    `;
+                    row.addEventListener("mouseenter", () => row.style.background = "#1a1d26");
+                    row.addEventListener("mouseleave", () => row.style.background = "#0d0f14");
+                    row.onclick = () => {
+                        selectedItem = { type: "hunter", data: h };
+                        renderTree();
+                        renderViewer();
+                    };
+                    list.appendChild(row);
+                });
+            }
+        }
+
+        /* ── Load data & init ─────────────────────────── */
+
+        async function loadData() {
+            try {
+                const res = await fetch("data/files.json");
+                hunterFiles = await res.json();
+                // Normalize active fields
+                hunterFiles.forEach(h => {
+                    if (typeof h.active === "string") h.active = { base: h.active, paths: [] };
+                    else if (!h.active) h.active = { base: "", paths: [] };
+                    if (!Array.isArray(h.active.paths)) h.active.paths = [];
+                });
+            } catch (e) {
+                hunterFiles = [];
+            }
+            renderTree();
+            renderViewer();
+        }
+
+        loadData();
     }
 
     /* =========================
@@ -933,7 +1290,7 @@ async function loadApp(name, el, data) {
 
             <div class="panel" style="margin-top:8px;">
                 <p><b>De:</b> Hunter Association — Terminal de Control</p>
-                <p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.2)</p>
+                <p><b>Asunto:</b> Protocolo de gestión de Hunters (v3.0)</p>
             </div>
 
             <div class="panel" style="margin-top:8px; line-height:1.75;">
@@ -945,29 +1302,34 @@ async function loadApp(name, el, data) {
                     <b>1. BÚSQUEDA DE HUNTERS</b><br>
                     Utiliza el módulo <b>Buscador</b> para localizar Hunters en el archivo multidimensional.<br>
                     Parámetros de búsqueda: Género, Clase, MBTI.<br>
-                    Pasa el cursor sobre cada campo para consultar su definición operativa.<br>
-                    El sistema generará tres conceptos de realidad (FN / AE / AN), una habilidad pasiva,
-                    y una habilidad activa con su árbol de evolución (Base → Ruta I + Ruta II).<br><br>
+                    El sistema generará dos conceptos de realidad (FN / AN) y asignará automáticamente
+                    una <b>Dimensión de Origen</b> desde <code>dimensions.json</code>.<br>
+                    La dimensión es <b>inmutable</b>: no puede modificarse tras la creación.<br><br>
 
-                    <b>2. ÁRBOL DE HABILIDAD ACTIVA</b><br>
+                    <b>2. DIMENSIONES DE ORIGEN</b><br>
+                    Cada Hunter nace en una dimensión específica del multiverso.<br>
+                    La dimensión se asigna aleatoriamente en la creación y define parte de su identidad narrativa.<br>
+                    Las dimensiones se gestionan en <code>data/dimensions.json</code> y se visualizan en <b>Archivos</b>.<br><br>
+
+                    <b>3. ÁRBOL DE HABILIDAD ACTIVA</b><br>
                     Cada Hunter posee una habilidad <b>BASE</b> que define su capacidad nuclear.<br>
                     Dos <b>RUTAS DE EVOLUCIÓN</b> representan posibles expansiones de esa capacidad.<br>
-                    Son caminos narrativos, no mecánicas de juego fijas: el Hunter elige una ruta al avanzar.<br>
                     La estructura se almacena en el JSON bajo la clave <code>active.paths[]</code>.<br><br>
 
-                    <b>3. ARCHIVOS DE HUNTERS</b><br>
-                    El módulo <b>Archivos</b> muestra todos los expedientes almacenados.<br>
-                    Cada expediente incluye: ID, clase, MBTI, conceptos, habilidades y descripción.<br>
-                    El árbol de habilidad activa se visualiza directamente en el expediente.<br><br>
+                    <b>4. EXPLORADOR DE ARCHIVOS</b><br>
+                    El módulo <b>Archivos</b> funciona como un explorador de ficheros.<br>
+                    Panel izquierdo: árbol de navegación (Hunters · Dimensiones).<br>
+                    Panel derecho: vista detallada del archivo seleccionado.<br>
+                    Desde cada Dimensión puedes ver todos los Hunters que proceden de ella.<br>
+                    Desde cada Hunter puedes navegar directamente a su dimensión de origen.<br><br>
 
-                    <b>4. EDICIÓN Y CORRECCIÓN</b><br>
+                    <b>5. EDICIÓN Y CORRECCIÓN</b><br>
                     El <b>Editor</b> permite modificar cualquier dato del Hunter:<br>
-                    — Descripción · Habilidades · Imágenes · Conceptos<br>
-                    — Árbol activo: BASE + RUTA I + RUTA II son campos independientes y editables<br>
-                    Los cambios se reflejan en tiempo real en la vista previa.<br><br>
+                    — Descripción · Habilidades · Imágenes · Conceptos (FN + AN)<br>
+                    — La dimensión de origen es de solo lectura y no se puede editar.<br><br>
 
                     <b>Glosario de badges:</b><br>
-                    &nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AE = Estética &nbsp;|&nbsp; AN = Anomalía<br>
+                    &nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>
                     &nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br>
 
                     <b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>
