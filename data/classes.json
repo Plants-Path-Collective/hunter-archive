@@ -1,322 +1,938 @@
 [
   {
-    "name": "Panadero",
-    "description": "Domina el tiempo y la temperatura como nadie más. Su trabajo es pura alquimia silenciosa: transforma lo crudo en algo que alimenta, consuela y desentierra recuerdos.",
+    "name": "Avatar del Viento (Ehécatl)",
+    "dimension_id": "DIM-6084206892469",
+    "description": "Portador de la chispa del dios del viento. Domina las corrientes de aire, se mueve como el huracán y puede cortar con ráfagas invisibles.",
     "passive_pool": [
-      "Calcula instintivamente el tiempo exacto sin mirar ningún reloj",
-      "Los cuchillos siempre caen del lado del filo hacia el exterior, nunca hacia él",
-      "Detecta el punto exacto de cocción de cualquier cosa con solo olerlo"
+      "Puede sentir las corrientes de aire en un radio de cien metros, detectando movimientos y respiraciones",
+      "Su cuerpo pesa la mitad de lo normal; cae más lento y salta el doble",
+      "Nunca es afectado por vientos fuertes o tormentas; estas le son indiferentes"
     ],
     "active_pool": [
       {
-        "base": "Hornear un pan que revela un recuerdo oculto al primer mordisco",
+        "base": "Lanzar una ráfaga de viento cortante que hiere a distancia como una cuchilla invisible",
         "paths": [
-          "Miga del arrepentimiento — el recuerdo pertenece al que lo horneó, no al que lo come",
-          "Hogaza del olvido — quien lo come olvida un dolor específico durante exactamente una hora"
+          "Ráfaga múltiple — lanza tres cortes en abanico",
+          "Ráfaga perforante — un solo corte concentrado que atraviesa armaduras"
         ]
       },
       {
-        "base": "Crear una masa que absorbe el tiempo de un espacio (lo ralentiza mientras fermenta)",
+        "base": "Crear un torbellino que levanta a los enemigos y los lanza hacia atrás, causando caída",
         "paths": [
-          "Fermentación infinita — el área queda suspendida hasta que el pan se hornea",
-          "Corteza de urgencia — al romperse, el tiempo del área se comprime en un instante"
+          "Torbellino controlado — puede elegir la dirección del lanzamiento",
+          "Torbellino ascendente — los eleva y luego caen, recibiendo daño por impacto"
         ]
       },
       {
-        "base": "Amasar en silencio para que el ruido de un lugar desaparezca por una hora",
+        "base": "Aumentar su velocidad de movimiento y reacción durante un minuto, volviéndose una ráfaga viviente",
         "paths": [
-          "Silencio selectivo — solo una persona en el área deja de ser escuchada",
-          "Mudo de lugar — el espacio entero deja de existir acústicamente para el exterior"
+          "Velocidad sostenida — corre el triple de rápido, puede esquivar proyectiles",
+          "Velocidad explosiva — se teletransporta en línea recta hasta treinta metros"
         ]
       }
+    ],
+    "weapons": [
+      "Abanico de plumas de quetzal (lanza ráfagas cortantes)",
+      "Silbato de viento (convoca corrientes ascendentes)",
+      "Manto de nubes (permite planear brevemente)",
+      "Daga de obsidiana hueca (silba al cortar, desorienta)"
     ]
   },
   {
-    "name": "Archivista",
-    "description": "Custodia lo que no debería existir y cataloga lo que todos prefieren olvidar. Su poder reside en el orden, la paciencia y la certeza de que todo deja huella.",
+    "name": "Avatar Solar (Tonatiuh)",
+    "dimension_id": "DIM-6084206892469",
+    "description": "Portador de la chispa del dios sol. Irradia calor purificador, quema la maleza y protege los cultivos.",
     "passive_pool": [
-      "Recuerda la ubicación exacta de todo objeto que haya tocado alguna vez",
-      "Puede leer texto borrado, tachado o destruido si estuvo en el mismo espacio",
-      "Detecta si algo ha sido movido o alterado aunque sea mínimamente"
+      "Su cuerpo emite un calor constante que purifica el agua a su alrededor en un radio de tres metros",
+      "Las plantas que toca crecen más sanas y resistentes a plagas",
+      "Puede resistir temperaturas extremas sin daño (desde el hielo hasta lava)"
     ],
     "active_pool": [
       {
-        "base": "Catalogar un evento como 'no ocurrido': lo borra de la memoria colectiva del área durante 24 horas",
+        "base": "Lanzar una llamarada solar que quema a los enemigos sin dañar la vegetación ni las estructuras aliadas",
         "paths": [
-          "Reclasificación permanente — el evento desaparece del registro de una sola persona para siempre",
-          "Archivo sellado — el evento solo puede ser recordado por quien lo vivió, no por testigos"
+          "Llamarada selectiva — solo daña a quienes el avatar considera hostiles",
+          "Llamarada envolvente — quema todo en un radio de veinte metros, pero el avatar puede excluir aliados con concentración"
         ]
       },
       {
-        "base": "Abrir un expediente sobre una persona: durante una hora conoce todo lo que esa persona hizo ese día",
+        "base": "Aumentar su calor corporal hasta volverse incandescente, fundiendo metales y armas que se le acerquen",
         "paths": [
-          "Expediente extendido — el acceso cubre la última semana completa",
-          "Expediente anticipado — el acceso muestra lo que esa persona hará en las próximas dos horas"
+          "Incandescencia controlada — puede tocar aliados sin dañarlos, solo afecta a objetos inanimados y enemigos",
+          "Incandescencia salvaje — quema todo a su paso, pero también se daña a sí mismo"
         ]
       },
       {
-        "base": "Crear una copia física de un recuerdo como documento tangible que otros pueden leer",
+        "base": "Invocar un escudo de luz solar que repele proyectiles y ataques mágicos durante varios minutos",
         "paths": [
-          "Copia certificada — el documento es irrefutable; quien lo lea lo acepta como verdad propia",
-          "Borrador — el documento muestra el recuerdo tal como debería haber sido, no como fue"
+          "Escudo reflectante — devuelve los proyectiles al atacante con la misma fuerza",
+          "Escudo absorbente — convierte la energía de los ataques en calor que puede liberar después"
         ]
       }
+    ],
+    "weapons": [
+      "Macana de obsidiana con incrustaciones de pirita (arde al impactar)",
+      "Chimalli (escudo circular) que refleja luz cegadora",
+      "Lanza con punta de cobre (se calienta al rojo vivo)",
+      "Atlatl (propulsor de dardos) que lanza proyectiles ígneos"
     ]
   },
   {
-    "name": "Electricista",
-    "description": "Ve el mundo como un circuito: flujos, cortes, resistencias. Conecta lo que no debería estar unido y desconecta lo que todos dan por estable.",
+    "name": "Avatar Terrestre (Tlaltecuhtli)",
+    "dimension_id": "DIM-6084206892469",
+    "description": "Portador de la chispa de la diosa de la tierra. Controla la fertilidad del suelo y la estabilidad del terreno.",
     "passive_pool": [
-      "Siente los cortes de luz antes de que ocurran con varios minutos de antelación",
-      "Nunca recibe una descarga eléctrica, aunque lo intente",
-      "Intuye si un edificio o espacio tiene 'carga acumulada' de eventos pasados"
+      "Siente las vibraciones del suelo en un radio de cien metros (localiza criaturas enterradas o acechando)",
+      "Nunca resbala ni cae en terreno inestable; sus pies se adhieren a la roca y al barro",
+      "Las semillas que planta germinan en horas incluso en tierra muerta"
     ],
     "active_pool": [
       {
-        "base": "Cablear emocionalmente un espacio: amplifica las emociones de quienes lo habiten durante una hora",
+        "base": "Hacer temblar el suelo en un área pequeña para derribar a los enemigos y crear grietas",
         "paths": [
-          "Cortocircuito emocional — las emociones se invierten: el miedo se vuelve valentía, la ira se vuelve calma",
-          "Sobrecarga — las emociones se amplifican al triple pero se descargan todas a la vez al salir del espacio"
+          "Temblor focalizado — solo afecta a una zona de cinco metros, pero derriba con seguridad",
+          "Temblor en cadena — ondas que se propagan, derribando a objetivos en una línea de treinta metros"
         ]
       },
       {
-        "base": "Interrumpir la 'corriente' de una persona: su próxima decisión importante queda en suspenso por diez minutos",
+        "base": "Fusionarse temporalmente con la tierra, volviéndose intangible y pudiendo moverse bajo el suelo",
         "paths": [
-          "Fusible quemado — la decisión suspendida desaparece; la persona olvida que iba a tomarla",
-          "Redireccionamiento — puede sustituir la decisión suspendida por una que él elija"
+          "Fusión breve — hasta un minuto, suficiente para atravesar muros o emboscar",
+          "Fusión extendida — hasta diez minutos, pero al salir queda agotado"
         ]
       },
       {
-        "base": "Encender algo que lleva mucho tiempo apagado: un negocio cerrado, una conversación interrumpida, una relación cortada",
+        "base": "Hacer crecer espinas de roca desde el suelo que atrapan o dañan a los enemigos",
         "paths": [
-          "Corriente alterna — lo que enciende funciona solo intermitentemente, creando patrones impredecibles",
-          "Corriente continua — funciona de forma estable pero consume el doble de energía de quien lo activa"
+          "Espinas afiladas — causan heridas punzantes y ralentizan",
+          "Espinas de contención — crecen en forma de jaula, atrapando sin matar"
         ]
       }
+    ],
+    "weapons": [
+      "Tezcacuitlapilli (bastón de madera con punta de obsidiana, hace brotar raíces)",
+      "Honda de fibra de maguey (lanza piedras que se convierten en barro)",
+      "Red de henequén (atrapa y hunde ligeramente en el suelo)",
+      "Manopla de jade (golpes que hacen temblar el suelo)"
     ]
   },
   {
-    "name": "Jardinero",
-    "description": "Trabaja con el tiempo largo de las plantas: décadas comprimidas en una poda, generaciones en una semilla. Sabe que todo crece hacia la luz aunque nunca la haya visto.",
+    "name": "Cantor de Mareas (combate)",
+    "dimension_id": "DIM-8214739502846",
+    "description": "Guerrero que entona frecuencias letales. Su voz puede derrumbar islas o reventar tímpanos enemigos.",
     "passive_pool": [
-      "Las plantas bajo su cuidado directo no mueren de causas naturales mientras esté cerca",
-      "Detecta qué le falta a un ser vivo (agua, sol, atención, espacio) con solo mirarlo",
-      "Su presencia hace que las semillas germinan en horas en lugar de días"
+      "Su voz resuena en el vacío del espacio entre cuerdas, por lo que puede ser escuchada incluso sin aire",
+      "Puede imitar el canto de cualquier criatura del archipiélago después de oírlo una vez",
+      "Sus cuerdas vocales son indestructibles; ni el grito más fuerte las daña"
     ],
     "active_pool": [
       {
-        "base": "Injertar dos plantas de entornos incompatibles para crear un híbrido que no debería existir",
+        "base": "Cantar una nota de fractura que rompe las cuerdas bajo los pies de los enemigos, haciéndolos caer al vacío",
         "paths": [
-          "Injerto de memoria — el híbrido absorbe y puede transmitir los recuerdos del suelo donde creció",
-          "Injerto de frontera — el híbrido marca un límite; nada que no sea invitado puede cruzarlo"
+          "Fractura local — solo afecta a una cuerda de hasta diez metros",
+          "Fractura en eco — la nota rebota y afecta a múltiples cuerdas en un radio"
         ]
       },
       {
-        "base": "Acelerar el ciclo vital de un objeto o lugar (lo envejece décadas en minutos)",
+        "base": "Entonar un silbido ultrasónico que aturde a todos los que lo oyen (excepto aliados entrenados)",
         "paths": [
-          "Ciclo completo — el objeto o lugar alcanza su punto de máxima plenitud antes de marchitarse",
-          "Poda selectiva — elige qué aspectos envejecen y cuáles permanecen en su estado original"
+          "Aturdimiento masivo — afecta a un área grande, pero el cantor también se aturde ligeramente",
+          "Aturdimiento selectivo — solo afecta a un objetivo, pero lo deja inconsciente por minutos"
         ]
       },
       {
-        "base": "Plantar una intención en el suelo: quien pise ese terreno sentirá el impulso de completarla",
+        "base": "Cantar una melodía de aceleración que aumenta la velocidad de movimiento de los aliados al plegar el espacio a su alrededor",
         "paths": [
-          "Raíz profunda — la intención dura hasta que alguien la cumple, independientemente del tiempo",
-          "Flor de temporada — la intención es poderosa pero dura solo hasta el próximo amanecer"
+          "Aceleración breve — dura un minuto, pero duplica la velocidad",
+          "Aceleración sostenida — dura diez minutos, pero solo aumenta un 30%"
         ]
       }
+    ],
+    "weapons": [
+      "Caracola marina tallada (amplifica su voz como un altavoz)",
+      "Tambor de guerra portátil (para ritmos de combate)",
+      "Silbato de hueso de pez abisal (emite ultrasonidos)",
+      "Máscara de coral (protege su garganta y proyecta el sonido en un cono)"
     ]
   },
   {
-    "name": "Taxista",
-    "description": "Conoce la ciudad como nadie: sus atajos, sus horarios, sus secretos. Lleva a las personas donde necesitan estar, aunque ellas mismas no lo sepan todavía.",
+    "name": "Rompecuerdas",
+    "dimension_id": "DIM-8214739502846",
+    "description": "Guerrero que usa un tambor de guerra masivo. Cada redoble es un martillo que golpea las cuerdas del espacio.",
     "passive_pool": [
-      "Siempre encuentra la ruta más rápida, incluso en ciudades o lugares que nunca visitó",
-      "Nunca se pierde, aunque el entorno cambie o sea completamente desconocido",
-      "Sabe instintivamente cuándo alguien está a punto de entrar en pánico o tomar una mala decisión"
+      "Puede golpear su tambor sin que el sonido le afecte a él ni a sus aliados cercanos",
+      "Sus brazos tienen la fuerza necesaria para hacer vibrar cuerdas a kilómetros de distancia",
+      "Sabe exactamente qué nota hará caer una cuerda después de probar tres golpes"
     ],
     "active_pool": [
       {
-        "base": "Llevar a un pasajero a donde realmente necesita ir, no a donde pidió",
+        "base": "Redoblar para crear ondas de choque que empujan a los enemigos hacia atrás",
         "paths": [
-          "Destino literal — lo lleva al lugar físico donde resolverá su problema más urgente",
-          "Destino emocional — lo lleva al lugar donde está la persona que más necesita ver"
+          "Onda frontal — empuja a todos en una línea recta",
+          "Onda circular — empuja a todos alrededor, pero con menos fuerza"
         ]
       },
       {
-        "base": "Crear una ruta que no existe en el mapa: un atajo que acorta no el espacio sino el tiempo",
+        "base": "Golpe seco que corta una cuerda limpiamente, haciendo que una isla o plataforma se desplome",
         "paths": [
-          "Ruta exprés — el trayecto tarda lo mismo pero la persona llega habiendo procesado horas de pensamiento",
-          "Ruta larga — el trayecto parece breve pero el mundo exterior avanza varias horas mientras dura"
+          "Corte preciso — la cuerda se rompe en el punto exacto, caída controlada",
+          "Corte explosivo — la cuerda se fragmenta, la isla se desmorona en pedazos"
         ]
       },
       {
-        "base": "Hacer que un viaje sea completamente privado: nadie recuerda haber visto ese taxi ni a sus ocupantes",
+        "base": "Tamborileo rápido que genera una barrera de sonido sólido, deteniendo proyectiles y cargas",
         "paths": [
-          "Invisibilidad de tránsito — aplica solo al vehículo mientras se mueve",
-          "Borrón de ruta — nadie puede recordar el origen ni el destino del viaje, incluidos los pasajeros"
+          "Barrera estática — dura un minuto, inmóvil",
+          "Barrera móvil — se mueve con el rompecuerdas, pero dura solo treinta segundos"
         ]
       }
+    ],
+    "weapons": [
+      "Tambor de guerra de caparazón de tortuga gigante",
+      "Baquetas de hueso de ballena (pesadas y resistentes)",
+      "Coraza resonante (amplifica los golpes de su propio pecho)",
+      "Yunque portátil (para golpear superficies sólidas y crear ondas)"
     ]
   },
   {
-    "name": "Sastre",
-    "description": "Cada prenda es una segunda piel, un argumento, una promesa. Mide sin tocar y cose sin error. Lo que fabrica no solo viste: transforma.",
+    "name": "Cartógrafo de Cuerdas (táctico)",
+    "dimension_id": "DIM-8214739502846",
+    "description": "Especialista en dibujar rutas imposibles. Sus mapas pueden confundir al enemigo o abrir caminos secretos.",
     "passive_pool": [
-      "Intuye las medidas exactas de cualquier persona con solo verla durante un segundo",
-      "Detecta si una prenda fue hecha con intención dañina o con afecto genuino",
-      "Sus costuras nunca se descosen solas; solo se deshacen si él lo decide"
+      "Siempre sabe su posición exacta en el archipiélago, incluso sin referencias",
+      "Puede recordar cualquier ruta que haya dibujado o recorrido una sola vez",
+      "Sus mapas son indestructibles al agua, fuego y desgaste"
     ],
     "active_pool": [
       {
-        "base": "Coser una prenda que protege a quien la usa de una emoción específica (miedo, culpa, vergüenza)",
+        "base": "Dibujar una ruta falsa que hace que quien la siga termine en el punto de partida (bucle infinito)",
         "paths": [
-          "Forro blindado — la protección es total pero la emoción se acumula y se libera al quitarse la prenda",
-          "Tela permeable — filtra la emoción: el portador la siente a la mitad de su intensidad"
+          "Bucle corto — la víctima se da cuenta tras diez minutos",
+          "Bucle largo — puede durar horas; la víctima cree estar avanzando"
         ]
       },
       {
-        "base": "Descosir la 'costura' entre dos personas: cortar el vínculo emocional que las une temporalmente",
+        "base": "Trazar un atajo que conecta dos puntos distantes, permitiendo a los aliados cruzar en segundos",
         "paths": [
-          "Corte limpio — el vínculo desaparece por completo durante 24 horas sin dolor ni rastro",
-          "Deshilachado — el vínculo se debilita progresivamente durante una semana antes de romperse"
+          "Atajo estable — dura una hora, puede usarlo todo el grupo",
+          "Atajo de un solo uso — se desvanece tras el primer viajero"
         ]
       },
       {
-        "base": "Tomar las medidas de un lugar para 'adaptarlo': el espacio se ajusta físicamente a las necesidades de quien lo habita",
+        "base": "Modificar un mapa existente para ocultar una isla entera, haciendo que los navegantes enemigos la rodeen sin verla",
         "paths": [
-          "Talla única — el ajuste beneficia a una sola persona; para el resto el espacio parece igual",
-          "Alta costura — el ajuste es permanente pero requiere que nadie observe el proceso"
+          "Ocultamiento temporal — dura un día",
+          "Ocultamiento permanente — requiere un ritual largo, pero la isla desaparece de todos los mapas"
         ]
       }
+    ],
+    "weapons": [
+      "Pluma de ave marina (traza líneas vibrantes en el aire)",
+      "Tintero de tinta de calamar gigante (indeleble y resonante)",
+      "Brújula de aguja magnética (apunta a la cuerda más cercana)",
+      "Pergamino de piel de pez (imposible de rasgar)"
     ]
   },
   {
-    "name": "Barista",
-    "description": "Prepara lo que la gente necesita, no lo que pide. Lee el estado de ánimo antes de que la persona abra la boca y sirve la respuesta en una taza.",
+    "name": "Tallador de Nubes (guerrero)",
+    "dimension_id": "DIM-3827596041235",
+    "description": "Monje artista que esculpe nubes sólidas en armas y armaduras. Sus creaciones flotan y cortan como el acero.",
     "passive_pool": [
-      "Intuye lo que una persona necesita beber antes de que lo pida, con una precisión perturbadora",
-      "Detecta si alguien está mintiendo por el modo en que sostiene un vaso o taza",
-      "Su presencia reduce el nivel de estrés ambiental de cualquier espacio cerrado"
+      "Puede sostener una nube tallada sin que esta se desmorone, incluso si pesa más que él",
+      "Sus manos están siempre frías para no derretir la espuma mineral",
+      "Sabe qué gas hay en una nube con solo lamerla"
     ],
     "active_pool": [
       {
-        "base": "Preparar una bebida que hace aflorar el recuerdo más honesto del bebedor en los próximos diez minutos",
+        "base": "Tallar un arpón de nube sólida que al impactar libera gas congelante, inmovilizando al objetivo",
         "paths": [
-          "Recuerdo involuntario — el bebedor lo verbaliza sin poder evitarlo",
-          "Recuerdo proyectado — el recuerdo es visible para todos en la habitación como una imagen flotante"
+          "Arpón de hielo — congela y rompe en fragmentos cortantes",
+          "Arpón de niebla — crea una nube densa que ciega"
         ]
       },
       {
-        "base": "Servir algo que conecta emocionalmente a dos personas que lo beben al mismo tiempo",
+        "base": "Crear un escudo de nube que absorbe impactos y se regenera con el viento ambiente",
         "paths": [
-          "Empatía temporal — durante una hora sienten exactamente lo mismo aunque estén separados",
-          "Comprensión mutua — cada uno entiende perfectamente el punto de vista del otro, sin necesidad de hablar"
+          "Escudo ligero — apenas pesa, pero absorbe golpes moderados",
+          "Escudo pesado — pesa como una roca, pero resiste catapultas"
         ]
       },
       {
-        "base": "Crear una bebida que hace que quien la tome no pueda ser recordado por nadie durante el resto del día",
+        "base": "Reesculpir una nube dañada en el campo de batalla, reparando armaduras o armas en segundos",
         "paths": [
-          "Amnesia de fondo — solo quienes no lo conocen previamente no pueden recordarlo",
-          "Presencia fantasma — es recordado pero nadie puede describir ningún rasgo físico suyo"
+          "Reparación rápida — tarda un suspiro, pero la nube queda frágil",
+          "Reparación cuidadosa — tarda un minuto, pero la nube queda más resistente"
         ]
       }
+    ],
+    "weapons": [
+      "Cincel de bambú (para tallar nubes a distancia)",
+      "Martillo de piedra pómez (golpea sin romper la espuma)",
+      "Arpón de nube congelante (arma arrojadiza)",
+      "Mochila de fuelles (para insuflar gas y crear formas rápido)"
     ]
   },
   {
-    "name": "Técnico de Ascensores",
-    "description": "Vive entre pisos. Conoce los espacios que nadie habita: el hueco entre plantas, el momento entre subir y bajar. Experto en transiciones.",
+    "name": "Guardabrisas (defensor)",
+    "dimension_id": "DIM-3827596041235",
+    "description": "Monje que doma las corrientes de aire. Puede desviar tormentas o crear remansos de calma.",
     "passive_pool": [
-      "Siente qué piso 'necesita' una persona antes de que pulse el botón",
-      "Detecta si un espacio ha sido usado para algo que sus ocupantes preferirían ocultar",
-      "Nunca queda atrapado en ningún sitio por más de treinta segundos"
+      "El viento nunca le mueve la ropa; es invisible para el aire",
+      "Puede caminar sobre corrientes ascendentes como si fuera suelo firme",
+      "Sabe el cambio de viento con diez minutos de antelación"
     ],
     "active_pool": [
       {
-        "base": "Detener un ascensor entre pisos para crear un espacio temporalmente fuera del tiempo y del registro",
+        "base": "Crear un remanso de aire quieto alrededor de aliados, protegiéndolos de vientos fuertes y proyectiles ligeros",
         "paths": [
-          "Burbuja de tránsito — el tiempo fuera se detiene; puede durar indefinidamente mientras permanezcan dentro",
-          "Espacio liminal — el lugar existe entre dos realidades; lo dicho dentro no puede ser probado fuera"
+          "Remanso absoluto — ni el viento ni el sonido penetran",
+          "Remanso permeable — solo bloquea ráfagas fuertes"
         ]
       },
       {
-        "base": "Conectar dos plantas que no están físicamente relacionadas: abrir la puerta del tercer piso y que lleve al decimocuarto",
+        "base": "Llamar una corriente ascendente que eleva a los aliados a una nube alta o permite saltar obstáculos",
         "paths": [
-          "Conexión permanente — el desvío dura hasta que él lo deshaga manualmente",
-          "Conexión de emergencia — solo funciona cuando alguien lo necesita urgentemente, no a voluntad"
+          "Ascenso suave — lento pero silencioso",
+          "Ascenso explosivo — rápido pero ruidoso, puede alertar al enemigo"
         ]
       },
       {
-        "base": "Hacer que alguien 'suba' o 'baje' emocionalmente con un trayecto en ascensor: llega al destino en un estado radicalmente distinto",
+        "base": "Desviar una ráfaga de viento enemiga (como flechas de aire o gases) hacia otra dirección",
         "paths": [
-          "Subida — llega calmado, seguro, con claridad sobre lo que debe hacer",
-          "Bajada — llega vaciado de ansiedad pero también de urgencia; le cuesta actuar durante una hora"
+          "Desvío preciso — redirige hacia un objetivo concreto",
+          "Desvío disperso — esparce el ataque en un área amplia, reduciendo su letalidad"
         ]
       }
+    ],
+    "weapons": [
+      "Abanico de plumas de cóndor (para desviar vientos)",
+      "Campana de viento (alerta de cambios de corriente)",
+      "Capa de seda (captura el viento y lo libera a voluntad)",
+      "Bastón con veleta (señala la dirección del viento y puede golpear)"
     ]
   },
   {
-    "name": "Auditor Nocturno",
-    "description": "Trabaja cuando todos duermen. Revisa las cuentas, los registros, las inconsistencias. Todo número es una historia y él sabe cuáles no cuadran.",
+    "name": "Afinador de Fuelles (ingeniero de combate)",
+    "dimension_id": "DIM-3827596041235",
+    "description": "Experto en presión de gas. Puede hacer explotar depósitos o sellar fugas en medio de la batalla.",
     "passive_pool": [
-      "Detecta inconsistencias en cualquier relato o cifra con una sola lectura, sin esfuerzo consciente",
-      "Permanece completamente alerta durante la noche; el sueño nunca lo sorprende",
-      "Recuerda con exactitud fotográfica cualquier documento que haya procesado, aunque sea brevemente"
+      "Sus pulmones inflan un fuelle roto sin esfuerzo",
+      "Siente la presión del gas a cien metros",
+      "Nunca se quema con gas caliente"
     ],
     "active_pool": [
       {
-        "base": "Emitir una 'factura de deudas emocionales' de una persona: el receptor ve con claridad todo lo que debe durante 24 horas",
+        "base": "Sobrecargar un fuelle cercano para que explote en una ráfaga que empuja a los enemigos",
         "paths": [
-          "Auditoría completa — incluye deudas que la persona ni sabía que tenía",
-          "Balance parcial — muestra solo las deudas con una persona específica que él elija"
+          "Ráfaga direccional — empuja a un objetivo donde señale",
+          "Ráfaga circular — empuja todo alrededor, incluyéndose a sí mismo"
         ]
       },
       {
-        "base": "Cuadrar las cuentas de un conflicto: ambas partes sienten que recibieron lo justo, aunque nada haya cambiado materialmente",
+        "base": "Sellar una fuga de gas con un golpe, evitando que se desperdicie y pueda ser usado después",
         "paths": [
-          "Balance cero — la sensación de justicia dura permanentemente pero es puramente subjetiva",
-          "Asiento contable — genera un cambio real y pequeño en cada parte que simbólicamente salda la deuda"
+          "Sellado rápido — dura una hora",
+          "Sellado permanente — requiere concentración total"
         ]
       },
       {
-        "base": "Registrar un evento como 'gasto no recuperable': todos los implicados lo asumen como pérdida y dejan de intentar revertirlo",
+        "base": "Ajustar la presión de una nube para que se vuelva sólida como piedra, creando barricadas instantáneas",
         "paths": [
-          "Amortización — el proceso es gradual; tardan una semana en aceptarlo del todo",
-          "Baja inmediata — la aceptación es instantánea pero produce un duelo breve e inevitable"
+          "Barricada ligera — se puede atravesar con esfuerzo",
+          "Barricada pesada — impenetrable durante una hora"
         ]
       }
+    ],
+    "weapons": [
+      "Fuelles de bambú reforzado (para insuflar o extraer gas)",
+      "Manómetro de bronce (mide la presión, puede lanzarse como dardo)",
+      "Soplete largo (dirige el gas a puntos precisos)",
+      "Maza hueca (llena de gas comprimido, explota al golpear)"
     ]
   },
   {
-    "name": "Agente de Atención",
-    "description": "Ha escuchado todo. Voces furiosas, voces que lloran, voces que mienten y voces que piden ayuda sin saber cómo pedirla. Sabe exactamente qué decir y exactamente cuándo callarse.",
+    "name": "Faraón Transformador (Tiranosaurio)",
+    "dimension_id": "DIM-9472018563720",
+    "description": "Faraón que toca el tambor de cráneo de tiranosaurio y se transforma en la bestia prehistórica más temida.",
     "passive_pool": [
-      "Recuerda con precisión absoluta toda conversación que haya escuchado, aunque fuera de fondo",
-      "Detecta el estado emocional real de una persona por el ritmo y el tono de su voz, no por las palabras",
-      "Puede mantener varias conversaciones simultáneas sin perder hilo en ninguna"
+      "Sus huesos son más densos; las caídas no le rompen",
+      "Puede rugir imitando a un tiranosaurio, aterrando a enemigos débiles",
+      "Siente la presencia de fósiles cercanos"
     ],
     "active_pool": [
       {
-        "base": "Poner a alguien 'en espera': su percepción del tiempo se detiene mientras dura la llamada; el mundo sigue sin ellos",
+        "base": "Transformarse en tiranosaurio durante un minuto: gana tamaño, mordida devastadora y cola arrolladora",
         "paths": [
-          "Espera indefinida — el efecto dura hasta que él decide transferirlos de vuelta",
-          "Música de espera — el sujeto en pausa experimenta el tiempo detenido pero vive una experiencia interna completa"
+          "Transformación controlada — mantiene la conciencia y puede pensar",
+          "Transformación berserker — más fuerza y velocidad, pero actúa por instinto"
         ]
       },
       {
-        "base": "Escalar una situación al 'departamento correcto': redirige un problema hacia la persona exacta que puede resolverlo, aunque esa persona no lo sepa aún",
+        "base": "Golpear el tambor para emitir un rugido sónico que derriba a todos en un radio de veinte metros",
         "paths": [
-          "Escalado urgente — la persona correcta siente una compulsión inmediata e inexplicable de actuar",
-          "Transferencia silenciosa — el conocimiento sobre el problema aparece en la mente del receptor sin que sepa de dónde vino"
+          "Rugido direccional — solo hacia adelante, mayor alcance",
+          "Rugido circular — menos alcance pero afecta a todos alrededor"
         ]
       },
       {
-        "base": "Cerrar un ticket: declarar que un conflicto, problema o situación ha sido resuelto, y que todos los implicados lo sientan así",
+        "base": "Morder a un enemigo y, si lo traga, puede digerirlo lentamente mientras mantiene la transformación",
         "paths": [
-          "Cierre satisfecho — todos quedan conformes aunque nada se haya resuelto realmente",
-          "Cierre con seguimiento — el problema se declara resuelto pero deja un recordatorio que reaparece en 72 horas"
+          "Digerir rápido — el enemigo muere en un minuto, pero el faraón no puede usar otras acciones",
+          "Digerir lento — el enemigo sufre daño constante pero el faraón puede seguir luchando"
         ]
       }
+    ],
+    "weapons": [
+      "Tambor de cráneo de tiranosaurio (desencadena la transformación)",
+      "Baquetas de fémur de hadrosaurio (resonancia perfecta)",
+      "Máscara de hueso con dientes (aumenta el terror del rugido)",
+      "Amuleto de garra (permite una transformación parcial rápida)"
+    ]
+  },
+  {
+    "name": "Faraón Transformador (Espinosaurio)",
+    "dimension_id": "DIM-9472018563720",
+    "description": "Faraón que usa una flauta de vértebra de espinosaurio. Se transforma en un dinosaurio anfibio con gran velocidad en el agua.",
+    "passive_pool": [
+      "Puede contener la respiración bajo el agua durante diez minutos",
+      "Nada el doble de rápido que un humano entrenado",
+      "Sus escamas de espinosaurio le dan resistencia al calor"
+    ],
+    "active_pool": [
+      {
+        "base": "Transformarse en espinosaurio: garras afiladas, cresta dorsal y habilidad para moverse rápido en agua y tierra",
+        "paths": [
+          "Forma anfibia — puede pasar de agua a tierra sin penalización",
+          "Forma acuática — más veloz en agua, más lento en tierra"
+        ]
+      },
+      {
+        "base": "Atacar con la garra del espinosaurio para desgarrar armaduras y escudos",
+        "paths": [
+          "Garra penetrante — ignora la mitad de la protección",
+          "Garra desarmadora — puede arrancar el escudo de las manos del enemigo"
+        ]
+      },
+      {
+        "base": "Sumergirse y crear un remolino que arrastra a los enemigos cercanos bajo el agua",
+        "paths": [
+          "Remolino letal — los enemigos pueden ahogarse si no saben nadar",
+          "Remolino de contención — los atrapa pero no los daña, útil para capturar"
+        ]
+      }
+    ],
+    "weapons": [
+      "Flauta de vértebra de espinosaurio (transformación anfibia)",
+      "Arpón de hueso (para pescar o enganchar enemigos desde el agua)",
+      "Red de fibras de papiro (resistente y ligera)",
+      "Daga de diente de cocodrilo (venenosa para enemigos terrestres)"
+    ]
+  },
+  {
+    "name": "Cazador de Fósiles (explorador)",
+    "dimension_id": "DIM-9472018563720",
+    "description": "Rastreador que localiza huesos cantantes en el desierto. Sabe extraerlos sin dañar su memoria sonora.",
+    "passive_pool": [
+      "Puede oír los fósiles enterrados a metros de profundidad",
+      "Nunca se deshidrata en el desierto",
+      "Sabe la edad exacta de un fósil con solo mirarlo"
+    ],
+    "active_pool": [
+      {
+        "base": "Extraer un fósil intacto en mitad de una tormenta de arena, protegiéndolo con su cuerpo",
+        "paths": [
+          "Extracción rápida — minutos, pero puede dañar el fósil",
+          "Extracción delicada — horas, pero conserva toda la memoria"
+        ]
+      },
+      {
+        "base": "Unir dos fósiles incompletos de la misma especie para crear un instrumento más poderoso",
+        "paths": [
+          "Unión armónica — suena perfecto",
+          "Unión inestable — suena desafinado pero puede emitir dos notas a la vez"
+        ]
+      },
+      {
+        "base": "Marcar un fósil con su símbolo para que solo él pueda hacerlo sonar; otros que lo intenten se aturden",
+        "paths": [
+          "Marca exclusiva — permanente hasta su muerte",
+          "Marca temporal — dura una semana"
+        ]
+      }
+    ],
+    "weapons": [
+      "Pico de excavador (golpea sin dañar fósiles)",
+      "Cepillo de cerdas de camello (limpia arena sin rayar)",
+      "Cuerno de carnero (para llamar a otros cazadores)",
+      "Cuerda de tripa de dinosaurio (resistente y elástica)"
+    ]
+  },
+  {
+    "name": "Lancero de Sal (guerrero vikingo)",
+    "dimension_id": "DIM-1092837465582",
+    "description": "Vikingo que empuña lanzas de sal precipitada que se endurecen al contacto con la sangre. Cada lanza lleva una emoción cristalizada.",
+    "passive_pool": [
+      "Puede lanzar una lanza de sal sin que esta se desmorone en el aire",
+      "Sus manos no se cortan con los cristales de sal",
+      "Sabe qué emoción contiene una lanza por su color (amarga = gris, dulce = rosa, etc.)"
+    ],
+    "active_pool": [
+      {
+        "base": "Lanzar una lanza de sal amarga (traición) que causa una hemorragia interna que dura horas",
+        "paths": [
+          "Hemorragia lenta — el enemigo pierde salud gradualmente",
+          "Hemorragia explosiva — al impactar, la lanza estalla en fragmentos"
+        ]
+      },
+      {
+        "base": "Lanzar una lanza de sal picante (ira) que hace que el objetivo ataque a sus propios aliados durante un breve lapso",
+        "paths": [
+          "Confusión total — el objetivo ataca al más cercano",
+          "Confusión dirigida — el lanzador puede elegir a quién ataca"
+        ]
+      },
+      {
+        "base": "Lanzar una lanza de sal dulce (amor) que, en lugar de dañar, hace que el objetivo no pueda atacar al lanzador durante un minuto (lo ve como amigo)",
+        "paths": [
+          "Encantamiento débil — el objetivo puede atacar a otros aliados",
+          "Encantamiento fuerte — el objetivo protege al lanzador de otros enemigos"
+        ]
+      }
+    ],
+    "weapons": [
+      "Lanzas de sal precipitada (desechables, una por emoción)",
+      "Arpa de cuarzo (para cargar emociones en las lanzas)",
+      "Escudo de sal cristalizada (refleja emociones al bloqueador)",
+      "Cuchillo de sal (para cortes rápidos que inducen emociones)"
+    ]
+  },
+  {
+    "name": "Berserker de Sal",
+    "dimension_id": "DIM-1092837465582",
+    "description": "Vikingo que se autoinflige heridas para mezclar su propia rabia con la sal del océano, volviéndose un torbellino de cristales cortantes.",
+    "passive_pool": [
+      "No siente dolor mientras está en berserker (puede ignorar heridas graves)",
+      "Su sangre se endurece en cristales de sal al contacto con el aire",
+      "Cuanto más herido está, más fuerte se vuelve (hasta un límite)"
+    ],
+    "active_pool": [
+      {
+        "base": "Entrar en furia berserker: durante un minuto, cada golpe suyo lanza fragmentos de sal que hieren a los enemigos cercanos",
+        "paths": [
+          "Furia constante — el daño adicional es bajo pero continuo",
+          "Furia explosiva — al final del minuto, libera una onda de cristales que daña todo a su alrededor"
+        ]
+      },
+      {
+        "base": "Cortarse las manos y arrojar la sangre al suelo para que broten estalagmitas de sal que pinchan a los enemigos",
+        "paths": [
+          "Estalagmitas grandes — daño alto, pero fáciles de esquivar",
+          "Estalagmitas múltiples — muchas pequeñas, área grande"
+        ]
+      },
+      {
+        "base": "Absorber la sal de un cadáver reciente para recuperar salud y aumentar su fuerza temporalmente",
+        "paths": [
+          "Absorción rápida — recupera mucha salud, pero el cadáver se desintegra",
+          "Absorción lenta — recupera poca salud, pero puede usarse varias veces"
+        ]
+      }
+    ],
+    "weapons": [
+      "Hacha de sal sólida (se rompe y regenera con la furia)",
+      "Espinas de sal (se insertan en los brazos para aumentar daño)",
+      "Capa de salmuera (lanza gotas que se endurecen al contacto)",
+      "Cuerno para beber (lleno de salmuera, al beberlo activa el berserker)"
+    ]
+  },
+  {
+    "name": "Lector de Sal (apoyo)",
+    "dimension_id": "DIM-1092837465582",
+    "description": "Vikingo que lee las emociones del océano y puede calmarlas o avivarlas con su arpa de cuarzo.",
+    "passive_pool": [
+      "Puede saborear una pizca de sal y saber qué emoción guarda",
+      "Sabe cuándo una corriente está cargada de una emoción dominante",
+      "Su presencia calma las emociones extremas de quienes están cerca"
+    ],
+    "active_pool": [
+      {
+        "base": "Tocar el arpa para extraer un recuerdo de la sal del lugar y proyectarlo como imagen borrosa, confundiendo al enemigo",
+        "paths": [
+          "Proyección nítida — imagen clara, dura diez segundos",
+          "Proyección sensorial — transmite la emoción del recuerdo"
+        ]
+      },
+      {
+        "base": "Cristalizar su propia emoción en un grano de sal que lanza como proyectil; al impactar, transmite esa emoción",
+        "paths": [
+          "Emoción pura — el objetivo la siente con toda intensidad durante una hora",
+          "Emoción invertida — el objetivo siente la contraria"
+        ]
+      },
+      {
+        "base": "Leer la sal de una persona para saber qué emoción la domina, incluso si intenta ocultarla",
+        "paths": [
+          "Lectura superficial — solo emociones fuertes",
+          "Lectura profunda — detecta emociones sutiles"
+        ]
+      }
+    ],
+    "weapons": [
+      "Arpa de cuarzo (para hacer vibrar la sal)",
+      "Cuenco de salmuera (para beber y potenciar la lectura)",
+      "Púa de hueso (para rasgar el arpa con más fuerza)",
+      "Amatista de sal (guarda una emoción para usar después)"
+    ]
+  },
+  {
+    "name": "Samurái de Alquitrán",
+    "dimension_id": "DIM-7182930415264",
+    "description": "Guerrero que empuña una katana engrasada con Kuroyū. El filo sólido corta cualquier material, y puede volverse gas para esquivar.",
+    "passive_pool": [
+      "Su katana nunca se desafila mientras esté engrasada",
+      "Puede sentir la voluntad del Kuroyū en su arma (si está de humor o rebelde)",
+      "Sus movimientos con la katana son silenciosos"
+    ],
+    "active_pool": [
+      {
+        "base": "Solidificar el filo para cortar cualquier material (metal, piedra, magia) durante diez minutos",
+        "paths": [
+          "Corte absoluto — imparable, pero la katana se calienta y puede dañarse",
+          "Corte selectivo — corta solo lo que desea (ropa sin tocar piel)"
+        ]
+      },
+      {
+        "base": "Volverse gaseoso (intangible) durante unos segundos, esquivando ataques y atravesando obstáculos",
+        "paths": [
+          "Gas rápido — apenas un segundo, útil para esquivar un golpe",
+          "Gas sostenido — hasta cinco segundos, permite atravesar rejas"
+        ]
+      },
+      {
+        "base": "Envolver su katana en una capa de alquitrán pegajoso que, al golpear, inmoviliza al enemigo (lo pega al suelo)",
+        "paths": [
+          "Pegajoso leve — la víctima puede liberarse con fuerza",
+          "Pegajoso tenaz — requiere disolvente o magia para soltarse"
+        ]
+      }
+    ],
+    "weapons": [
+      "Katana con canal para Kuroyū (almacena una dosis)",
+      "Wakizashi gemela (una para corte sólido, otra para gas)",
+      "Frasco de cerámica con Kuroyū líquido (para reabastecer)",
+      "Armadura de escamas de alquitrán (endurece al recibir golpes)"
+    ]
+  },
+  {
+    "name": "Domador de Kuroyū (controlador)",
+    "dimension_id": "DIM-7182930415264",
+    "description": "Especialista que negocia con el petróleo vivo. Puede enfurecerlo para que ataque a los enemigos o calmarlo para que sirva de escudo.",
+    "passive_pool": [
+      "Puede respirar dentro del Kuroyū sin ahogarse",
+      "El Kuroyū nunca le quema ni le mancha",
+      "Siente cualquier masa de Kuroyū en un radio de cien metros"
+    ],
+    "active_pool": [
+      {
+        "base": "Ordenar a una masa de Kuroyū que se solidifique en una forma ofensiva (garras, púas, muro)",
+        "paths": [
+          "Forma obediente — perfecta, dura una hora",
+          "Forma rebelde — tosca, pero dura el doble"
+        ]
+      },
+      {
+        "base": "Enfurecer al Kuroyū de un arma enemiga para que esta ataque a su propio dueño",
+        "paths": [
+          "Furia ciega — ataca al más cercano",
+          "Furia dirigida — el domador elige el objetivo"
+        ]
+      },
+      {
+        "base": "Calmar a un kraken de alquitrán para que deje de atacar, volviéndolo pasivo",
+        "paths": [
+          "Calma profunda — el kraken duerme una hora",
+          "Calma superficial — sigue consciente pero no ataca; se puede negociar"
+        ]
+      }
+    ],
+    "weapons": [
+      "Cetro de obsidiana (concentra la voluntad del domador)",
+      "Campana de bronce (emite frecuencias que calman al Kuroyū)",
+      "Red de fibras vegetales (para contener pequeñas masas rebeldes)",
+      "Aceite esencial de hierbas (atrae o repele al Kuroyū)"
+    ]
+  },
+  {
+    "name": "Shinobi Intangible",
+    "dimension_id": "DIM-7182930415264",
+    "description": "Ninja que se inyecta Kuroyū para volverse gaseoso a voluntad. Perfecto para infiltración y asesinato silencioso.",
+    "passive_pool": [
+      "Su cuerpo es más liviano; cae sin hacer ruido",
+      "Puede deslizarse por rendijas tan estrechas como un dedo",
+      "El Kuroyū que lleva dentro no le duele ni le intoxica"
+    ],
+    "active_pool": [
+      {
+        "base": "Volverse intangible por un minuto, atravesando paredes y suelos, pero no puede atacar en ese estado",
+        "paths": [
+          "Intangibilidad total — atraviesa cualquier materia no mágica",
+          "Intangibilidad parcial — solo el torso, puede atacar con piernas"
+        ]
+      },
+      {
+        "base": "Materializar una daga de alquitrán sólido directamente dentro del cuerpo de un enemigo (requiere contacto previo)",
+        "paths": [
+          "Daga letal — mata al instante si acierta en órgano vital",
+          "Daga de dolor — no mata pero incapacita por minutos"
+        ]
+      },
+      {
+        "base": "Dejar un rastro de gas envenenado al moverse, que afecta a quienes lo respiren",
+        "paths": [
+          "Veneno rápido — causa tos y ceguera temporal",
+          "Veneno lento — causa parálisis gradual"
+        ]
+      }
+    ],
+    "weapons": [
+      "Aguja hueca (para inyectar Kuroyū)",
+      "Daga de alquitrán sólido (se desmaterializa tras usarse)",
+      "Funda de gas (libera una nube al abrirla)",
+      "Zapatos de tela (silenciosos, impregnan veneno en el suelo)"
+    ]
+  },
+  {
+    "name": "Guerrero de Arena (Moldador de combate)",
+    "dimension_id": "DIM-4950182736451",
+    "description": "Descifrador que usa la arena de los libros para crear armas sólidas y escudos en mitad de la batalla.",
+    "passive_pool": [
+      "Puede hacer flotar un puñado de arena sin moverlo, solo con la mirada",
+      "La arena no se le pega a la ropa",
+      "Sabe qué tipo de arena es mejor para cada forma"
+    ],
+    "active_pool": [
+      {
+        "base": "Moldear una espada de arena sólida que corta como el acero pero se deshace al golpear hueso (solo daña tejido blando)",
+        "paths": [
+          "Espada precisa — corta ropa y piel, no mata",
+          "Espada roma — golpea como un mazo"
+        ]
+      },
+      {
+        "base": "Crear un escudo de arena que absorbe impactos y se regenera mientras haya arena cerca",
+        "paths": [
+          "Escudo ligero — apenas pesa, resiste flechas",
+          "Escudo pesado — pesa como piedra, resiste catapultas"
+        ]
+      },
+      {
+        "base": "Lanzar una ráfaga de arena afilada que ciega y corta a los enemigos en un cono",
+        "paths": [
+          "Ráfaga amplia — afecta a muchos, daño bajo",
+          "Ráfaga concentrada — daño alto, un solo objetivo"
+        ]
+      }
+    ],
+    "weapons": [
+      "Frasco de arena de batalla (con memoria de combates pasados)",
+      "Guanteletes con canal de viento (para moldear rápido)",
+      "Cuchillo de arena (se deshace tras un corte)",
+      "Mochila de pergaminos (almacena diferentes tipos de arena)"
+    ]
+  },
+  {
+    "name": "Descifrador de Viento (apoyo ofensivo)",
+    "dimension_id": "DIM-4950182736451",
+    "description": "Especialista en leer libros de arena para proyectar hologramas que confunden al enemigo o revelan sus secretos.",
+    "passive_pool": [
+      "Puede contener la respiración diez minutos",
+      "Sabe la dirección del viento en todo momento",
+      "Nunca estornuda sobre un libro"
+    ],
+    "active_pool": [
+      {
+        "base": "Soplar un libro para proyectar el holograma de un ejército falso que asusta y atrae a los enemigos",
+        "paths": [
+          "Ejército realista — parece sólido, puede sonar",
+          "Ejército fantasma — semitransparente, pero cubre más área"
+        ]
+      },
+      {
+        "base": "Inhalar la arena de un libro para grabar en su memoria un evento útil (por ejemplo, la contraseña de una puerta)",
+        "paths": [
+          "Memoria vívida — recuerda con detalle, pero puede confundirlo con su vida",
+          "Memoria fría — recuerda los hechos sin emociones"
+        ]
+      },
+      {
+        "base": "Soplar un libro hacia un enemigo para que la arena lo envuelva y le muestre su peor recuerdo, aturdiéndolo",
+        "paths": [
+          "Aturdimiento breve — dura un minuto",
+          "Aturdimiento profundo — el enemigo queda catatónico hasta que alguien lo sacuda"
+        ]
+      }
+    ],
+    "weapons": [
+      "Pajilla de bambú (para soplar con precisión)",
+      "Máscara de filtro (protege de la arena al inhalar)",
+      "Ventilador de mano (para desviar el viento no deseado)",
+      "Lámpara de aceite (ilumina los hologramas para hacerlos más reales)"
+    ]
+  },
+  {
+    "name": "Conservador de Granos (defensor de la biblioteca)",
+    "dimension_id": "DIM-4950182736451",
+    "description": "Guardián que evita que los libros de arena se mezclen o se pierdan. Puede 'congelar' la arena en su lugar.",
+    "passive_pool": [
+      "Puede contar los granos de un libro con solo mirar",
+      "Sus dedos no dañan los cristales de arena",
+      "Sabe si un grano falta o está de más"
+    ],
+    "active_pool": [
+      {
+        "base": "Congelar la arena de un libro abierto, impidiendo que se mueva o sea soplada (protección contra descifradores hostiles)",
+        "paths": [
+          "Congelamiento total — la arena no se puede mover por una hora",
+          "Congelamiento parcial — solo impide que se forme hologramas, pero se puede soplar"
+        ]
+      },
+      {
+        "base": "Separar dos tipos de arena mezcladas (por ejemplo, un libro contaminado) en cuestión de segundos",
+        "paths": [
+          "Separación rápida — restaura el libro original",
+          "Separación creativa — puede mezclarlas a propósito para crear un libro híbrido"
+        ]
+      },
+      {
+        "base": "Crear una barrera de granos flotantes que desvía proyectiles y atrapa a los intrusos (como arenas movedizas)",
+        "paths": [
+          "Barrera defensiva — desvía flechas y lanzas",
+          "Barrera trampa — atrapa a quien la toca, hundiéndolo hasta la cintura"
+        ]
+      }
+    ],
+    "weapons": [
+      "Pincel de pelo de camello (para recolocar granos)",
+      "Tamiz de bronce (para separar mezclas)",
+      "Frasco de vidrio soplado (para almacenar arena congelada)",
+      "Cinta de seda (marca libros prohibidos)"
+    ]
+  },
+  {
+    "name": "Fractal Divisor (especialista en fisión)",
+    "dimension_id": "DIM-6029384756102",
+    "description": "Fractal que ha perfeccionado el arte de dividirse en múltiples copias conscientes para dominar el campo de batalla.",
+    "passive_pool": [
+      "Puede dividirse en hasta cinco fragmentos sin perder conciencia",
+      "Cada fragmento puede pensar y actuar de forma independiente",
+      "Si un fragmento muere, los demás no sienten dolor"
+    ],
+    "active_pool": [
+      {
+        "base": "Dividirse en dos copias idénticas durante una hora; cada una tiene la mitad de fuerza pero la misma inteligencia",
+        "paths": [
+          "División equilibrada — ambas iguales",
+          "División desigual — una fuerte (70%) y otra débil (30%), útil para distraer"
+        ]
+      },
+      {
+        "base": "Reunir todos los fragmentos en un solo cuerpo, recuperando fuerza total y curando heridas leves",
+        "paths": [
+          "Reunión rápida — tarda un segundo, pero gasta energía",
+          "Reunión cuidadosa — tarda un minuto, pero cura heridas graves"
+        ]
+      },
+      {
+        "base": "Enviar un fragmento pequeño a espiar o activar una trampa, mientras el resto se queda a salvo",
+        "paths": [
+          "Fragmento explorador — muy pequeño, casi invisible",
+          "Fragmento kamikaze — pequeño pero puede congelarse al explotar"
+        ]
+      }
+    ],
+    "weapons": [
+      "Cuchillas de hielo (cada fragmento puede llevar una)",
+      "Red de escarcha (atrapar enemigos para dividirse con calma)",
+      "Núcleo de repuesto (un trozo de hielo vivo que ayuda a regenerar fragmentos perdidos)",
+      "Silbato de resonancia (para coordinarse entre fragmentos)"
+    ]
+  },
+  {
+    "name": "Fractal Unificador (superconciencia)",
+    "dimension_id": "DIM-6029384756102",
+    "description": "Fractal que ha aprendido a fusionar fragmentos de distintos individuos, creando entidades más poderosas (o una mente colmena).",
+    "passive_pool": [
+      "Puede comunicarse telepáticamente con otros Fractales a distancia",
+      "Siente cuándo dos fragmentos son compatibles para fusionarse",
+      "Su núcleo de agua vital es más grande de lo normal"
+    ],
+    "active_pool": [
+      {
+        "base": "Fusionar dos fragmentos de aliados diferentes en un solo ser temporal (más fuerte, pero con doble conciencia)",
+        "paths": [
+          "Fusión armónica — el ser combinado obedece a ambos aliados",
+          "Fusión dominante — uno de los dos controla el cuerpo"
+        ]
+      },
+      {
+        "base": "Fusionar un fragmento enemigo con uno aliado para 'contaminar' su conciencia y volverlo leal",
+        "paths": [
+          "Conversión rápida — el enemigo cambia de bando al instante",
+          "Conversión lenta — el enemigo duda y puede traicionar después"
+        ]
+      },
+      {
+        "base": "Absorber fragmentos muertos para ganar sus recuerdos y habilidades temporalmente",
+        "paths": [
+          "Absorción completa — gana todas las habilidades del fragmento",
+          "Absorción selectiva — elige una habilidad específica"
+        ]
+      }
+    ],
+    "weapons": [
+      "Cetro de hielo fractal (para canalizar fusiones)",
+      "Cuenco de agua vital (para mantener la fusión estable)",
+      "Cadenas de escarcha (inmovilizan a los fragmentos que se van a fusionar)",
+      "Espejo de hielo (para ver la compatibilidad de fragmentos)"
+    ]
+  },
+  {
+    "name": "Fractal Resonante (comunicador de combate)",
+    "dimension_id": "DIM-6029384756102",
+    "description": "Fractal que usa vibraciones de sus facetas para aturdir, comunicarse a larga distancia o detectar enemigos ocultos.",
+    "passive_pool": [
+      "Puede enviar mensajes vibracionales a otros Fractales en un radio de un kilómetro",
+      "Siente las vibraciones del suelo y del hielo, detectando movimientos",
+      "Su propio zumbido puede volverse molesto para los enemigos"
+    ],
+    "active_pool": [
+      {
+        "base": "Emitir una vibración de alta frecuencia que aturde a los enemigos cercanos (no fractales) durante segundos",
+        "paths": [
+          "Aturdimiento corto — apenas un parpadeo, pero repite cada pocos segundos",
+          "Aturdimiento largo — un solo pulso que deja atontado por un minuto"
+        ]
+      },
+      {
+        "base": "Resonar a baja frecuencia para hacer vibrar el hielo del suelo y crear grietas que ralentizan a los enemigos",
+        "paths": [
+          "Grietas profundas — pueden atrapar extremidades",
+          "Grietas superficiales — solo dificultan el movimiento"
+        ]
+      },
+      {
+        "base": "Usar un pulso de resonancia para localizar a todos los Fractales (amigos y enemigos) en un radio de quinientos metros",
+        "paths": [
+          "Localización precisa — muestra posición exacta",
+          "Localización vaga — solo dirección y distancia aproximada"
+        ]
+      }
+    ],
+    "weapons": [
+      "Diapasón de hielo (amplifica las vibraciones)",
+      "Tambor de membrana de hielo (para emitir pulsos más potentes)",
+      "Cuerno de carámbano (proyecta el zumbido a distancia)",
+      "Collar de cascabeles de hielo (crea un campo de vibración constante)"
     ]
   }
 ]
