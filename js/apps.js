@@ -1209,7 +1209,8 @@ async function loadApp(name, el, data) {
                             : ""}
                         `;
 
-                        Tooltip.bind(item, d.description || d.name);
+                        // Tooltip: mostrar tagline si existe, sino descripción
+                        Tooltip.bind(item, d.tagline || d.description || d.name);
 
                         item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
                         item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
@@ -1333,7 +1334,7 @@ async function loadApp(name, el, data) {
             const mdesc = mbtiDesc(h.mbti);
             if (cdesc) Tooltip.bind(viewer.querySelector("#fv-class"), cdesc);
             if (mdesc) Tooltip.bind(viewer.querySelector("#fv-mbti"), mdesc);
-            if (hunterDim && viewer.querySelector("#fv-dim")) Tooltip.bind(viewer.querySelector("#fv-dim"), hunterDim.description || "");
+            if (hunterDim && viewer.querySelector("#fv-dim")) Tooltip.bind(viewer.querySelector("#fv-dim"), hunterDim.tagline || hunterDim.description || "");
             if (tt("concepts") && viewer.querySelector("#fv-concepts-h")) Tooltip.bind(viewer.querySelector("#fv-concepts-h"), tt("concepts"));
             if (tt("function")  && viewer.querySelector("#fv-fn")) Tooltip.bind(viewer.querySelector("#fv-fn"), tt("function"));
             if (aeText !== null && tt("aesthetic") && viewer.querySelector("#fv-ae")) Tooltip.bind(viewer.querySelector("#fv-ae"), tt("aesthetic"));
@@ -1425,19 +1426,19 @@ async function loadApp(name, el, data) {
             // Render suggested classes with expandable details
             if (suggestedClassObjs.length > 0) {
                 const classList = viewer.querySelector("#dim-class-list");
-                classList.className = "dim-class-list"; // asegurar clase
+                classList.className = "dim-class-list";
                 suggestedClassObjs.forEach(cls => {
                     // Build active skill tree HTML
                     const activeTreeHtml = (cls.active_pool && cls.active_pool.length > 0)
                         ? renderSkillTreeHTML(cls.active_pool[0])
                         : `<div class="skill-node" style="color:var(--text-muted); font-style:italic;">Sin habilidad activa definida.</div>`;
 
-                    // Weapons list
+                    // Weapons list (unified class weapons-list)
                     const weapons = cls.weapons || [];
                     const weaponsHtml = weapons.length
                         ? `<div>
-                   <h4 class="class-section-title">⚔️ Armas / Herramientas</h4>
-                   <ul class="class-weapons-list">
+                   <h4 class="class-section-title">Armas / Herramientas</h4>
+                   <ul class="weapons-list">
                        ${weapons.map(w => `<li>${escapeHtml(w)}</li>`).join("")}
                    </ul>
                </div>`
@@ -1447,7 +1448,7 @@ async function loadApp(name, el, data) {
                     const passives = cls.passive_pool || [];
                     const passivesHtml = passives.length
                         ? `<div>
-                   <h4 class="class-section-title">🌀 Pasivas</h4>
+                   <h4 class="class-section-title">Pasivas</h4>
                    <ul class="class-passives-list">
                        ${passives.map(p => `<li>${escapeHtml(p)}</li>`).join("")}
                    </ul>
@@ -1470,7 +1471,7 @@ async function loadApp(name, el, data) {
             <div class="class-description">${escapeHtml(cls.description)}</div>
             ${passivesHtml}
             <div style="margin-top: 10px;">
-                <h4 class="class-section-title">⚡ Habilidad Activa</h4>
+                <h4 class="class-section-title">Habilidad Activa</h4>
                 ${activeTreeHtml}
             </div>
             ${weaponsHtml}
