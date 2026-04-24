@@ -824,6 +824,7 @@ h3[data-tooltip] {
 .class-card summary .arrow {
     font-size: 14px;
     transition: transform 0.05s;
+    padding-right: 5px;
 }
 
 .class-card[open] summary .arrow {
@@ -989,4 +990,44 @@ h3[data-tooltip] {
     font-size: 10px;
     color: var(--text-muted);
     margin-top: 4px;
+}
+
+/* Para todos los summary que usan nuestra flecha manual */
+summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+summary::-webkit-details-marker {
+    display: none;
+}
+summary::marker {
+    display: none;
+    content: '';
+}
+
+/* Para los enemy-card (si no tienen clase específica, créala) */
+.enemy-card summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+.enemy-card summary::-webkit-details-marker {
+    display: none;
+}
+.enemy-card summary::marker {
+    display: none;
+}
+
+summary span.arrow {
+    margin-right: 2px; 
+}
+
+.arrow {
+    display: inline-block;
+    width: 1.2em;
+    text-align: center;
 }

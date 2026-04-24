@@ -4,8 +4,8 @@
 
 const WM = (() => {
 
-    const DEFAULT_W  = 780;
-    const DEFAULT_H  = 600;
+    const DEFAULT_W  = 860;
+    const DEFAULT_H  = 650;
     const TASKBAR_H  = 44;
     const MARGIN     = 10;
 
