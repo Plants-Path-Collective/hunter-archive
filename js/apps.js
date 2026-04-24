@@ -343,6 +343,7 @@ async function loadApp(name, el, data) {
                 images: [],
                 stats: { ...DEFAULT_STATS },
                 weapon: null
+                // NOTA: no se asigna nombre aquí; se hará en el Editor
             };
 
             // Result panel
@@ -432,7 +433,8 @@ async function loadApp(name, el, data) {
                     huntersList.forEach(h => {
                         const opt = document.createElement("option");
                         opt.value = h.id;
-                        opt.textContent = `${h.id} — ${h.class} (${h.mbti})`;
+                        const displayName = h.name ? `${h.name} (${h.id})` : h.id;
+                        opt.textContent = `${displayName} — ${h.class} (${h.mbti})`;
                         selectEl.appendChild(opt);
                     });
                 }
@@ -455,7 +457,8 @@ async function loadApp(name, el, data) {
                     const previewDiv = el.querySelector("#selectorPreview");
                     previewDiv.innerHTML = `
                         <div class="panel">
-                            <h3>${escapeHtml(displayHunter.id)}</h3>
+                            <h3>${escapeHtml(displayHunter.name || displayHunter.id)}</h3>
+                            <p><b>ID:</b> ${escapeHtml(displayHunter.id)}</p>
                             <p><b id="sel-class">${escapeHtml(displayHunter.class)}</b> &nbsp;—&nbsp; <span id="sel-mbti">${escapeHtml(displayHunter.mbti)}</span></p>
                             <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(displayHunter.gender || "")}</p>
                             ${dimEntry ? `<div style="margin:8px 0; padding:6px 10px; background:#0a0c10; border-left:3px solid var(--accent-primary);"><div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">DIMENSIÓN DE ORIGEN</div><span id="sel-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span></div>` : ""}
@@ -542,6 +545,8 @@ async function loadApp(name, el, data) {
         if (!Array.isArray(h.active.paths)) h.active.paths = [];
         if (!h.stats) h.stats = { ...DEFAULT_STATS };
         if (h.weapon === undefined) h.weapon = null;
+        // Asegurar que tenga campo name (si no existe, se asigna el id como fallback)
+        if (!h.name) h.name = "";
         const isNewSchema = h.dimension_id !== undefined && h.dimension_id !== null;
         const dimEntry = isNewSchema ? getDim(h.dimension_id) : null;
         const conceptsFormHTML = isNewSchema ? `
@@ -566,7 +571,12 @@ async function loadApp(name, el, data) {
         el.innerHTML = `
         <div class="split split-30-70">
             <div class="stack">
-                <h3>${escapeHtml(h.id)}</h3>
+                <h3>Editor de Hunter</h3>
+                <div class="panel">
+                    <label>Nombre del Hunter</label>
+                    <input type="text" id="hunterName" placeholder="Ej: Typlon" value="${escapeHtml(h.name)}">
+                    <div style="font-size:9px; color:var(--text-muted); margin-top:2px;">ID: ${escapeHtml(h.id)}</div>
+                </div>
                 <div class="panel">
                     <label>Clase</label>
                     <select id="classSelect"></select>
@@ -677,6 +687,8 @@ async function loadApp(name, el, data) {
         if (isNewSchema && dimEntry && el.querySelector("#ed-dim-name")) Tooltip.bind(el.querySelector("#ed-dim-name"), dimEntry.description || "");
 
         function build() {
+            const name = el.querySelector("#hunterName").value.trim();
+            const finalName = name || "";
             const paths = [el.querySelector("#active-path0").value.trim(), el.querySelector("#active-path1").value.trim()].filter(Boolean);
             let weapon = null;
             const weaponVal = el.querySelector("#weaponSelect").value;
@@ -687,6 +699,7 @@ async function loadApp(name, el, data) {
             }
             const built = {
                 ...h,
+                name: finalName,
                 class: classSelect.value,
                 description: el.querySelector("#desc").value,
                 images: el.querySelector("#imgs").value.split("\n").map(v => v.trim()).filter(Boolean),
@@ -716,6 +729,7 @@ async function loadApp(name, el, data) {
 
         function render() {
             const d = build();
+            const displayName = d.name || d.id;
             const fnText = d.concepts?.[0] || "—";
             let aeText = null, anText;
             if (isNewSchema) { anText = d.concepts?.[1] || "—"; } else { aeText = d.concepts?.[1] || "—"; anText = d.concepts?.[2] || "—"; }
@@ -732,7 +746,8 @@ async function loadApp(name, el, data) {
             const stats = d.stats || DEFAULT_STATS;
             el.querySelector("#preview").innerHTML = `
             <div class="panel">
-                <h3>${escapeHtml(d.id)}</h3>
+                <h3>${escapeHtml(displayName)}</h3>
+                <div style="font-size:9px; color:var(--text-muted); margin-bottom:6px;">ID: ${escapeHtml(d.id)}</div>
                 <div style="display:grid; grid-template-columns:220px 1fr; gap:6px; margin-top:6px;">
                     <div class="panel">${d.images[0] ? `<img src="${escapeHtml(d.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div style="height:200px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`}</div>
                     <div class="panel">
@@ -815,7 +830,8 @@ async function loadApp(name, el, data) {
                         item.style.cssText = `padding:5px 14px 5px 28px; cursor:pointer; font-size:10px; font-family:monospace; letter-spacing:0.3px; color:${isActive ? "var(--accent-warning)" : "var(--text-muted)"}; background:${isActive ? "#1a1d26" : "transparent"}; border-left:2px solid ${isActive ? "var(--accent-warning)" : "transparent"}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;`;
                         item.title = h.id;
                         const dimInfo = h.dimension_id ? getDim(h.dimension_id) : null;
-                        item.innerHTML = `<span style="color:var(--accent-primary); font-size:9px;">◆</span><span style="overflow:hidden; text-overflow:ellipsis;">${escapeHtml(h.id)}</span>`;
+                        const displayText = h.name ? `${h.name} (${h.id})` : h.id;
+                        item.innerHTML = `<span style="color:var(--accent-primary); font-size:9px;">◆</span><span style="overflow:hidden; text-overflow:ellipsis;">${escapeHtml(displayText)}</span>`;
                         Tooltip.bind(item, dimInfo ? `${h.class} — ${dimInfo.name}` : (h.class || h.id));
                         item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
                         item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
@@ -921,7 +937,8 @@ async function loadApp(name, el, data) {
             }
             viewer.innerHTML = `
             <div class="panel">
-                <h3>${escapeHtml(h.id)}</h3>
+                <h3>${escapeHtml(h.name || h.id)}</h3>
+                <div style="font-size:9px; color:var(--text-muted); margin-bottom:8px;">ID: ${escapeHtml(h.id)}</div>
                 <div style="display:grid; grid-template-columns:200px 1fr; gap:10px; margin-top:8px;">
                     <div class="panel" style="padding:8px;">${h.images?.[0] ? `<img src="${escapeHtml(h.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div style="height:180px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`}</div>
                     <div class="panel">
@@ -1022,7 +1039,8 @@ async function loadApp(name, el, data) {
                 related.forEach(h => {
                     const row = document.createElement("div");
                     row.style.cssText = `display:flex; align-items:center; gap:8px; padding:6px 10px; background:#0d0f14; border:1px solid var(--border-light); cursor:pointer; transition:background 0.05s;`;
-                    row.innerHTML = `<span class="concept-label" style="flex-shrink:0;">${escapeHtml(h.class)}</span><span style="font-family:monospace; font-size:11px; color:var(--text-secondary);">${escapeHtml(h.id)}</span><span style="font-size:10px; color:var(--text-muted); margin-left:auto;">${escapeHtml(h.mbti)} · ${escapeHtml(h.gender || "")}</span><span style="font-size:10px; color:var(--accent-primary);">→</span>`;
+                    const hunterDisplayName = h.name ? `${h.name} (${h.id})` : h.id;
+                    row.innerHTML = `<span class="concept-label" style="flex-shrink:0;">${escapeHtml(h.class)}</span><span style="font-family:monospace; font-size:11px; color:var(--text-secondary);">${escapeHtml(hunterDisplayName)}</span><span style="font-size:10px; color:var(--text-muted); margin-left:auto;">${escapeHtml(h.mbti)} · ${escapeHtml(h.gender || "")}</span><span style="font-size:10px; color:var(--accent-primary);">→</span>`;
                     row.addEventListener("mouseenter", () => row.style.background = "#1a1d26");
                     row.addEventListener("mouseleave", () => row.style.background = "#0d0f14");
                     row.onclick = () => {
@@ -1093,7 +1111,7 @@ async function loadApp(name, el, data) {
         <div class="panel">
             <h3>Hunter Association — Correo Interno</h3>
             <div class="panel" style="margin-top:8px;"><p><b>De:</b> Hunter Association — Terminal de Control</p><p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.0)</p></div>
-            <div class="panel" style="margin-top:8px; line-height:1.75;"><p>Operador,<br><br>El flujo de trabajo es el siguiente:<br><br><b>1. BUSCADOR</b><br>Selecciona Género y MBTI. La Clase se genera automáticamente según la Dimensión de Origen (o aleatoria si no hay sugerencias).<br>Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN), una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase generada.<br><br><b>2. DIMENSIONES DE ORIGEN</b><br>Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br><b>3. CLASES</b><br>Las clases no son roles de combate: son oficios cotidianos.<br>Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>El Buscador solo usa las habilidades de la clase generada, nunca un pool genérico.<br><br><b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>Las rutas son expansiones o variaciones de la base, definidas por clase.<br>Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br><b>5. EDITOR</b><br>Modifica descripción, conceptos (FN + AN), habilidades, imágenes, estadísticas, y además puede <b>cambiar la clase</b> y <b>seleccionar un arma</b> de las disponibles para esa clase.<br>La Dimensión de Origen es de solo lectura.<br>Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>. Las estadísticas se guardan automáticamente en localStorage.<br><br><b>6. ARCHIVOS DE DATOS</b><br><code>data/data.json</code> — Géneros, MBTI y tooltips de atributos.<br><code>data/classes.json</code> — Clases con sus pools de habilidades y armas.<br><code>data/concepts.json</code> — Organizado por dimensión (funciones y anomalías temáticas).<br><code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br><code>data/files.json</code> — Hunters registrados.<br><code>data/elemental_types.json</code> — Tipos elementales y criaturas.<br><br><b>Glosario de badges:</b><br>&nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>&nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br><b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>— Hunter Association</p></div>
+            <div class="panel" style="margin-top:8px; line-height:1.75;"><p>Operador,<br><br>El flujo de trabajo es el siguiente:<br><br><b>1. BUSCADOR</b><br>Selecciona Género y MBTI. La Clase se genera automáticamente según la Dimensión de Origen (o aleatoria si no hay sugerencias).<br>Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN), una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase generada.<br><br><b>2. DIMENSIONES DE ORIGEN</b><br>Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br><b>3. CLASES</b><br>Las clases no son roles de combate: son oficios cotidianos.<br>Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>El Buscador solo usa las habilidades de la clase generada, nunca un pool genérico.<br><br><b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>Las rutas son expansiones o variaciones de la base, definidas por clase.<br>Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br><b>5. EDITOR</b><br>Modifica el nombre, descripción, conceptos (FN + AN), habilidades, imágenes, estadísticas, clase y arma.<br>La Dimensión de Origen es de solo lectura.<br>Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>. Las estadísticas se guardan automáticamente en localStorage.<br><br><b>6. ARCHIVOS DE DATOS</b><br><code>data/data.json</code> — Géneros, MBTI y tooltips de atributos.<br><code>data/classes.json</code> — Clases con sus pools de habilidades y armas.<br><code>data/concepts.json</code> — Organizado por dimensión (funciones y anomalías temáticas).<br><code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br><code>data/files.json</code> — Hunters registrados.<br><code>data/elemental_types.json</code> — Tipos elementales y criaturas.<br><br><b>Glosario de badges:</b><br>&nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>&nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br><b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>— Hunter Association</p></div>
         </div>`;
     }
 }
