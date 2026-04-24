@@ -31,6 +31,54 @@
       "magicdefense": 10,
       "evasion": 5,
       "accuracy": 100
+    },
+    "weapon": {
+      "name": "Tambor de membrana de hielo",
+      "description": "Pequeño tambor con membrana de hielo flexible, para emitir pulsos más potentes",
+      "type": "herramienta",
+      "damage": 4,
+      "effect": "pulsos pueden romper objetos frágiles"
+    }
+  },
+  {
+    "id": "H-1777006969292",
+    "gender": "Masculino",
+    "class": "Domador de Kuroyū (controlador)",
+    "mbti": "Explorador",
+    "dimension_id": "DIM-7182930415264",
+    "concepts": [
+      "Shinobi intangible que se vuelve gas para atravesar muros",
+      "Su piel nunca se mancha con alquitrán; resbala como agua"
+    ],
+    "passive": "El Kuroyū nunca le quema ni le mancha.",
+    "active": {
+      "base": "Enfurecer arma enemiga: hace que ataque a su dueño, 15 daño (5s).",
+      "paths": [
+        "Furia ciega: ataca al más cercano (5s).",
+        "Furia dirigida: eliges objetivo (5s)."
+      ]
+    },
+    "description": "Renjiro es un joven adulto de espíritu explorador: adaptable hasta lo impredecible, impulsivo por naturaleza y temerario por necesidad. En el Imperio de las Mareas Negras —un archipiélago donde el Kuroyū no es brea fósil sino un organismo líquido semi-inteligente— todos aprenden a respetar a esa criatura de alquitrán que puede solidificarse en katanas, volverse gas inflamable o bombear castillos enteros como relojes hidráulicos. Pero Renjiro nació con una anomalía: el Kuroyū resbala por su piel sin quemarlo, sin poseerlo, sin volverlo intangible como hacen los shinobis con sus inyecciones. Esta inmunidad lo convirtió en un marginado desde niño. Sus travesuras provocaron dos incidentes donde el alquitrán atacó a su aldea, por lo que sus padres lo entregaron a un laudero ciego, quien le regaló una shakuhachi de bambú. Con ella aprendió que ciertas notas calman la furia del Kuroyū, mientras otras lo avivan para moldearlo en armas efímeras.\n\nCuando el shogun —dueño de un kraken de alquitrán vivo— quiso reclutarlo como arma única, Renjiro huyó. Hoy vaga por el archipiélago como ronin voluntario, durmiendo en santuarios rotos y ayudando a aldeas con \"Kuroyū salvaje\". Cobra en arroz y sake, y nunca se queda más de tres días. Su estilo de combate es errático: toca la pieza \"Corriente Violenta\" mientras el alquitrán se retuerce en látigos o resbala en el suelo para derribar enemigos. Una nota desafinada hace que el Kuroyū se vuelva contra él, pero al no poder quemarlo, solo lo deja embarrado. Lleva una campana de bronce cuyo triple sonido hace retirarse al organismo líquido sin que él sepa por qué. Renjiro busca a otro inmune como él, aunque no sabe si es para compartir su suerte o para confirmar que está solo en el mundo.",
+    "images": [
+      "https://i.imgur.com/aGDTisM.jpg"
+    ],
+    "stats": {
+      "hp": 20,
+      "mp": 10,
+      "speed": 10,
+      "strength": 10,
+      "magicpower": 10,
+      "defense": 10,
+      "magicdefense": 10,
+      "evasion": 5,
+      "accuracy": 5
+    },
+    "weapon": {
+      "name": "Campana de bronce",
+      "description": "Campana pequeña de bronce, emite frecuencias que calman al Kuroyū",
+      "type": "herramienta",
+      "damage": 2,
+      "effect": "pacifica a un enjambre de Kuroyū"
     }
   }
 ]
