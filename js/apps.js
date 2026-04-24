@@ -277,9 +277,6 @@ async function loadApp(name, el, data) {
                 <div class="panel" style="margin-top:6px">
                     <label>Género</label>
                     <select id="gender"></select>
-                    <label id="lbl-class">Clase</label>
-                    <select id="class"></select>
-                    <div id="class-hint" class="field-hint"></div>
                     <label id="lbl-mbti">MBTI</label>
                     <select id="mbti"></select>
                     <div id="mbti-hint" class="field-hint"></div>
@@ -304,26 +301,7 @@ async function loadApp(name, el, data) {
         };
         fillSelect("gender", CONFIG.genders);
         fillSelect("mbti",   CONFIG.mbti);
-        const classSelect = el.querySelector("#class");
-        const classHint   = el.querySelector("#class-hint");
-        refreshClassSelect(classSelect, classHint, null);
-        const updateClassHint = () => {
-            const d = classDesc(classSelect.value);
-            classHint.textContent = d ? "↳ " + d : "";
-        };
-        classSelect.addEventListener("change", updateClassHint);
-        Tooltip.bindDynamic(classSelect, () => {
-            const cls = getClass(classSelect.value);
-            if (!cls) return classDesc(classSelect.value);
-            let tip = cls.description || "";
-            const exPassive = cls.passive_pool?.[0];
-            const exActive  = cls.active_pool?.[0]?.base;
-            if (exPassive) tip += `\n\nPasiva: "${exPassive}"`;
-            if (exActive)  tip += `\nActiva: "${exActive}"`;
-            return tip;
-        });
-        if (tt("class")) Tooltip.bind(el.querySelector("#lbl-class"), tt("class"));
-        updateClassHint();
+
         const mbtiSelect = el.querySelector("#mbti");
         const mbtiHint   = el.querySelector("#mbti-hint");
         const updateMbtiHint = () => {
@@ -338,15 +316,14 @@ async function loadApp(name, el, data) {
         el.querySelector("#generate").onclick = () => {
             const dimEntry = dims.length ? rand(dims) : null;
             const suggested = dimEntry?.suggested_classes || [];
-            const userClass = classSelect.value;
-            const isUserClassSuggested = suggested.length === 0 || suggested.includes(userClass);
-            let chosenClass = userClass;
-            let classAutoAssigned = false;
-            if (!isUserClassSuggested && suggested.length > 0) {
+            let chosenClass;
+            if (suggested.length > 0) {
                 const validClasses = CLASSES.filter(c => suggested.includes(c.name));
-                chosenClass = validClasses.length > 0 ? rand(validClasses).name : userClass;
-                classAutoAssigned = chosenClass !== userClass;
+                chosenClass = validClasses.length > 0 ? rand(validClasses).name : (CLASSES.length ? rand(CLASSES).name : "Clase por defecto");
+            } else {
+                chosenClass = CLASSES.length ? rand(CLASSES).name : "Clase por defecto";
             }
+
             const { passivePool, activePool } = getClassSkills(chosenClass);
             const passive = rand(passivePool);
             const activeEntry = rand(activePool);
@@ -364,16 +341,12 @@ async function loadApp(name, el, data) {
                 active: { base: activeEntry.base, paths: activePaths },
                 description: "",
                 images: [],
-                stats: { ...DEFAULT_STATS }   // default stats
+                stats: { ...DEFAULT_STATS },
+                weapon: null
             };
-            refreshClassSelect(classSelect, classHint, dimEntry);
-            if ([...classSelect.options].some(o => o.value === chosenClass)) classSelect.value = chosenClass;
-            updateClassHint();
+
             // Result panel
             el.querySelector("#result").innerHTML = `
-                ${classAutoAssigned ? `<div style="margin-bottom:8px; padding:5px 8px; background:#1a1200; border:1px solid var(--accent-warning); font-size:10px; color:var(--accent-warning);">
-                        ↺ Clase ajustada a la dimensión: <b>${escapeHtml(chosenClass)}</b>
-                       </div>` : ""}
                 <div class="concept-row">
                     <span class="concept-label" id="lbl-fn">FN</span>
                     <span>${escapeHtml(concepts[0])}</span>
@@ -393,12 +366,10 @@ async function loadApp(name, el, data) {
             if (tt("function")) Tooltip.bind(rEl.querySelector("#lbl-fn"), tt("function"));
             if (tt("anomaly")) Tooltip.bind(rEl.querySelector("#lbl-an"), tt("anomaly"));
             if (dimEntry && rEl.querySelector("#res-dim-name")) Tooltip.bind(rEl.querySelector("#res-dim-name"), dimEntry.tagline || dimEntry.description || "");
-            // Preview panel
+
+            // Preview panel (sin armas)
             const cdesc = classDesc(hunter.class);
             const mdesc = mbtiDesc(hunter.mbti);
-            const classObj = getClass(hunter.class);
-            const weapons = classObj?.weapons || [];
-            const weaponsHtml = weapons.length ? `<div class="panel" style="margin-top:6px;"><h3>Armas / Herramientas típicas</h3><ul class="weapons-list">${weapons.map(w => renderWeaponItem(w)).join("")}</ul></div>` : "";
             el.querySelector("#preview").innerHTML = `
                 <div class="panel">
                     <h3>${escapeHtml(hunter.id)}</h3>
@@ -410,7 +381,6 @@ async function loadApp(name, el, data) {
                     <div class="panel" style="margin-top:6px;"><h3 id="prev-concepts-h">Conceptos</h3><div class="concept-row"><span class="concept-label" id="prev-fn">FN</span><span>${escapeHtml(concepts[0])}</span></div><div class="concept-row"><span class="concept-label" id="prev-an">AN</span><span>${escapeHtml(concepts[1])}</span></div></div>
                     <div class="panel" style="margin-top:6px;"><p><b id="prev-passive-lbl">Pasiva:</b> ${escapeHtml(passive)}</p></div>
                     <div class="panel" style="margin-top:6px;"><h3 id="prev-active-lbl">Habilidad Activa</h3>${renderSkillTreeHTML(hunter.active)}</div>
-                    ${weaponsHtml}
                 </div>
             `;
             const pEl = el.querySelector("#preview");
@@ -422,6 +392,7 @@ async function loadApp(name, el, data) {
             if (tt("anomaly")) Tooltip.bind(pEl.querySelector("#prev-an"), tt("anomaly"));
             if (tt("passive")) Tooltip.bind(pEl.querySelector("#prev-passive-lbl"), tt("passive"));
             if (tt("active")) Tooltip.bind(pEl.querySelector("#prev-active-lbl"), tt("active"));
+
             el.querySelector("#to-editor").onclick = () => openApp("editor", hunter);
         };
     }
@@ -570,6 +541,7 @@ async function loadApp(name, el, data) {
         else if (!h.active) h.active = { base: "", paths: [] };
         if (!Array.isArray(h.active.paths)) h.active.paths = [];
         if (!h.stats) h.stats = { ...DEFAULT_STATS };
+        if (h.weapon === undefined) h.weapon = null;
         const isNewSchema = h.dimension_id !== undefined && h.dimension_id !== null;
         const dimEntry = isNewSchema ? getDim(h.dimension_id) : null;
         const conceptsFormHTML = isNewSchema ? `
@@ -595,7 +567,14 @@ async function loadApp(name, el, data) {
         <div class="split split-30-70">
             <div class="stack">
                 <h3>${escapeHtml(h.id)}</h3>
-                <div class="panel"><p><b id="ed-class">${escapeHtml(h.class)}</b> &nbsp;—&nbsp; <span id="ed-mbti">${escapeHtml(h.mbti)}</span></p><p style="color:var(--text-muted); font-size:11px;">${escapeHtml(h.gender)}</p></div>
+                <div class="panel">
+                    <label>Clase</label>
+                    <select id="classSelect"></select>
+                    <div id="classHint" class="field-hint"></div>
+                    <label style="margin-top:8px;">Arma seleccionada</label>
+                    <select id="weaponSelect"></select>
+                </div>
+                <div class="panel"><p><span id="ed-mbti">${escapeHtml(h.mbti)}</span> &nbsp;|&nbsp; ${escapeHtml(h.gender)}</p></div>
                 ${conceptsFormHTML}
                 <div class="panel">
                     <h3>Estadísticas</h3>
@@ -635,6 +614,48 @@ async function loadApp(name, el, data) {
             <div class="panel scroll" id="preview"></div>
         </div>
         `;
+
+        // Poblar selector de clases
+        const classSelect = el.querySelector("#classSelect");
+        const classHint = el.querySelector("#classHint");
+        refreshClassSelect(classSelect, classHint, dimEntry);
+        classSelect.value = h.class;
+        classHint.textContent = classDesc(h.class) ? "↳ " + classDesc(h.class) : "";
+
+        // Función para actualizar el selector de armas según la clase seleccionada
+        function updateWeaponSelect(className) {
+            const classObj = getClass(className);
+            const weapons = classObj?.weapons || [];
+            const weaponSelect = el.querySelector("#weaponSelect");
+            weaponSelect.innerHTML = '<option value="">— Ninguna —</option>';
+            weapons.forEach(w => {
+                const opt = document.createElement("option");
+                opt.value = JSON.stringify(w);
+                opt.textContent = `${w.name} (${w.type}) - Daño: ${w.damage}`;
+                weaponSelect.appendChild(opt);
+            });
+            // Seleccionar el arma actual si existe
+            if (h.weapon && h.weapon.name) {
+                const found = weapons.some(w => w.name === h.weapon.name);
+                if (found) {
+                    weaponSelect.value = JSON.stringify(h.weapon);
+                } else {
+                    weaponSelect.value = "";
+                }
+            } else {
+                weaponSelect.value = "";
+            }
+        }
+        updateWeaponSelect(h.class);
+
+        classSelect.addEventListener("change", () => {
+            const newClass = classSelect.value;
+            classHint.textContent = classDesc(newClass) ? "↳ " + classDesc(newClass) : "";
+            updateWeaponSelect(newClass);
+            // Actualizar también la vista previa al cambiar clase (opcional, pero se hará en el render)
+        });
+
+        // Resto de campos
         el.querySelector("#concept0").value = h.concepts?.[0] || "";
         el.querySelector("#concept1").value = h.concepts?.[1] || "";
         if (!isNewSchema && el.querySelector("#concept2")) el.querySelector("#concept2").value = h.concepts?.[2] || "";
@@ -644,10 +665,8 @@ async function loadApp(name, el, data) {
         el.querySelector("#active-base").value = h.active?.base || "";
         el.querySelector("#active-path0").value = h.active?.paths?.[0] || "";
         el.querySelector("#active-path1").value = h.active?.paths?.[1] || "";
-        // stats inputs already set via value attribute
-        const cdesc = classDesc(h.class);
+
         const mdesc = mbtiDesc(h.mbti);
-        if (cdesc) Tooltip.bind(el.querySelector("#ed-class"), cdesc);
         if (mdesc) Tooltip.bind(el.querySelector("#ed-mbti"), mdesc);
         if (tt("concepts")) Tooltip.bind(el.querySelector("#ed-concepts-h"), tt("concepts"));
         if (tt("function") && el.querySelector("#ed-fn-lbl")) Tooltip.bind(el.querySelector("#ed-fn-lbl"), tt("function"));
@@ -656,10 +675,19 @@ async function loadApp(name, el, data) {
         if (tt("passive")) Tooltip.bind(el.querySelector("#ed-passive-lbl"), tt("passive"));
         if (tt("active")) Tooltip.bind(el.querySelector("#ed-active-lbl"), tt("active"));
         if (isNewSchema && dimEntry && el.querySelector("#ed-dim-name")) Tooltip.bind(el.querySelector("#ed-dim-name"), dimEntry.description || "");
+
         function build() {
             const paths = [el.querySelector("#active-path0").value.trim(), el.querySelector("#active-path1").value.trim()].filter(Boolean);
+            let weapon = null;
+            const weaponVal = el.querySelector("#weaponSelect").value;
+            if (weaponVal) {
+                try {
+                    weapon = JSON.parse(weaponVal);
+                } catch(e) { weapon = null; }
+            }
             const built = {
                 ...h,
+                class: classSelect.value,
                 description: el.querySelector("#desc").value,
                 images: el.querySelector("#imgs").value.split("\n").map(v => v.trim()).filter(Boolean),
                 passive: el.querySelector("#passive").value.trim(),
@@ -674,7 +702,8 @@ async function loadApp(name, el, data) {
                     magicdefense: parseInt(el.querySelector("#stat_magicdefense").value) || 0,
                     evasion: parseInt(el.querySelector("#stat_evasion").value) || 0,
                     accuracy: parseInt(el.querySelector("#stat_accuracy").value) || 0
-                }
+                },
+                weapon: weapon
             };
             if (isNewSchema) {
                 built.concepts = [el.querySelector("#concept0").value.trim(), el.querySelector("#concept1").value.trim()];
@@ -684,14 +713,22 @@ async function loadApp(name, el, data) {
             }
             return built;
         }
+
         function render() {
             const d = build();
             const fnText = d.concepts?.[0] || "—";
             let aeText = null, anText;
             if (isNewSchema) { anText = d.concepts?.[1] || "—"; } else { aeText = d.concepts?.[1] || "—"; anText = d.concepts?.[2] || "—"; }
             const currentClassObj = getClass(d.class);
-            const weapons = currentClassObj?.weapons || [];
-            const weaponsHtml = weapons.length ? `<div class="panel" style="margin-top:6px;"><h3>Armas / Herramientas típicas</h3><ul class="weapons-list">${weapons.map(w => renderWeaponItem(w)).join("")}</ul></div>` : "";
+            const weaponsForDisplay = currentClassObj?.weapons || [];
+            // Mostrar el arma seleccionada en la vista previa
+            const selectedWeapon = d.weapon;
+            let weaponDisplayHtml = "";
+            if (selectedWeapon && selectedWeapon.name) {
+                weaponDisplayHtml = `<div class="panel" style="margin-top:6px;"><h3>Arma seleccionada</h3><ul class="weapons-list">${renderWeaponItem(selectedWeapon)}</ul></div>`;
+            } else {
+                weaponDisplayHtml = `<div class="panel" style="margin-top:6px;"><h3>Arma seleccionada</h3><p style="color:var(--text-muted); font-style:italic;">Ninguna</p></div>`;
+            }
             const stats = d.stats || DEFAULT_STATS;
             el.querySelector("#preview").innerHTML = `
             <div class="panel">
@@ -707,7 +744,7 @@ async function loadApp(name, el, data) {
                 <div class="panel" style="margin-top:6px;"><h3>Estadísticas</h3><div class="stats-grid"><div class="stat-item"><span class="stat-label">HP</span><span class="stat-value">${stats.hp}</span></div><div class="stat-item"><span class="stat-label">MP</span><span class="stat-value">${stats.mp}</span></div><div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value">${stats.speed}</span></div><div class="stat-item"><span class="stat-label">Strength</span><span class="stat-value">${stats.strength}</span></div><div class="stat-item"><span class="stat-label">Magic Power</span><span class="stat-value">${stats.magicpower}</span></div><div class="stat-item"><span class="stat-label">Defense</span><span class="stat-value">${stats.defense}</span></div><div class="stat-item"><span class="stat-label">Magic Defense</span><span class="stat-value">${stats.magicdefense}</span></div><div class="stat-item"><span class="stat-label">Evasion</span><span class="stat-value">${stats.evasion}</span></div><div class="stat-item"><span class="stat-label">Accuracy</span><span class="stat-value">${stats.accuracy}</span></div></div></div>
                 <div class="panel" style="margin-top:6px;"><h3>Descripción</h3><p>${escapeHtml(d.description || "Sin descripción.")}</p></div>
                 <div class="panel" style="margin-top:6px;"><h3>Habilidades</h3><p style="margin-bottom:8px;"><b id="prev-passive-lbl">Pasiva:</b> ${escapeHtml(d.passive || "—")}</p><p style="margin-bottom:6px;"><b id="prev-active-lbl">Activa</b></p>${renderSkillTreeHTML(d.active)}</div>
-                ${weaponsHtml}
+                ${weaponDisplayHtml}
             </div>
             `;
             const pEl = el.querySelector("#preview");
@@ -723,6 +760,7 @@ async function loadApp(name, el, data) {
             if (tt("passive")) Tooltip.bind(pEl.querySelector("#prev-passive-lbl"), tt("passive"));
             if (tt("active")) Tooltip.bind(pEl.querySelector("#prev-active-lbl"), tt("active"));
         }
+
         el.querySelector("#update").onclick = () => {
             const updated = build();
             saveHunterToLocalStorage(updated);
@@ -741,7 +779,7 @@ async function loadApp(name, el, data) {
         let expandHunters = true;
         let expandDims = true;
         let expandBestiary = true;
-        let selectedItem = null; // { type: 'hunter'|'dimension'|'bestiary', data: ... }
+        let selectedItem = null;
         el.innerHTML = `
         <div style="display:flex; height:100%; overflow:hidden; gap:0;">
             <div id="ftree" style="width:260px; min-width:260px; flex-shrink:0; background:#0b0d12; border-right:1px solid var(--border-light); display:flex; flex-direction:column; overflow:hidden;">
@@ -782,7 +820,6 @@ async function loadApp(name, el, data) {
                         item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
                         item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
                         item.onclick = () => {
-                            // Load from localStorage if available
                             let displayHunter = h;
                             const stored = localStorage.getItem(`hunter_${h.id}`);
                             if (stored) try { displayHunter = JSON.parse(stored); } catch(e) {}
@@ -835,7 +872,7 @@ async function loadApp(name, el, data) {
             const divider2 = document.createElement("div");
             divider2.style.cssText = "border-top:1px solid #1a1d24; margin:6px 0;";
             treeBody.appendChild(divider2);
-            // Bestiary section (elemental types + creature types)
+            // Bestiary section
             const bestSec = document.createElement("div");
             const bestHdr = document.createElement("div");
             bestHdr.style.cssText = `padding:6px 14px; cursor:pointer; font-size:10px; letter-spacing:1.5px; color:var(--text-secondary); text-transform:uppercase; display:flex; align-items:center; gap:7px; user-select:none; border-bottom:1px solid #1a1d24;`;
@@ -875,8 +912,13 @@ async function loadApp(name, el, data) {
             const aeText = hunterIsNew ? null : (h.concepts?.[1] || "—");
             const anText = hunterIsNew ? (h.concepts?.[1] || "—") : (h.concepts?.[2] || "—");
             const classObj = getClass(h.class);
-            const weapons = classObj?.weapons || [];
-            const weaponsHtml = weapons.length ? `<div class="panel" style="margin-top:8px;"><h3>Armas / Herramientas típicas</h3><ul class="weapons-list">${weapons.map(w => renderWeaponItem(w)).join("")}</ul></div>` : "";
+            // Mostrar arma seleccionada si existe
+            let weaponHtml = "";
+            if (h.weapon && h.weapon.name) {
+                weaponHtml = `<div class="panel" style="margin-top:8px;"><h3>Arma seleccionada</h3><ul class="weapons-list">${renderWeaponItem(h.weapon)}</ul></div>`;
+            } else {
+                weaponHtml = `<div class="panel" style="margin-top:8px;"><h3>Arma seleccionada</h3><p style="color:var(--text-muted); font-style:italic;">Ninguna</p></div>`;
+            }
             viewer.innerHTML = `
             <div class="panel">
                 <h3>${escapeHtml(h.id)}</h3>
@@ -895,7 +937,7 @@ async function loadApp(name, el, data) {
                 <div class="panel" style="margin-top:8px;"><h3>Estadísticas</h3><div class="stats-grid"><div class="stat-item"><span class="stat-label">HP</span><span class="stat-value">${stats.hp}</span></div><div class="stat-item"><span class="stat-label">MP</span><span class="stat-value">${stats.mp}</span></div><div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value">${stats.speed}</span></div><div class="stat-item"><span class="stat-label">Strength</span><span class="stat-value">${stats.strength}</span></div><div class="stat-item"><span class="stat-label">Magic Power</span><span class="stat-value">${stats.magicpower}</span></div><div class="stat-item"><span class="stat-label">Defense</span><span class="stat-value">${stats.defense}</span></div><div class="stat-item"><span class="stat-label">Magic Defense</span><span class="stat-value">${stats.magicdefense}</span></div><div class="stat-item"><span class="stat-label">Evasion</span><span class="stat-value">${stats.evasion}</span></div><div class="stat-item"><span class="stat-label">Accuracy</span><span class="stat-value">${stats.accuracy}</span></div></div></div>
                 <div class="panel" style="margin-top:8px;"><h3>Descripción</h3><p>${escapeHtml(h.description || "Sin descripción.")}</p></div>
                 <div class="panel" style="margin-top:8px;"><h3>Habilidades</h3><p style="margin-bottom:8px;"><b id="fv-passive-lbl">Pasiva:</b> ${escapeHtml(h.passive || "—")}</p><p style="margin-bottom:6px;"><b id="fv-active-lbl">Activa — Árbol de habilidad</b></p>${renderSkillTreeHTML(h.active)}</div>
-                ${weaponsHtml}
+                ${weaponHtml}
                 <div style="margin-top:10px; display:flex; gap:6px;"><button id="fv-edit-btn">Abrir en Editor</button>${hunterDim ? `<button id="fv-goto-dim">Ver dimensión: ${escapeHtml(hunterDim.name)}</button>` : ""}</div>
             </div>`;
             const cdesc = classDesc(h.class);
@@ -1051,7 +1093,7 @@ async function loadApp(name, el, data) {
         <div class="panel">
             <h3>Hunter Association — Correo Interno</h3>
             <div class="panel" style="margin-top:8px;"><p><b>De:</b> Hunter Association — Terminal de Control</p><p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.0)</p></div>
-            <div class="panel" style="margin-top:8px; line-height:1.75;"><p>Operador,<br><br>El flujo de trabajo es el siguiente:<br><br><b>1. BUSCADOR</b><br>Selecciona Género y MBTI. La Clase puede elegirse manualmente o dejarse en cualquier valor: el sistema la ajustará automáticamente a las clases sugeridas por la Dimensión asignada.<br>Si tu clase ya es compatible, se respeta. Si no, el sistema elige una compatible y lo indica.<br>Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN), una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase elegida.<br><br><b>2. DIMENSIONES DE ORIGEN</b><br>Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br><b>3. CLASES</b><br>Las clases no son roles de combate: son oficios cotidianos.<br>Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>El Buscador solo usa las habilidades de la clase elegida, nunca un pool genérico.<br><br><b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>Las rutas son expansiones o variaciones de la base, definidas por clase.<br>Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br><b>5. ARCHIVOS DE DATOS</b><br><code>data/data.json</code> — Géneros, MBTI y tooltips de atributos.<br><code>data/classes.json</code> — Clases con sus pools de habilidades.<br><code>data/concepts.json</code> — Ahora organizado por dimensión (funciones y anomalías temáticas).<br><code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br><code>data/files.json</code> — Hunters registrados.<br><code>data/elemental_types.json</code> — Tipos elementales y criaturas.<br><br><b>6. EDITOR</b><br>Modifica descripción, conceptos (FN + AN), habilidades, imágenes y estadísticas.<br>La Dimensión de Origen es de solo lectura.<br>Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>. Las estadísticas se guardan automáticamente en localStorage.<br><br><b>Glosario de badges:</b><br>&nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>&nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br><b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>— Hunter Association</p></div>
+            <div class="panel" style="margin-top:8px; line-height:1.75;"><p>Operador,<br><br>El flujo de trabajo es el siguiente:<br><br><b>1. BUSCADOR</b><br>Selecciona Género y MBTI. La Clase se genera automáticamente según la Dimensión de Origen (o aleatoria si no hay sugerencias).<br>Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN), una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase generada.<br><br><b>2. DIMENSIONES DE ORIGEN</b><br>Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br><b>3. CLASES</b><br>Las clases no son roles de combate: son oficios cotidianos.<br>Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>El Buscador solo usa las habilidades de la clase generada, nunca un pool genérico.<br><br><b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>Las rutas son expansiones o variaciones de la base, definidas por clase.<br>Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br><b>5. EDITOR</b><br>Modifica descripción, conceptos (FN + AN), habilidades, imágenes, estadísticas, y además puede <b>cambiar la clase</b> y <b>seleccionar un arma</b> de las disponibles para esa clase.<br>La Dimensión de Origen es de solo lectura.<br>Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>. Las estadísticas se guardan automáticamente en localStorage.<br><br><b>6. ARCHIVOS DE DATOS</b><br><code>data/data.json</code> — Géneros, MBTI y tooltips de atributos.<br><code>data/classes.json</code> — Clases con sus pools de habilidades y armas.<br><code>data/concepts.json</code> — Organizado por dimensión (funciones y anomalías temáticas).<br><code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br><code>data/files.json</code> — Hunters registrados.<br><code>data/elemental_types.json</code> — Tipos elementales y criaturas.<br><br><b>Glosario de badges:</b><br>&nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>&nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br><b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>— Hunter Association</p></div>
         </div>`;
     }
 }

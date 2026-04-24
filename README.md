@@ -2,13 +2,15 @@
 
 ## Resumen
 
-Hunter Association OS es un sistema operativo ficticio basado en navegador, diseñado para crear, editar y gestionar archivos de personajes "Hunter" para un universo narrativo estilo DnD.
+Hunter Association OS es un sistema operativo ficticio basado en navegador, diseñado para crear, 
+editar y gestionar archivos de personajes "Hunter" para un universo narrativo con multiples 
+dimensiones con un combate JRPG por turnos.  El sistema simula un entorno de escritorio retrofuturista 
+brutalista inspirado en sistemas operativos de los años 90, presentando los datos de los personajes 
+como expedientes estructurados dentro de un sistema de archivo estilizado. 
+Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo 
+de construcción de mundos.
 
-El sistema simula un entorno de escritorio retro inspirado en Windows 95, presentando los datos de los personajes como expedientes estructurados dentro de un sistema de archivo estilizado.
-
-Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo de construcción de mundos.
-
-**Versión actual:** v1.5.2
+**Versión actual:** v1.5.3 (posibilidad de escoger el arma del Hunter en el editor)
 
 ---
 
@@ -20,7 +22,7 @@ Está pensado como una herramienta para la ideación rápida, diseño de persona
 - Barra de tareas con reloj del sistema
 - Botones de ventana: minimizar (con animación), maximizar/restaurar, cerrar
 - Iconos en el escritorio para lanzar aplicaciones
-- Interfaz de estilo retro
+- Interfaz de estilo brutalista retrofuturista
 
 ### Sistema de Tooltips
 - Casi todos los elementos (clases, MBTI, conceptos, habilidades, dimensiones) muestran tooltips con descripciones contextuales.
@@ -61,18 +63,17 @@ Crea nuevos Hunters usando entradas estructuradas.
 
 Entradas:
 - Género
-- Clase (con tooltip de descripción y ejemplos de habilidades de esa clase)
 - MBTI (con tooltip de descripción)
+
+**Nota:** La clase del Hunter se genera automáticamente según la Dimensión de Origen (si tiene clases sugeridas, se elige una de ellas; en caso contrario, se selecciona una clase aleatoria de todas las disponibles). El usuario no puede elegir la clase en el Generador, sino que debe modificarla posteriormente en el Editor si lo desea.
 
 Salidas:
 - **Dimensión de Origen** (asignada aleatoriamente desde `dimensions.json` – **inmutable**)
 - Dos conceptos: **Función** (FN) y **Anomalía** (AN), obtenidos desde `concepts.json` según la dimensión asignada (o fallback global)
-- Habilidad pasiva (aleatoria desde `passive_pool` de la clase seleccionada)
-- Habilidad activa (aleatoria desde `active_pool` de la clase), incluyendo **Base** y hasta dos **Rutas de evolución** (RUTA I, RUTA II)
+- Habilidad pasiva (aleatoria desde `passive_pool` de la clase generada)
+- Habilidad activa (aleatoria desde `active_pool` de la clase generada), incluyendo **Base** y hasta dos **Rutas de evolución** (RUTA I, RUTA II)
 
-**Comportamiento especial:** Si la clase elegida por el usuario no está entre las `suggested_classes` de la dimensión generada, el sistema la reemplaza automáticamente por una clase sugerida (y lo notifica). Si la dimensión no tiene sugerencias, se respeta la clase elegida.
-
-El resultado se muestra en dos paneles: un resumen compacto y una vista previa completa con el árbol de habilidades. Un botón permite enviar el Hunter directamente al **Editor**.
+El resultado se muestra en dos paneles: un resumen compacto y una vista previa completa con el árbol de habilidades. Un botón permite enviar el Hunter directamente al **Editor**, donde se podrá modificar la clase y seleccionar un arma.
 
 ### Editor
 
@@ -119,8 +120,8 @@ Sirve como guía de referencia dentro del propio sistema.
 
 ## Flujo de trabajo recomendado
 
-1. **Buscador** → genera un Hunter con dimensión aleatoria, conceptos temáticos y habilidades basadas en su clase.
-2. **Editor** → refina descripción, estadísticas, habilidades, imágenes. La dimensión no se puede cambiar.
+1. **Buscador** → genera un Hunter con dimensión aleatoria, conceptos temáticos y habilidades basadas en una clase generada automáticamente (según la dimensión o aleatoria). El usuario no elige la clase aquí.
+2. **Editor** → refina descripción, estadísticas, habilidades, imágenes, y además puede **cambiar la clase** y **seleccionar un arma** de entre las disponibles para esa clase.
 3. **Guardado automático** → los cambios se almacenan en `localStorage`; puedes cerrar la ventana y retomarlos después.
 4. **Exportar** → copia o descarga el JSON final.
 5. **Añadir a `data/files.json`** (manualmente o sustituyendo el archivo).
@@ -266,28 +267,23 @@ Define los tipos elementales (con ventajas y desventajas) y los tipos de criatur
 Almacena todos los Hunters creados. Cada Hunter sigue el esquema:
 
 ``` json
-[
-  {
-    "id": "H-1776239790089",
-    "gender": "No Binario",
-    "class": "Archivista",
-    "mbti": "Analista",
-    "dimension_id": "DIM-6084206892469",
-    "concepts": [ "vende recuerdos ilegales", "el tiempo se repite al parpadear" ],
-    "passive": "Percibe eventos futuros cercanos",
-    "active": {
-      "base": "Rebobinar acción reciente",
-      "paths": [ "Rebobinar en área", "Retroceder dos turnos" ]
-    },
-    "description": "Cazador novato",
-    "images": [ "https://i.imgur.com/IsyBjDJ.png" ],
-    "stats": {
-      "hp": 20, "mp": 10, "speed": 10, "strength": 10,
-      "magicpower": 10, "defense": 10, "magicdefense": 10,
-      "evasion": 5, "accuracy": 5
-    }
-  }
-]
+{
+  "id": "H-1776239790089",
+  "gender": "No Binario",
+  "class": "Archivista",
+  "mbti": "Analista",
+  "dimension_id": "DIM-6084206892469",
+  "concepts": [ "vende recuerdos ilegales", "el tiempo se repite al parpadear" ],
+  "passive": "Percibe eventos futuros cercanos",
+  "active": {
+    "base": "Rebobinar acción reciente",
+    "paths": [ "Rebobinar en área", "Retroceder dos turnos" ]
+  },
+  "description": "Cazador novato",
+  "images": [ "https://i.imgur.com/IsyBjDJ.png" ],
+  "stats": { ... },
+  "weapon": { ... }   
+}
 ```
 
 ---
