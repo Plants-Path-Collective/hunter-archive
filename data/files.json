@@ -22,7 +22,7 @@
       "https://i.imgur.com/L2ZZcRO.jpg"
     ],
     "stats": {
-      "hp": 20,
+      "hp": 10,
       "mp": 10,
       "speed": 10,
       "strength": 10,
@@ -30,6 +30,7 @@
       "defense": 10,
       "magicdefense": 10,
       "evasion": 5,
-      "accuracy": 5
+      "accuracy": 100
     }
+  }
 ]
