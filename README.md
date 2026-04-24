@@ -69,7 +69,7 @@ Entradas:
 
 Salidas:
 - **Dimensión de Origen** (asignada aleatoriamente desde `dimensions.json` – **inmutable**)
-- Dos conceptos: **Función** (FN) y **Anomalía** (AN), obtenidos desde `concepts.json` según la dimensión asignada (o fallback global)
+- Dos conceptos: **Función** (FN) y **Anomalía** (AN), obtenidos desde `concepts.json` según la dimensión asignada
 - Habilidad pasiva (aleatoria desde `passive_pool` de la clase generada)
 - Habilidad activa (aleatoria desde `active_pool` de la clase generada), incluyendo **Base** y hasta dos **Rutas de evolución** (RUTA I, RUTA II)
 
@@ -145,31 +145,6 @@ Define las entradas del generador, tooltips y algunos pools genéricos (usados s
   "concepts": { ... },  // obsoleto si usas concepts.json por dimensión
   "passive_pool": [ ... ],
   "active_pool": [ ... ]
-}
-```
-
-### `data/dimensions.json`
-Lista de dimensiones de origen. Cada dimensión tiene:
-- `id`: identificador único de 13 digitos
-- `name`: nombre de la dimension
-- `tagline`: descripcion corta ed la dimension
-- `description`: descripción general 
-- `lore`: texto narrativo extendido (opcional)
-- `image`: URL de una imagen representativa (opcional)
-- 
-``` json
-{
-  "dimensions": [
-    {
-      "id": "DIM-6084206892469",
-      "name": "Aztlán de Cristal",
-      "tagline": "Donde los dioses caminan entre humanos...",
-      "description": "Los mexicas nunca fueron conquistados...",
-      "lore": "Tras repeler la invasión española...",
-      "image": ""
-    },
-    ...
-  ]
 }
 ```
 
@@ -266,9 +241,24 @@ Define los tipos elementales (con ventajas y desventajas) y los tipos de criatur
 ### `data/files.json`
 Almacena todos los Hunters creados. Cada Hunter sigue el esquema:
 
+- `id`: identificador único
+- `name`: nombre de cazador
+- `gender`: género
+- `class`: clase jrpg
+- `mbti`: personalidad
+- `dimension_id`: id de la dimension a la que pertenece
+- `concepts`: conceptos que describen su función en su dimension y un rasgo de su personalidad
+- `passive`: habilidad pasiva
+- `active`: habilidad activa base y su skill tree
+- `description`: descripción del hunter en general y un poco de su lore
+- `images`: URL de imagen representativa (opcional)
+- `stats`: estadisticas jrpg
+- `weapon`: arma que porta el hunter
+
 ``` json
 {
   "id": "H-1776239790089",
+  "name": "Typlon",
   "gender": "No Binario",
   "class": "Archivista",
   "mbti": "Analista",
