@@ -1,3 +1,35 @@
 ﻿[
-  
+  {
+  "id": "H-1776999818457",
+  "gender": "Femenino",
+  "class": "Fractal Resonante (comunicador de combate)",
+  "mbti": "Centinela",
+  "dimension_id": "DIM-6029384756102",
+  "concepts": [
+    "Cantante de frecuencias que alinea las facetas del hielo vivo",
+    "Sus extremidades se mueven como si tuvieran vida propia"
+  ],
+  "passive": "Su zumbido molesta a los enemigos cercanos.",
+  "active": {
+    "base": "Pulso de resonancia: localiza todos los Fractales en 500m (1s).",
+    "paths": [
+      "Localización precisa: muestra posición exacta (1s).",
+      "Localización vaga: solo dirección y distancia aprox (1s)."
+    ]
+  },
+  "description": "Una cantante onírica que posee un linaje familiar ligado al lamento de los difuntos; mientras mayor sea el dolor que expresa, más fácil es que las almas de los fallecidos trasciendan.",
+  "images": [
+    "https://i.imgur.com/L2ZZcRO.jpg"
+  ],
+  "stats": {
+    "hp": 20,
+    "mp": 10,
+    "speed": 10,
+    "strength": 10,
+    "magicpower": 10,
+    "defense": 10,
+    "magicdefense": 10,
+    "evasion": 5,
+    "accuracy": 5
+  }
 ]
