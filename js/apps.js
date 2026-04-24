@@ -10,6 +10,29 @@ function downloadJSON(data) {
     a.click();
 }
 
+async function exportAsPng(element, filename) {
+    if (typeof html2canvas === "undefined") {
+        alert("Función de exportación no disponible.\nRequiere conexión a internet para cargar html2canvas.");
+        return;
+    }
+    if (!element) { alert("No se encontró el elemento a exportar."); return; }
+    try {
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            backgroundColor: '#111318',
+            useCORS: true,
+            logging: false
+        });
+        const a = document.createElement("a");
+        a.href = canvas.toDataURL("image/png");
+        a.download = (filename || "export") + ".png";
+        a.click();
+    } catch(e) {
+        alert("Error al exportar: " + e.message);
+        console.error("[exportAsPng]", e);
+    }
+}
+
 function escapeHtml(str) {
     if (str === null || str === undefined) return "";
     return String(str)
@@ -553,87 +576,106 @@ async function loadApp(name, el, data) {
         if (!h.mbti_subtype) h.mbti_subtype = null;
         const isNewSchema = h.dimension_id !== undefined && h.dimension_id !== null;
         const dimEntry = isNewSchema ? getDim(h.dimension_id) : null;
-        const conceptsFormHTML = isNewSchema ? `
-            <div class="panel">
-                <h3 id="ed-concepts-h">Conceptos</h3>
-                <label id="ed-fn-lbl">Función</label><input id="concept0" placeholder="qué hace el Hunter en el mundo...">
-                <label id="ed-an-lbl">Anomalía</label><input id="concept1" placeholder="rasgo inexplicable o contradicción...">
-                <div style="margin-top:10px; padding:8px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);">
-                    <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen — Inmutable</div>
-                    <div id="ed-dim-name" style="color:var(--accent-warning); font-weight:bold; font-size:13px;">${escapeHtml(dimEntry?.name || h.dimension_id)}</div>
-                    ${dimEntry?.description ? `<div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-style:italic;">${escapeHtml(dimEntry.description)}</div>` : ""}
-                </div>
+        const conceptsFormInner = isNewSchema ? `
+            <label id="ed-fn-lbl">Función</label><input id="concept0" placeholder="qué hace el Hunter en el mundo...">
+            <label id="ed-an-lbl" style="margin-top:8px;">Anomalía</label><input id="concept1" placeholder="rasgo inexplicable o contradicción...">
+            <div style="margin-top:10px; padding:8px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary); overflow-y: auto">
+                <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase; overflow-y: auto">Dimensión de Origen — Inmutable</div>
+                <div id="ed-dim-name" style="color:var(--accent-warning); font-weight:bold; font-size:13px;">${escapeHtml(dimEntry?.name || h.dimension_id)}</div>
+                ${dimEntry?.description ? `<div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-style:italic;">${escapeHtml(dimEntry.description)}</div>` : ""}
             </div>
         ` : `
-            <div class="panel">
-                <h3 id="ed-concepts-h">Conceptos</h3>
-                <label id="ed-fn-lbl">Función</label><input id="concept0" placeholder="qué hace el Hunter en el mundo...">
-                <label id="ed-ae-lbl">Estética</label><input id="concept1" placeholder="atmósfera visual o entorno...">
-                <label id="ed-an-lbl">Anomalía</label><input id="concept2" placeholder="rasgo inexplicable o contradicción...">
-            </div>
+            <label id="ed-fn-lbl">Función</label><input id="concept0" placeholder="qué hace el Hunter en el mundo...">
+            <label id="ed-ae-lbl" style="margin-top:8px;">Estética</label><input id="concept1" placeholder="atmósfera visual o entorno...">
+            <label id="ed-an-lbl" style="margin-top:8px;">Anomalía</label><input id="concept2" placeholder="rasgo inexplicable o contradicción...">
         `;
         el.innerHTML = `
         <div class="split split-30-70">
             <div class="stack">
                 <h3>Editor de Hunter</h3>
-                <div class="panel">
-                    <label>Nombre del Hunter</label>
-                    <input type="text" id="hunterName" placeholder="Ej: Typlon" value="${escapeHtml(h.name)}">
-                    <div style="font-size:9px; color:var(--text-muted); margin-top:2px;">ID: ${escapeHtml(h.id)}</div>
-                </div>
-                <div class="panel">
-                    <label>Clase</label>
-                    <select id="classSelect"></select>
-                    <div id="classHint" class="field-hint"></div>
-                    <label style="margin-top:8px;">Arma seleccionada</label>
-                    <select id="weaponSelect"></select>
-                </div>
-                <div class="panel">
-                    <label>Personalidad (MBTI)</label>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <span style="background:#1a1d24; padding:4px 8px; border-radius:4px;">${escapeHtml(h.mbti)}</span>
-                        <span style="color:var(--text-muted);">→</span>
-                        <select id="mbtiSubtype" style="flex:1;">
-                            <option value="">— Sin subtipo —</option>
-                        </select>
+
+                <details class="editor-section">
+                    <summary><span class="editor-section-arrow">▶</span> Info Básica</summary>
+                    <div class="editor-section-body">
+                        <label>Nombre del Hunter</label>
+                        <input type="text" id="hunterName" placeholder="Ej: Typlon" value="${escapeHtml(h.name)}">
+                        <div style="font-size:9px; color:var(--text-muted); margin-top:2px; margin-bottom:10px;">ID: ${escapeHtml(h.id)}</div>
+                        <label>Clase</label>
+                        <select id="classSelect"></select>
+                        <div id="classHint" class="field-hint"></div>
+                        <label style="margin-top:8px;">Arma seleccionada</label>
+                        <select id="weaponSelect"></select>
+                        <label style="margin-top:10px;">Personalidad (MBTI)</label>
+                        <div style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+                            <span id="ed-mbti" style="background:#1a1d24; padding:4px 8px;">${escapeHtml(h.mbti)}</span>
+                            <span style="color:var(--text-muted);">→</span>
+                            <select id="mbtiSubtype" style="flex:1;">
+                                <option value="">— Sin subtipo —</option>
+                            </select>
+                        </div>
+                        <div style="font-size:10px; color:var(--text-muted);">Género: ${escapeHtml(h.gender)}</div>
                     </div>
-                    <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">Género: ${escapeHtml(h.gender)}</div>
-                </div>
-                ${conceptsFormHTML}
-                <div class="panel">
-                    <h3>Estadísticas</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item"><span class="stat-label">HP</span><input type="number" id="stat_hp" value="${h.stats.hp}" style="width:60px;"></div>
-                        <div class="stat-item"><span class="stat-label">MP</span><input type="number" id="stat_mp" value="${h.stats.mp}" style="width:60px;"></div>
-                        <div class="stat-item"><span class="stat-label">Speed</span><input type="number" id="stat_speed" value="${h.stats.speed}" style="width:60px;"></div>
-                        <div class="stat-item"><span class="stat-label">Strength</span><input type="number" id="stat_strength" value="${h.stats.strength}" style="width:60px;"></div>
-                        <div class="stat-item"><span class="stat-label">Magic Power</span><input type="number" id="stat_magicpower" value="${h.stats.magicpower}" style="width:60px;"></div>
-                        <div class="stat-item"><span class="stat-label">Defense</span><input type="number" id="stat_defense" value="${h.stats.defense}" style="width:60px;"></div>
-                        <div class="stat-item"><span class="stat-label">Magic Defense</span><input type="number" id="stat_magicdefense" value="${h.stats.magicdefense}" style="width:60px;"></div>
-                        <div class="stat-item"><span class="stat-label">Evasion</span><input type="number" id="stat_evasion" value="${h.stats.evasion}" style="width:60px;"></div>
-                        <div class="stat-item"><span class="stat-label">Accuracy</span><input type="number" id="stat_accuracy" value="${h.stats.accuracy}" style="width:60px;"></div>
+                </details>
+
+                <details class="editor-section">
+                    <summary><span class="editor-section-arrow">▶</span> <span id="ed-concepts-h">Conceptos</span></summary>
+                    <div class="editor-section-body">
+                        ${conceptsFormInner}
                     </div>
-                </div>
-                <div class="panel"><h3>Imágenes (URLs de Imgur)</h3><textarea id="imgs" placeholder="una url por línea" style="min-height:60px;"></textarea></div>
-                <div class="panel"><h3>Descripción</h3><textarea id="desc" style="min-height:70px;"></textarea></div>
-                <div class="panel">
-                    <h3>Habilidades</h3>
-                    <label id="ed-passive-lbl">Pasiva</label><input id="passive">
-                    <div style="margin-top:10px; padding-top:8px; border-top:1px solid var(--border-light);">
-                        <label id="ed-active-lbl" style="margin-bottom:6px;">Activa — Árbol de habilidad</label>
-                        <div class="active-fields">
-                            <label style="margin-top:0; font-size:9px;"><span class="skill-badge skill-badge-base" style="font-size:9px;">BASE</span></label>
-                            <input id="active-base" placeholder="habilidad principal...">
-                            <div style="border-left:2px solid var(--accent-primary); margin-left:14px; padding-left:10px; margin-top:4px; display:flex; flex-direction:column; gap:4px;">
-                                <label style="margin-top:0; font-size:9px;"><span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA I</span></label>
-                                <input id="active-path0" placeholder="primera evolución...">
-                                <label style="margin-top:4px; font-size:9px;"><span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA II</span></label>
-                                <input id="active-path1" placeholder="segunda evolución...">
+                </details>
+
+                <details class="editor-section">
+                    <summary><span class="editor-section-arrow">▶</span> Estadísticas</summary>
+                    <div class="editor-section-body">
+                        <div class="stats-grid">
+                            <div class="stat-item"><span class="stat-label">HP</span><input type="number" id="stat_hp" value="${h.stats.hp}" style="width:60px;"></div>
+                            <div class="stat-item"><span class="stat-label">MP</span><input type="number" id="stat_mp" value="${h.stats.mp}" style="width:60px;"></div>
+                            <div class="stat-item"><span class="stat-label">Speed</span><input type="number" id="stat_speed" value="${h.stats.speed}" style="width:60px;"></div>
+                            <div class="stat-item"><span class="stat-label">Strength</span><input type="number" id="stat_strength" value="${h.stats.strength}" style="width:60px;"></div>
+                            <div class="stat-item"><span class="stat-label">Magic Power</span><input type="number" id="stat_magicpower" value="${h.stats.magicpower}" style="width:60px;"></div>
+                            <div class="stat-item"><span class="stat-label">Defense</span><input type="number" id="stat_defense" value="${h.stats.defense}" style="width:60px;"></div>
+                            <div class="stat-item"><span class="stat-label">Magic Defense</span><input type="number" id="stat_magicdefense" value="${h.stats.magicdefense}" style="width:60px;"></div>
+                            <div class="stat-item"><span class="stat-label">Evasion</span><input type="number" id="stat_evasion" value="${h.stats.evasion}" style="width:60px;"></div>
+                            <div class="stat-item"><span class="stat-label">Accuracy</span><input type="number" id="stat_accuracy" value="${h.stats.accuracy}" style="width:60px;"></div>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="editor-section">
+                    <summary><span class="editor-section-arrow">▶</span> Imágenes y Descripción</summary>
+                    <div class="editor-section-body">
+                        <label>Imágenes (URLs de Imgur)</label>
+                        <textarea id="imgs" placeholder="una url por línea" style="min-height:60px;"></textarea>
+                        <label style="margin-top:10px;">Descripción</label>
+                        <textarea id="desc" style="min-height:80px;"></textarea>
+                    </div>
+                </details>
+
+                <details class="editor-section">
+                    <summary><span class="editor-section-arrow">▶</span> Habilidades</summary>
+                    <div class="editor-section-body">
+                        <label id="ed-passive-lbl">Pasiva</label><input id="passive">
+                        <div style="margin-top:10px; padding-top:8px; border-top:1px solid var(--border-light);">
+                            <label id="ed-active-lbl" style="margin-bottom:6px;">Activa — Árbol de habilidad</label>
+                            <div class="active-fields">
+                                <label style="margin-top:0; font-size:9px;"><span class="skill-badge skill-badge-base" style="font-size:9px;">BASE</span></label>
+                                <input id="active-base" placeholder="habilidad principal...">
+                                <div style="border-left:2px solid var(--accent-primary); margin-left:14px; padding-left:10px; margin-top:4px; display:flex; flex-direction:column; gap:4px;">
+                                    <label style="margin-top:0; font-size:9px;"><span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA I</span></label>
+                                    <input id="active-path0" placeholder="primera evolución...">
+                                    <label style="margin-top:4px; font-size:9px;"><span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA II</span></label>
+                                    <input id="active-path1" placeholder="segunda evolución...">
+                                </div>
                             </div>
                         </div>
                     </div>
+                </details>
+
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button id="update">Actualizar</button>
+                    <button id="download">Descargar JSON</button>
+                    <button id="copy">Copiar JSON</button>
                 </div>
-                <div style="display:flex; gap:6px; flex-wrap:wrap;"><button id="update">Actualizar</button><button id="download">Descargar JSON</button><button id="copy">Copiar JSON</button></div>
             </div>
             <div class="panel scroll" id="preview"></div>
         </div>
@@ -813,6 +855,28 @@ async function loadApp(name, el, data) {
         el.querySelector("#download").onclick = () => downloadJSON(build());
         el.querySelector("#copy").onclick = () => { navigator.clipboard.writeText(JSON.stringify(build(), null, 2)); alert("JSON copiado al portapapeles"); };
         render();
+
+        // Comportamiento de acordeón: solo una sección abierta a la vez
+        const sections = el.querySelectorAll('.editor-section');
+        sections.forEach(section => {
+            const summary = section.querySelector('summary');
+            if (!summary) return;
+            summary.addEventListener('click', (e) => {
+                // Si la sección ya está abierta, la cerramos y no hacemos más
+                if (section.open) {
+                    section.open = false;
+                    e.preventDefault(); // para evitar que el toggle nativo lo vuelva a abrir
+                    return;
+                }
+                // Cerrar todas las secciones
+                sections.forEach(s => {
+                    if (s !== section && s.open) s.open = false;
+                });
+                // Abrir esta sección
+                section.open = true;
+                e.preventDefault(); // evitar doble toggle
+            });
+        });
     }
 
     /* =========================
@@ -826,8 +890,11 @@ async function loadApp(name, el, data) {
         let selectedItem = null;
         el.innerHTML = `
         <div style="display:flex; height:100%; overflow:hidden; gap:0;">
-            <div id="ftree" style="width:260px; min-width:260px; flex-shrink:0; background:#0b0d12; border-right:1px solid var(--border-light); display:flex; flex-direction:column; overflow:hidden;">
-                <div style="padding:9px 14px; border-bottom:1px solid var(--border-light); font-size:10px; letter-spacing:2.5px; color:var(--accent-warning); font-weight:bold; text-transform:uppercase; flex-shrink:0; background:#08090d;">Explorador</div>
+            <div id="ftree" style="width:260px; min-width:260px; flex-shrink:0; background:#0b0d12; border-right:1px solid var(--border-light); display:flex; flex-direction:column; overflow:hidden; transition: width 0.12s, min-width 0.12s;">
+                <div style="padding:9px 14px; border-bottom:1px solid var(--border-light); font-size:10px; letter-spacing:2.5px; color:var(--accent-warning); font-weight:bold; text-transform:uppercase; flex-shrink:0; background:#08090d; display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                    <span id="ftree-title-text">Explorador</span>
+                    <button id="ftree-toggle" style="background:transparent; border:none; border-left:1px solid var(--border-light); color:var(--accent-primary); font-size:10px; padding:2px 8px; margin:-9px -14px -9px 0; align-self:stretch; cursor:pointer; letter-spacing:0; text-transform:none; font-weight:bold; flex-shrink:0;" title="Colapsar panel">◀</button>
+                </div>
                 <div id="ftree-body" style="flex:1; overflow-y:auto; padding:8px 0;"></div>
             </div>
             <div id="fviewer" style="flex:1; overflow-y:auto; padding:14px; background:#111318; min-width:0;">
@@ -936,6 +1003,38 @@ async function loadApp(name, el, data) {
                 bestSec.appendChild(bestItem);
             }
             treeBody.appendChild(bestSec);
+
+            // ── Tree panel collapse toggle ──
+            let treeCollapsed = false;
+            const ftreeEl        = el.querySelector("#ftree");
+            const ftreeTitleText = el.querySelector("#ftree-title-text");
+            const ftreeToggle    = el.querySelector("#ftree-toggle");
+            ftreeToggle.addEventListener("click", () => {
+                treeCollapsed = !treeCollapsed;
+                if (treeCollapsed) {
+                    ftreeEl.style.width       = "28px";
+                    ftreeEl.style.minWidth    = "28px";
+                    el.querySelector("#ftree-body").style.visibility = "hidden";
+                    el.querySelector("#ftree-body").style.overflow   = "hidden";
+                    ftreeTitleText.style.display = "none";
+                    ftreeToggle.textContent   = "▶";
+                    ftreeToggle.title         = "Expandir panel";
+                    ftreeToggle.style.borderLeft = "none";
+                    ftreeToggle.style.margin     = "";
+                    ftreeToggle.style.padding    = "2px 4px";
+                } else {
+                    ftreeEl.style.width       = "260px";
+                    ftreeEl.style.minWidth    = "260px";
+                    el.querySelector("#ftree-body").style.visibility = "";
+                    el.querySelector("#ftree-body").style.overflow   = "";
+                    ftreeTitleText.style.display = "";
+                    ftreeToggle.textContent   = "◀";
+                    ftreeToggle.title         = "Colapsar panel";
+                    ftreeToggle.style.borderLeft = "1px solid var(--border-light)";
+                    ftreeToggle.style.margin     = "-9px -14px -9px 0";
+                    ftreeToggle.style.padding    = "2px 8px";
+                }
+            });
         }
         function renderViewer() {
             if (!selectedItem) {
@@ -965,26 +1064,33 @@ async function loadApp(name, el, data) {
             }
             viewer.innerHTML = `
             <div class="panel">
-                <h3>${escapeHtml(h.name || h.id)}</h3>
-                <div style="font-size:9px; color:var(--text-muted); margin-bottom:8px;">ID: ${escapeHtml(h.id)}</div>
-                <div style="display:grid; grid-template-columns:200px 1fr; gap:10px; margin-top:8px;">
-                    <div class="panel" style="padding:8px;">${h.images?.[0] ? `<img src="${escapeHtml(h.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div style="height:180px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`}</div>
-                    <div class="panel">
-                        <p style="margin-bottom:4px;"><b id="fv-class">${escapeHtml(h.class)}</b> &nbsp;—&nbsp; <span id="fv-mbti">${escapeHtml(mbtiDisplay)}</span></p>
-                        <p style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">${escapeHtml(h.gender || "")}</p>
-                        ${hunterDim ? `<div style="margin-bottom:10px; padding:6px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);"><div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen</div><span id="fv-dim" style="color:var(--accent-warning); font-weight:bold; font-size:12px; cursor:pointer; text-decoration:underline dotted var(--accent-primary);">${escapeHtml(hunterDim.name)}</span></div>` : ""}
-                        <h3 id="fv-concepts-h" style="font-size:11px; margin-bottom:6px;">Conceptos</h3>
-                        <div class="concept-row"><span class="concept-label" id="fv-fn">FN</span><span>${escapeHtml(fnText)}</span></div>
-                        ${aeText !== null ? `<div class="concept-row"><span class="concept-label" id="fv-ae">AE</span><span>${escapeHtml(aeText)}</span></div>` : ""}
-                        <div class="concept-row"><span class="concept-label" id="fv-an">AN</span><span>${escapeHtml(anText)}</span></div>
+                <div class="export-hunter">
+                    <h3>${escapeHtml(h.name || h.id)}</h3>
+                    <div style="font-size:9px; color:var(--text-muted); margin-bottom:8px;">ID: ${escapeHtml(h.id)}</div>
+                    <div style="display:grid; grid-template-columns:200px 1fr; gap:10px; margin-top:8px;">
+                        <div class="panel" style="padding:8px;">${h.images?.[0] ? `<img src="${escapeHtml(h.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div style="height:180px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`}</div>
+                        <div class="panel">
+                            <p style="margin-bottom:4px;"><b id="fv-class">${escapeHtml(h.class)}</b> &nbsp;—&nbsp; <span id="fv-mbti">${escapeHtml(mbtiDisplay)}</span></p>
+                            <p style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">${escapeHtml(h.gender || "")}</p>
+                            ${hunterDim ? `<div style="margin-bottom:10px; padding:6px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);"><div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen</div><span id="fv-dim" style="color:var(--accent-warning); font-weight:bold; font-size:12px; cursor:pointer; text-decoration:underline dotted var(--accent-primary);">${escapeHtml(hunterDim.name)}</span></div>` : ""}
+                            <h3 id="fv-concepts-h" style="font-size:11px; margin-bottom:6px;">Conceptos</h3>
+                            <div class="concept-row"><span class="concept-label" id="fv-fn">FN</span><span>${escapeHtml(fnText)}</span></div>
+                            ${aeText !== null ? `<div class="concept-row"><span class="concept-label" id="fv-ae">AE</span><span>${escapeHtml(aeText)}</span></div>` : ""}
+                            <div class="concept-row"><span class="concept-label" id="fv-an">AN</span><span>${escapeHtml(anText)}</span></div>
+                        </div>
                     </div>
+                    <div class="panel" style="margin-top:8px;"><h3>Estadísticas</h3><div class="stats-grid"><div class="stat-item"><span class="stat-label">HP</span><span class="stat-value">${stats.hp}</span></div><div class="stat-item"><span class="stat-label">MP</span><span class="stat-value">${stats.mp}</span></div><div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value">${stats.speed}</span></div><div class="stat-item"><span class="stat-label">Strength</span><span class="stat-value">${stats.strength}</span></div><div class="stat-item"><span class="stat-label">Magic Power</span><span class="stat-value">${stats.magicpower}</span></div><div class="stat-item"><span class="stat-label">Defense</span><span class="stat-value">${stats.defense}</span></div><div class="stat-item"><span class="stat-label">Magic Defense</span><span class="stat-value">${stats.magicdefense}</span></div><div class="stat-item"><span class="stat-label">Evasion</span><span class="stat-value">${stats.evasion}</span></div><div class="stat-item"><span class="stat-label">Accuracy</span><span class="stat-value">${stats.accuracy}</span></div></div></div>
+                    <div class="panel" style="margin-top:8px;"><h3>Descripción</h3><p>${escapeHtml(h.description || "Sin descripción.")}</p></div>
+                    <div class="panel" style="margin-top:8px;"><h3>Habilidades</h3><p style="margin-bottom:8px;"><b id="fv-passive-lbl">Pasiva:</b> ${escapeHtml(h.passive || "—")}</p><p style="margin-bottom:6px;"><b id="fv-active-lbl">Activa — Árbol de habilidad</b></p>${renderSkillTreeHTML(h.active)}</div>
+                    ${weaponHtml}
                 </div>
-                <div class="panel" style="margin-top:8px;"><h3>Estadísticas</h3><div class="stats-grid"><div class="stat-item"><span class="stat-label">HP</span><span class="stat-value">${stats.hp}</span></div><div class="stat-item"><span class="stat-label">MP</span><span class="stat-value">${stats.mp}</span></div><div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value">${stats.speed}</span></div><div class="stat-item"><span class="stat-label">Strength</span><span class="stat-value">${stats.strength}</span></div><div class="stat-item"><span class="stat-label">Magic Power</span><span class="stat-value">${stats.magicpower}</span></div><div class="stat-item"><span class="stat-label">Defense</span><span class="stat-value">${stats.defense}</span></div><div class="stat-item"><span class="stat-label">Magic Defense</span><span class="stat-value">${stats.magicdefense}</span></div><div class="stat-item"><span class="stat-label">Evasion</span><span class="stat-value">${stats.evasion}</span></div><div class="stat-item"><span class="stat-label">Accuracy</span><span class="stat-value">${stats.accuracy}</span></div></div></div>
-                <div class="panel" style="margin-top:8px;"><h3>Descripción</h3><p>${escapeHtml(h.description || "Sin descripción.")}</p></div>
-                <div class="panel" style="margin-top:8px;"><h3>Habilidades</h3><p style="margin-bottom:8px;"><b id="fv-passive-lbl">Pasiva:</b> ${escapeHtml(h.passive || "—")}</p><p style="margin-bottom:6px;"><b id="fv-active-lbl">Activa — Árbol de habilidad</b></p>${renderSkillTreeHTML(h.active)}</div>
-                ${weaponHtml}
-                <div style="margin-top:10px; display:flex; gap:6px;"><button id="fv-edit-btn">Abrir en Editor</button>${hunterDim ? `<button id="fv-goto-dim">Ver dimensión: ${escapeHtml(hunterDim.name)}</button>` : ""}</div>
+                <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+                    <button id="fv-edit-btn">Abrir en Editor</button>
+                    ${hunterDim ? `<button id="fv-goto-dim">Ver dimensión: ${escapeHtml(hunterDim.name)}</button>` : ""}
+                    <button class="btn-export" id="fv-export-btn" title="Exportar perfil como PNG">⬇ PNG</button>
+                </div>
             </div>`;
+            viewer.querySelector("#fv-export-btn").onclick = () => exportAsPng(viewer.querySelector(".export-hunter"), `hunter_${h.id}`);
             const cdesc = classDesc(h.class);
             const mdesc = mbtiDesc(h.mbti);
             if (cdesc) Tooltip.bind(viewer.querySelector("#fv-class"), cdesc);
@@ -1010,16 +1116,21 @@ async function loadApp(name, el, data) {
             const suggestedClassObjs = (d.suggested_classes || []).map(name => getClass(name)).filter(Boolean);
             viewer.innerHTML = `
             <div class="panel">
-                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
-                    <div><h3 class="dimension-title" style="margin-bottom:2px;">${escapeHtml(d.name)}</h3><span style="font-size:9px; color:var(--text-muted); letter-spacing:1px;">${escapeHtml(d.id)}</span></div>
-                    <div style="padding:4px 10px; background:#0a0c10; border:1px solid var(--accent-primary); font-size:10px; color:var(--accent-primary); letter-spacing:1px; text-transform:uppercase;">${related.length} Hunter${related.length !== 1 ? "s" : ""}</div>
+                <div class="export-dimension">
+                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+                        <div><h3 class="dimension-title" style="margin-bottom:2px;">${escapeHtml(d.name)}</h3><span style="font-size:9px; color:var(--text-muted); letter-spacing:1px;">${escapeHtml(d.id)}</span></div>
+                        <div style="padding:4px 10px; background:#0a0c10; border:1px solid var(--accent-primary); font-size:10px; color:var(--accent-primary); letter-spacing:1px; text-transform:uppercase;">${related.length} Hunter${related.length !== 1 ? "s" : ""}</div>
+                    </div>
+                    ${d.image ? `<div class="panel" style="margin-bottom:10px; padding:8px; text-align:center;"><img src="${escapeHtml(d.image)}" style="max-width:100%; max-height:220px; image-rendering:pixelated;"></div>` : ""}
+                    <div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Descripción</h3><p>${escapeHtml(d.description || "Sin descripción.")}</p></div>
+                    ${d.lore ? `<div class="panel" style="margin-bottom:8px; border-left:3px solid var(--accent-warning);"><h3 style="font-size:11px; color:var(--accent-primary);">Lore</h3><p style="font-style:italic; line-height:1.75;">${escapeHtml(d.lore)}</p></div>` : ""}
+                    ${suggestedClassObjs.length > 0 ? `<div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Clases sugeridas para esta dimensión</h3><div id="dim-class-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div></div>` : ""}
+                    ${d.suggested_enemies && d.suggested_enemies.length ? `<div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Enemigos comunes</h3><div id="dim-enemies-list" style="display:flex; flex-direction:column; gap:6px; margin-top:4px;"></div></div>` : ""}
+                    <div class="panel" style="margin-top:8px;"><h3 style="font-size:11px;">Hunters de esta dimensión</h3>${related.length === 0 ? `<p style="color:var(--text-muted); font-style:italic; font-size:11px;">Ningún hunter registrado en esta dimensión todavía.</p>` : `<div id="dim-hunter-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div>`}</div>
                 </div>
-                ${d.image ? `<div class="panel" style="margin-bottom:10px; padding:8px; text-align:center;"><img src="${escapeHtml(d.image)}" style="max-width:100%; max-height:220px; image-rendering:pixelated;"></div>` : ""}
-                <div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Descripción</h3><p>${escapeHtml(d.description || "Sin descripción.")}</p></div>
-                ${d.lore ? `<div class="panel" style="margin-bottom:8px; border-left:3px solid var(--accent-warning);"><h3 style="font-size:11px; color:var(--accent-primary);">Lore</h3><p style="font-style:italic; line-height:1.75;">${escapeHtml(d.lore)}</p></div>` : ""}
-                ${suggestedClassObjs.length > 0 ? `<div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Clases sugeridas para esta dimensión</h3><div id="dim-class-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div></div>` : ""}
-                ${d.suggested_enemies && d.suggested_enemies.length ? `<div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Enemigos comunes</h3><div id="dim-enemies-list" style="display:flex; flex-direction:column; gap:6px; margin-top:4px;"></div></div>` : ""}
-                <div class="panel" style="margin-top:8px;"><h3 style="font-size:11px;">Hunters de esta dimensión</h3>${related.length === 0 ? `<p style="color:var(--text-muted); font-style:italic; font-size:11px;">Ningún hunter registrado en esta dimensión todavía.</p>` : `<div id="dim-hunter-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div>`}</div>
+                <div style="margin-top:10px;">
+                    <button class="btn-export" id="dim-export-btn" title="Exportar dimensión como PNG">⬇ Exportar PNG</button>
+                </div>
             </div>`;
             const dimTitle = viewer.querySelector(".dimension-title");
             if (dimTitle && d.tagline) Tooltip.bind(dimTitle, d.tagline);
@@ -1083,38 +1194,45 @@ async function loadApp(name, el, data) {
                     list.appendChild(row);
                 });
             }
+            viewer.querySelector("#dim-export-btn").onclick = () => exportAsPng(viewer.querySelector(".export-dimension"), `dim_${d.id}`);
         }
         function renderBestiaryView() {
             viewer.innerHTML = `
             <div class="panel">
-                <h3>Bestiario: Tipos Elementales y Criaturas</h3>
-                <div class="panel" style="margin-bottom:12px;">
-                    <h3 style="font-size:11px;">Tabla de Ventajas/Desventajas Elementales</h3>
-                    <table class="elemental-table">
-                        <thead><tr><th>Tipo</th><th>Ventaja contra</th><th>Desventaja contra</th></tr></thead>
-                        <tbody>
-                            ${ELEMENTAL_DATA.elemental_types.map(t => `
-                                <tr>
-                                    <td><strong>${escapeHtml(t.name)}</strong></td>
-                                    <td class="advantage">${t.advantage.map(a => escapeHtml(a)).join(', ') || '—'}</td>
-                                    <td class="disadvantage">${t.disadvantage.map(d => escapeHtml(d)).join(', ') || '—'}</td>
-                                </tr>
+                <div class="export-bestiary">
+                    <h3>Bestiario: Tipos Elementales y Criaturas</h3>
+                    <div class="panel" style="margin-bottom:12px;">
+                        <h3 style="font-size:11px;">Tabla de Ventajas/Desventajas Elementales</h3>
+                        <table class="elemental-table">
+                            <thead><tr><th>Tipo</th><th>Ventaja contra</th><th>Desventaja contra</th></tr></thead>
+                            <tbody>
+                                ${ELEMENTAL_DATA.elemental_types.map(t => `
+                                    <tr>
+                                        <td><strong>${escapeHtml(t.name)}</strong></td>
+                                        <td class="advantage">${t.advantage.map(a => escapeHtml(a)).join(', ') || '—'}</td>
+                                        <td class="disadvantage">${t.disadvantage.map(d => escapeHtml(d)).join(', ') || '—'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel">
+                        <h3 style="font-size:11px;">Tipos de Criatura</h3>
+                        <div class="creature-types-list">
+                            ${ELEMENTAL_DATA.creature_types.map(ct => `
+                                <div class="creature-type-item">
+                                    <div class="creature-type-name">${escapeHtml(ct.name)}</div>
+                                    <div class="creature-type-desc">${escapeHtml(ct.description)}</div>
+                                </div>
                             `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel">
-                    <h3 style="font-size:11px;">Tipos de Criatura</h3>
-                    <div class="creature-types-list">
-                        ${ELEMENTAL_DATA.creature_types.map(ct => `
-                            <div class="creature-type-item">
-                                <div class="creature-type-name">${escapeHtml(ct.name)}</div>
-                                <div class="creature-type-desc">${escapeHtml(ct.description)}</div>
-                            </div>
-                        `).join('')}
+                        </div>
                     </div>
                 </div>
+                <div style="margin-top:10px;">
+                    <button class="btn-export" id="best-export-btn" title="Exportar bestiario como PNG">⬇ Exportar PNG</button>
+                </div>
             </div>`;
+            viewer.querySelector("#best-export-btn").onclick = () => exportAsPng(viewer.querySelector(".export-bestiary"), "bestiario");
         }
         async function loadData() {
             try {

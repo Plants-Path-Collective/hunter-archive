@@ -417,8 +417,8 @@ h4 {
     height: 100%;
     min-height: 0;
 }
-.split-30-70 { grid-template-columns: 380px 1fr; }
-.split-70-30 { grid-template-columns: 1fr 380px; }
+.split-30-70 { grid-template-columns: minmax(260px, 380px) 1fr; }
+.split-70-30 { grid-template-columns: 1fr minmax(260px, 380px); }
 .split-50    { grid-template-columns: 1fr 1fr; }
 
 .stack {
@@ -939,4 +939,149 @@ summary::marker, .class-card summary::marker, .enemy-card summary::marker {
 }
 .class-card[open] summary .arrow {
     transform: rotate(90deg);
+}
+
+/* =========================
+   READABILITY: LINE HEIGHT FOR DESCRIPTIONS
+========================= */
+
+.panel p, .class-description {
+    line-height: 1.75;
+}
+
+/* =========================
+   COLLAPSIBLE EDITOR SECTIONS (original style)
+========================= */
+
+details.editor-section {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-light);
+    box-shadow: inset 0 0 0 1px #2a2e3a, 2px 2px 0px black;
+    overflow: hidden;
+}
+
+details.editor-section > summary {
+    list-style: none;
+    padding: 8px 12px;
+    background: var(--bg-raised);
+    font-size: var(--font-sm);
+    color: var(--accent-primary);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-light);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    transition: color 0.05s;
+}
+details.editor-section > summary::-webkit-details-marker { display: none; }
+details.editor-section > summary::marker { display: none; }
+
+details.editor-section[open] > summary {
+    color: var(--accent-warning);
+    border-bottom-color: var(--accent-primary);
+}
+
+.editor-section-arrow {
+    font-size: 9px;
+    display: inline-block;
+    width: 10px;
+    flex-shrink: 0;
+    color: inherit;
+    transition: transform 0.08s;
+}
+details.editor-section[open] > summary .editor-section-arrow {
+    transform: rotate(90deg);
+}
+
+.editor-section-body {
+    padding: 12px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+/* =========================
+   ESPACIADO MEJORADO PARA EL EDITOR (gap, padding, etc.)
+========================= */
+
+/* El stack izquierdo debe ocupar toda la altura y permitir scroll */
+.split-30-70 .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    flex: 1;               /* fuerza a ocupar el espacio disponible */
+    min-height: 0;         /* necesario para flex overflow */
+    padding-right: 4px;    /* separación para la barra de scroll */
+}
+
+/* Espaciado interno de cada sección y separación entre campos */
+.editor-section-body {
+    padding: 14px 12px 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Evitar overflow horizontal en las secciones */
+details.editor-section {
+    overflow-x: hidden;
+}
+
+/* Márgenes más finos para etiquetas dentro de una sección */
+.editor-section-body > label {
+    margin-bottom: 2px;
+    margin-top: 6px;
+}
+.editor-section-body > input,
+.editor-section-body > textarea,
+.editor-section-body > select {
+    margin-bottom: 2px;
+}
+
+/* Ajuste para stats-grid dentro de sección (evita doble margen) */
+.stats-grid {
+    margin-top: 0;
+}
+
+/* Separar los botones finales de la última sección */
+.split-30-70 .stack > div:last-child {
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+/* Dar un poco más de respiro al título del Editor */
+.split-30-70 .stack > h3 {
+    margin-bottom: 4px;
+    flex-shrink: 0;
+}
+
+/* Mejor espaciado en la vista previa del Editor */
+.split-30-70 .panel.scroll {
+    padding: 16px;
+}
+.split-30-70 .panel.scroll .panel {
+    margin-bottom: 12px;
+}
+
+/* =========================
+   EXPORT BUTTON
+========================= */
+
+.btn-export {
+    background: transparent;
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+    font-size: 9px;
+    padding: 4px 10px;
+    letter-spacing: 1.5px;
+}
+.btn-export:hover {
+    background: var(--accent-primary);
+    color: #000;
+    border-color: var(--accent-primary);
 }

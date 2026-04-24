@@ -10,7 +10,7 @@ como expedientes estructurados dentro de un sistema de archivo estilizado.
 Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo 
 de construcción de mundos.
 
-**Versión actual:** v1.5.4 (posibilidad de escoger el arma del Hunter en el editor)
+**Versión actual:** v1.5.5
 
 ---
 
@@ -315,29 +315,6 @@ En las vistas previas (Generador, Editor, Archivos) se renderiza visualmente con
 * Usa `fetch` para cargar los archivos JSON desde la carpeta `data/`.
 * El gestor de ventanas (`os.js`) implementa arrastre, maximizado, minimizado con animación y persistencia de geometría.
 * Los tooltips se generan dinámicamente y pueden mostrar texto variable (ej. descripción de la clase seleccionada).
-
----
-
-## Próximas mejoras (tareas pendientes)
-
-1. UX/UI Improvements
-
-* Reduce information density: collapsible cards, improved spacing, cleaner typography.
-* Ensure responsiveness (desktop).
-* Optimize navigation between tabs/sections within Files, Editor, and Generator.
-* If not already in use, implement a component library (shadcn/ui, MUI) or refine the CSS with Tailwind.
-* Remember to maintain the essence of the website (a fictional OS based on Windows 95)
-
-2. Rendering Feature for Documentation
-
-* In Files, add buttons that allow you to generate a downloadable image (PNG) of:
-* A Hunter’s full profile (stats, abilities, weapons).
-* A Dimension’s summary profile (suggested classes, enemies).
-* Table of elemental types + creature types.
-* Use `html2canvas` and an “Export to Image” button that captures a specific container.
-
-You can break the tasks down, so let's start with the first three. If you need more information or a specific file, let me know. I attached the readme file of theproject with the current state of the project and the current file tree, ask for the files u need.
-Una vez implementados estos puntos, será necesario **actualizar este README** con la documentación correspondiente (estructura de datos, nuevas funcionalidades, flujo de trabajo ampliado).
 
 ---
 
