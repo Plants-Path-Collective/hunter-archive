@@ -4,7 +4,8 @@
     "name": "Metztli",
     "gender": "Masculino (Andrógino)",
     "class": "Fractal Resonante (comunicador de combate)",
-    "mbti": "Analista (INFJ)",
+    "mbti": "Analista",
+    "mbti_subtype": "INFJ",
     "dimension_id": "DIM-6084206892469",
     "concepts": [],
     "passive": null,
@@ -39,6 +40,7 @@
     "gender": "Femenino",
     "class": "Fractal Resonante (comunicador de combate)",
     "mbti": "Centinela",
+    "mbti_subtype": "ISFJ",
     "dimension_id": "DIM-6029384756102",
     "concepts": [
       "Cantante de frecuencias que alinea las facetas del hielo vivo",
@@ -81,6 +83,7 @@
     "gender": "Masculino",
     "class": "Domador de Kuroyū (controlador)",
     "mbti": "Explorador",
+    "mbti_subtype": "ESTP",
     "dimension_id": "DIM-7182930415264",
     "concepts": [
       "Shinobi intangible que se vuelve gas para atravesar muros",

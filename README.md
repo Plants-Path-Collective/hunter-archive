@@ -10,7 +10,7 @@ como expedientes estructurados dentro de un sistema de archivo estilizado.
 Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo 
 de construcción de mundos.
 
-**Versión actual:** v1.5.3 (posibilidad de escoger el arma del Hunter en el editor)
+**Versión actual:** v1.5.4 (posibilidad de escoger el arma del Hunter en el editor)
 
 ---
 
@@ -141,6 +141,12 @@ Define las entradas del generador, tooltips y algunos pools genéricos (usados s
   "genders": ["Masculino", "Femenino", "No binario", "Agénero"],
   "mbti": ["Analista", "Diplomático", "Centinela", "Explorador"],
   "mbti_descriptions": { ... },
+  "mbti_subtypes": {
+    "Analista": ["INTJ", "INTP", "ENTJ", "ENTP"],
+    "Diplomático": ["INFJ", "INFP", "ENFJ", "ENFP"],
+    "Centinela": ["ISTJ", "ISFJ", "ESTJ", "ESFJ"],
+    "Explorador": ["ISTP", "ISFP", "ESTP", "ESFP"]
+  },
   "attribute_tooltips": { ... },
   "concepts": { ... },  // obsoleto si usas concepts.json por dimensión
   "passive_pool": [ ... ],
@@ -245,7 +251,8 @@ Almacena todos los Hunters creados. Cada Hunter sigue el esquema:
 - `name`: nombre de cazador
 - `gender`: género
 - `class`: clase jrpg
-- `mbti`: personalidad
+- `mbti`: categoría personalidad
+- `mbti_subtype`: mbti especifico basado en la categoría
 - `dimension_id`: id de la dimension a la que pertenece
 - `concepts`: conceptos que describen su función en su dimension y un rasgo de su personalidad
 - `passive`: habilidad pasiva
@@ -262,6 +269,7 @@ Almacena todos los Hunters creados. Cada Hunter sigue el esquema:
   "gender": "No Binario",
   "class": "Archivista",
   "mbti": "Analista",
+  "mbti_subtype": "INTJ",
   "dimension_id": "DIM-6084206892469",
   "concepts": [ "vende recuerdos ilegales", "el tiempo se repite al parpadear" ],
   "passive": "Percibe eventos futuros cercanos",

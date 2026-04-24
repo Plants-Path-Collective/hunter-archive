@@ -59,6 +59,7 @@ async function loadApp(name, el, data) {
         genders: [],
         mbti: [],
         mbti_descriptions: {},
+        mbti_subtypes: {},
         attribute_tooltips: {},
         classes: [],
         concepts: { function: [], anomaly: [] },
@@ -68,6 +69,7 @@ async function loadApp(name, el, data) {
     try {
         const res = await fetch("data/data.json");
         CONFIG = await res.json();
+        if (!CONFIG.mbti_subtypes) CONFIG.mbti_subtypes = {};
     } catch (e) {
         console.warn("No se pudo cargar data.json:", e);
     }
@@ -335,6 +337,7 @@ async function loadApp(name, el, data) {
                 gender:       el.querySelector("#gender").value,
                 class:        chosenClass,
                 mbti:         mbtiSelect.value,
+                // No mbti_subtype inicial
                 dimension_id: dimEntry?.id || null,
                 concepts,
                 passive,
@@ -343,7 +346,6 @@ async function loadApp(name, el, data) {
                 images: [],
                 stats: { ...DEFAULT_STATS },
                 weapon: null
-                // NOTA: no se asigna nombre aquí; se hará en el Editor
             };
 
             // Result panel
@@ -368,7 +370,7 @@ async function loadApp(name, el, data) {
             if (tt("anomaly")) Tooltip.bind(rEl.querySelector("#lbl-an"), tt("anomaly"));
             if (dimEntry && rEl.querySelector("#res-dim-name")) Tooltip.bind(rEl.querySelector("#res-dim-name"), dimEntry.tagline || dimEntry.description || "");
 
-            // Preview panel (sin armas)
+            // Preview panel
             const cdesc = classDesc(hunter.class);
             const mdesc = mbtiDesc(hunter.mbti);
             el.querySelector("#preview").innerHTML = `
@@ -434,7 +436,8 @@ async function loadApp(name, el, data) {
                         const opt = document.createElement("option");
                         opt.value = h.id;
                         const displayName = h.name ? `${h.name} (${h.id})` : h.id;
-                        opt.textContent = `${displayName} — ${h.class} (${h.mbti})`;
+                        const mbtiDisplay = h.mbti_subtype ? `${h.mbti} · ${h.mbti_subtype}` : h.mbti;
+                        opt.textContent = `${displayName} — ${h.class} (${mbtiDisplay})`;
                         selectEl.appendChild(opt);
                     });
                 }
@@ -454,12 +457,13 @@ async function loadApp(name, el, data) {
                     const fnText = displayHunter.concepts?.[0] || "—";
                     const aeText = isNewSchema ? null : (displayHunter.concepts?.[1] || "—");
                     const anText = isNewSchema ? (displayHunter.concepts?.[1] || "—") : (displayHunter.concepts?.[2] || "—");
+                    const mbtiDisplay = displayHunter.mbti_subtype ? `${displayHunter.mbti} · ${displayHunter.mbti_subtype}` : displayHunter.mbti;
                     const previewDiv = el.querySelector("#selectorPreview");
                     previewDiv.innerHTML = `
                         <div class="panel">
                             <h3>${escapeHtml(displayHunter.name || displayHunter.id)}</h3>
                             <p><b>ID:</b> ${escapeHtml(displayHunter.id)}</p>
-                            <p><b id="sel-class">${escapeHtml(displayHunter.class)}</b> &nbsp;—&nbsp; <span id="sel-mbti">${escapeHtml(displayHunter.mbti)}</span></p>
+                            <p><b id="sel-class">${escapeHtml(displayHunter.class)}</b> &nbsp;—&nbsp; <span id="sel-mbti">${escapeHtml(mbtiDisplay)}</span></p>
                             <p style="color:var(--text-muted); font-size:11px;">${escapeHtml(displayHunter.gender || "")}</p>
                             ${dimEntry ? `<div style="margin:8px 0; padding:6px 10px; background:#0a0c10; border-left:3px solid var(--accent-primary);"><div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">DIMENSIÓN DE ORIGEN</div><span id="sel-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span></div>` : ""}
                             <h3 id="sel-concepts-h" style="margin-top:10px;">Conceptos</h3>
@@ -513,7 +517,7 @@ async function loadApp(name, el, data) {
                 el.querySelector("#previewConfigBtn").onclick = () => {
                     try {
                         const nc = JSON.parse(textarea.value);
-                        previewDiv.innerHTML = `<div class="panel"><h3>Vista previa de data.json</h3><h4>Géneros (${nc.genders?.length || 0})</h4><ul>${nc.genders?.map(g => `<li>${escapeHtml(g)}</li>`).join("") || "<li>No definido</li>"}</ul><h4>MBTI (${nc.mbti?.length || 0})</h4><ul>${nc.mbti?.map(m => `<li><b>${escapeHtml(m)}</b>: ${escapeHtml(nc.mbti_descriptions?.[m] || "—")}</li>`).join("") || "<li>No definido</li>"}</ul><h4>Tooltips de atributos</h4><ul>${Object.entries(nc.attribute_tooltips || {}).map(([k, v]) => `<li><b>${escapeHtml(k)}:</b> <span style="color:var(--text-muted);">${escapeHtml(v)}</span></li>`).join("") || "<li>No definido</li>"}</ul><div style="margin-top:10px; padding:8px; background:#0a0c10; border:1px solid var(--border-light); font-size:10px; color:var(--text-muted);">Clases cargadas desde <code>classes.json</code>: <b>${CLASSES.length}</b><br>Funciones en <code>concepts.json</code>: según dimensión.</div></div>`;
+                        previewDiv.innerHTML = `<div class="panel"><h3>Vista previa de data.json</h3><h4>Géneros (${nc.genders?.length || 0})</h4><ul>${nc.genders?.map(g => `<li>${escapeHtml(g)}</li>`).join("") || "<li>No definido</li>"}</ul><h4>MBTI (${nc.mbti?.length || 0})</h4><ul>${nc.mbti?.map(m => `<li><b>${escapeHtml(m)}</b>: ${escapeHtml(nc.mbti_descriptions?.[m] || "—")}</li>`).join("") || "<li>No definido</li>"}</ul><h4>Subtipos MBTI</h4><ul>${Object.entries(nc.mbti_subtypes || {}).map(([cat, subs]) => `<li><b>${escapeHtml(cat)}:</b> ${subs.map(s => escapeHtml(s)).join(', ')}</li>`).join("") || "<li>No definido</li>"}</ul><h4>Tooltips de atributos</h4><ul>${Object.entries(nc.attribute_tooltips || {}).map(([k, v]) => `<li><b>${escapeHtml(k)}:</b> <span style="color:var(--text-muted);">${escapeHtml(v)}</span></li>`).join("") || "<li>No definido</li>"}</ul><div style="margin-top:10px; padding:8px; background:#0a0c10; border:1px solid var(--border-light); font-size:10px; color:var(--text-muted);">Clases cargadas desde <code>classes.json</code>: <b>${CLASSES.length}</b><br>Funciones en <code>concepts.json</code>: según dimensión.</div></div>`;
                     } catch (e) { previewDiv.innerHTML = `<div class="panel" style="color:#ff6b6b;">Error en JSON: ${escapeHtml(e.message)}</div>`; }
                 };
                 el.querySelector("#downloadConfigBtn").onclick = () => {
@@ -545,8 +549,8 @@ async function loadApp(name, el, data) {
         if (!Array.isArray(h.active.paths)) h.active.paths = [];
         if (!h.stats) h.stats = { ...DEFAULT_STATS };
         if (h.weapon === undefined) h.weapon = null;
-        // Asegurar que tenga campo name (si no existe, se asigna el id como fallback)
         if (!h.name) h.name = "";
+        if (!h.mbti_subtype) h.mbti_subtype = null;
         const isNewSchema = h.dimension_id !== undefined && h.dimension_id !== null;
         const dimEntry = isNewSchema ? getDim(h.dimension_id) : null;
         const conceptsFormHTML = isNewSchema ? `
@@ -584,7 +588,17 @@ async function loadApp(name, el, data) {
                     <label style="margin-top:8px;">Arma seleccionada</label>
                     <select id="weaponSelect"></select>
                 </div>
-                <div class="panel"><p><span id="ed-mbti">${escapeHtml(h.mbti)}</span> &nbsp;|&nbsp; ${escapeHtml(h.gender)}</p></div>
+                <div class="panel">
+                    <label>Personalidad (MBTI)</label>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <span style="background:#1a1d24; padding:4px 8px; border-radius:4px;">${escapeHtml(h.mbti)}</span>
+                        <span style="color:var(--text-muted);">→</span>
+                        <select id="mbtiSubtype" style="flex:1;">
+                            <option value="">— Sin subtipo —</option>
+                        </select>
+                    </div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">Género: ${escapeHtml(h.gender)}</div>
+                </div>
                 ${conceptsFormHTML}
                 <div class="panel">
                     <h3>Estadísticas</h3>
@@ -644,7 +658,6 @@ async function loadApp(name, el, data) {
                 opt.textContent = `${w.name} (${w.type}) - Daño: ${w.damage}`;
                 weaponSelect.appendChild(opt);
             });
-            // Seleccionar el arma actual si existe
             if (h.weapon && h.weapon.name) {
                 const found = weapons.some(w => w.name === h.weapon.name);
                 if (found) {
@@ -662,8 +675,23 @@ async function loadApp(name, el, data) {
             const newClass = classSelect.value;
             classHint.textContent = classDesc(newClass) ? "↳ " + classDesc(newClass) : "";
             updateWeaponSelect(newClass);
-            // Actualizar también la vista previa al cambiar clase (opcional, pero se hará en el render)
         });
+
+        // Poblar selector de subtipos MBTI
+        const subtypeSelect = el.querySelector("#mbtiSubtype");
+        const mbtiCategory = h.mbti;
+        function populateMbtiSubtypeSelect(selectEl, category, selectedValue) {
+            selectEl.innerHTML = '<option value="">— Sin subtipo —</option>';
+            const subtypes = CONFIG.mbti_subtypes?.[category] || [];
+            subtypes.forEach(st => {
+                const opt = document.createElement("option");
+                opt.value = st;
+                opt.textContent = st;
+                if (st === selectedValue) opt.selected = true;
+                selectEl.appendChild(opt);
+            });
+        }
+        populateMbtiSubtypeSelect(subtypeSelect, mbtiCategory, h.mbti_subtype);
 
         // Resto de campos
         el.querySelector("#concept0").value = h.concepts?.[0] || "";
@@ -677,7 +705,7 @@ async function loadApp(name, el, data) {
         el.querySelector("#active-path1").value = h.active?.paths?.[1] || "";
 
         const mdesc = mbtiDesc(h.mbti);
-        if (mdesc) Tooltip.bind(el.querySelector("#ed-mbti"), mdesc);
+        if (mdesc) Tooltip.bind(el.querySelector("#ed-mbti")?.parentElement?.querySelector("span") || el.querySelector("#ed-mbti"), mdesc);
         if (tt("concepts")) Tooltip.bind(el.querySelector("#ed-concepts-h"), tt("concepts"));
         if (tt("function") && el.querySelector("#ed-fn-lbl")) Tooltip.bind(el.querySelector("#ed-fn-lbl"), tt("function"));
         if (!isNewSchema && tt("aesthetic") && el.querySelector("#ed-ae-lbl")) Tooltip.bind(el.querySelector("#ed-ae-lbl"), tt("aesthetic"));
@@ -689,6 +717,7 @@ async function loadApp(name, el, data) {
         function build() {
             const name = el.querySelector("#hunterName").value.trim();
             const finalName = name || "";
+            const mbtiSubtype = subtypeSelect.value || null;
             const paths = [el.querySelector("#active-path0").value.trim(), el.querySelector("#active-path1").value.trim()].filter(Boolean);
             let weapon = null;
             const weaponVal = el.querySelector("#weaponSelect").value;
@@ -700,6 +729,7 @@ async function loadApp(name, el, data) {
             const built = {
                 ...h,
                 name: finalName,
+                mbti_subtype: mbtiSubtype,
                 class: classSelect.value,
                 description: el.querySelector("#desc").value,
                 images: el.querySelector("#imgs").value.split("\n").map(v => v.trim()).filter(Boolean),
@@ -733,9 +763,8 @@ async function loadApp(name, el, data) {
             const fnText = d.concepts?.[0] || "—";
             let aeText = null, anText;
             if (isNewSchema) { anText = d.concepts?.[1] || "—"; } else { aeText = d.concepts?.[1] || "—"; anText = d.concepts?.[2] || "—"; }
+            const mbtiDisplay = d.mbti_subtype ? `${d.mbti} · ${d.mbti_subtype}` : d.mbti;
             const currentClassObj = getClass(d.class);
-            const weaponsForDisplay = currentClassObj?.weapons || [];
-            // Mostrar el arma seleccionada en la vista previa
             const selectedWeapon = d.weapon;
             let weaponDisplayHtml = "";
             if (selectedWeapon && selectedWeapon.name) {
@@ -751,7 +780,7 @@ async function loadApp(name, el, data) {
                 <div style="display:grid; grid-template-columns:220px 1fr; gap:6px; margin-top:6px;">
                     <div class="panel">${d.images[0] ? `<img src="${escapeHtml(d.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div style="height:200px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`}</div>
                     <div class="panel">
-                        <div class="panel"><p><b id="prev-class">${escapeHtml(d.class)}</b> &nbsp;—&nbsp; <span id="prev-mbti">${escapeHtml(d.mbti)}</span></p><p style="color:var(--text-muted); font-size:11px;">${escapeHtml(d.gender)}</p></div>
+                        <div class="panel"><p><b id="prev-class">${escapeHtml(d.class)}</b> &nbsp;—&nbsp; <span id="prev-mbti">${escapeHtml(mbtiDisplay)}</span></p><p style="color:var(--text-muted); font-size:11px;">${escapeHtml(d.gender)}</p></div>
                         ${dimEntry ? `<div style="margin-top:6px; padding:6px 10px; background:#0a0c10; border-left:3px solid var(--accent-primary);"><div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">DIMENSIÓN DE ORIGEN</div><span id="prev-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span></div>` : ""}
                         <div class="panel" style="margin-top:6px;"><h3 id="prev-concepts-h">Conceptos</h3><div class="concept-row"><span class="concept-label" id="prev-fn">FN</span><span>${escapeHtml(fnText)}</span></div>${aeText !== null ? `<div class="concept-row"><span class="concept-label" id="prev-ae">AE</span><span>${escapeHtml(aeText)}</span></div>` : ""}<div class="concept-row"><span class="concept-label" id="prev-an">AN</span><span>${escapeHtml(anText)}</span></div></div>
                     </div>
@@ -927,8 +956,7 @@ async function loadApp(name, el, data) {
             const fnText = h.concepts?.[0] || "—";
             const aeText = hunterIsNew ? null : (h.concepts?.[1] || "—");
             const anText = hunterIsNew ? (h.concepts?.[1] || "—") : (h.concepts?.[2] || "—");
-            const classObj = getClass(h.class);
-            // Mostrar arma seleccionada si existe
+            const mbtiDisplay = h.mbti_subtype ? `${h.mbti} · ${h.mbti_subtype}` : h.mbti;
             let weaponHtml = "";
             if (h.weapon && h.weapon.name) {
                 weaponHtml = `<div class="panel" style="margin-top:8px;"><h3>Arma seleccionada</h3><ul class="weapons-list">${renderWeaponItem(h.weapon)}</ul></div>`;
@@ -942,7 +970,7 @@ async function loadApp(name, el, data) {
                 <div style="display:grid; grid-template-columns:200px 1fr; gap:10px; margin-top:8px;">
                     <div class="panel" style="padding:8px;">${h.images?.[0] ? `<img src="${escapeHtml(h.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div style="height:180px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`}</div>
                     <div class="panel">
-                        <p style="margin-bottom:4px;"><b id="fv-class">${escapeHtml(h.class)}</b> &nbsp;—&nbsp; <span id="fv-mbti">${escapeHtml(h.mbti)}</span></p>
+                        <p style="margin-bottom:4px;"><b id="fv-class">${escapeHtml(h.class)}</b> &nbsp;—&nbsp; <span id="fv-mbti">${escapeHtml(mbtiDisplay)}</span></p>
                         <p style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">${escapeHtml(h.gender || "")}</p>
                         ${hunterDim ? `<div style="margin-bottom:10px; padding:6px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);"><div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen</div><span id="fv-dim" style="color:var(--accent-warning); font-weight:bold; font-size:12px; cursor:pointer; text-decoration:underline dotted var(--accent-primary);">${escapeHtml(hunterDim.name)}</span></div>` : ""}
                         <h3 id="fv-concepts-h" style="font-size:11px; margin-bottom:6px;">Conceptos</h3>
@@ -1040,7 +1068,8 @@ async function loadApp(name, el, data) {
                     const row = document.createElement("div");
                     row.style.cssText = `display:flex; align-items:center; gap:8px; padding:6px 10px; background:#0d0f14; border:1px solid var(--border-light); cursor:pointer; transition:background 0.05s;`;
                     const hunterDisplayName = h.name ? `${h.name} (${h.id})` : h.id;
-                    row.innerHTML = `<span class="concept-label" style="flex-shrink:0;">${escapeHtml(h.class)}</span><span style="font-family:monospace; font-size:11px; color:var(--text-secondary);">${escapeHtml(hunterDisplayName)}</span><span style="font-size:10px; color:var(--text-muted); margin-left:auto;">${escapeHtml(h.mbti)} · ${escapeHtml(h.gender || "")}</span><span style="font-size:10px; color:var(--accent-primary);">→</span>`;
+                    const mbtiDisplay = h.mbti_subtype ? `${h.mbti} · ${h.mbti_subtype}` : h.mbti;
+                    row.innerHTML = `<span class="concept-label" style="flex-shrink:0;">${escapeHtml(h.class)}</span><span style="font-family:monospace; font-size:11px; color:var(--text-secondary);">${escapeHtml(hunterDisplayName)}</span><span style="font-size:10px; color:var(--text-muted); margin-left:auto;">${escapeHtml(mbtiDisplay)} · ${escapeHtml(h.gender || "")}</span><span style="font-size:10px; color:var(--accent-primary);">→</span>`;
                     row.addEventListener("mouseenter", () => row.style.background = "#1a1d26");
                     row.addEventListener("mouseleave", () => row.style.background = "#0d0f14");
                     row.onclick = () => {
@@ -1111,7 +1140,7 @@ async function loadApp(name, el, data) {
         <div class="panel">
             <h3>Hunter Association — Correo Interno</h3>
             <div class="panel" style="margin-top:8px;"><p><b>De:</b> Hunter Association — Terminal de Control</p><p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.0)</p></div>
-            <div class="panel" style="margin-top:8px; line-height:1.75;"><p>Operador,<br><br>El flujo de trabajo es el siguiente:<br><br><b>1. BUSCADOR</b><br>Selecciona Género y MBTI. La Clase se genera automáticamente según la Dimensión de Origen (o aleatoria si no hay sugerencias).<br>Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN), una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase generada.<br><br><b>2. DIMENSIONES DE ORIGEN</b><br>Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br><b>3. CLASES</b><br>Las clases no son roles de combate: son oficios cotidianos.<br>Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>El Buscador solo usa las habilidades de la clase generada, nunca un pool genérico.<br><br><b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>Las rutas son expansiones o variaciones de la base, definidas por clase.<br>Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br><b>5. EDITOR</b><br>Modifica el nombre, descripción, conceptos (FN + AN), habilidades, imágenes, estadísticas, clase y arma.<br>La Dimensión de Origen es de solo lectura.<br>Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>. Las estadísticas se guardan automáticamente en localStorage.<br><br><b>6. ARCHIVOS DE DATOS</b><br><code>data/data.json</code> — Géneros, MBTI y tooltips de atributos.<br><code>data/classes.json</code> — Clases con sus pools de habilidades y armas.<br><code>data/concepts.json</code> — Organizado por dimensión (funciones y anomalías temáticas).<br><code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br><code>data/files.json</code> — Hunters registrados.<br><code>data/elemental_types.json</code> — Tipos elementales y criaturas.<br><br><b>Glosario de badges:</b><br>&nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>&nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br><b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>— Hunter Association</p></div>
+            <div class="panel" style="margin-top:8px; line-height:1.75;"><p>Operador,<br><br>El flujo de trabajo es el siguiente:<br><br><b>1. BUSCADOR</b><br>Selecciona Género y MBTI. La Clase se genera automáticamente según la Dimensión de Origen (o aleatoria si no hay sugerencias).<br>Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN), una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase generada.<br><br><b>2. DIMENSIONES DE ORIGEN</b><br>Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br><b>3. CLASES</b><br>Las clases no son roles de combate: son oficios cotidianos.<br>Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>El Buscador solo usa las habilidades de la clase generada, nunca un pool genérico.<br><br><b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>Las rutas son expansiones o variaciones de la base, definidas por clase.<br>Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br><b>5. EDITOR</b><br>Modifica el nombre, descripción, conceptos (FN + AN), habilidades, imágenes, estadísticas, clase y arma.<br>Además puedes seleccionar un <b>subtipo MBTI</b> (INTJ, INFP, etc.) según la categoría principal.<br>La Dimensión de Origen es de solo lectura.<br>Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>. Las estadísticas se guardan automáticamente en localStorage.<br><br><b>6. ARCHIVOS DE DATOS</b><br><code>data/data.json</code> — Géneros, MBTI, subtipos de MBTI y tooltips de atributos.<br><code>data/classes.json</code> — Clases con sus pools de habilidades y armas.<br><code>data/concepts.json</code> — Organizado por dimensión (funciones y anomalías temáticas).<br><code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br><code>data/files.json</code> — Hunters registrados.<br><code>data/elemental_types.json</code> — Tipos elementales y criaturas.<br><br><b>Glosario de badges:</b><br>&nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>&nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br><b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>— Hunter Association</p></div>
         </div>`;
     }
 }

@@ -6,16 +6,21 @@
     "Agénero"
   ],
   "mbti": [
-    "Analista",
-    "Diplomático",
-    "Centinela",
-    "Explorador"
-  ],
+    "Analista", 
+    "Diplomático", 
+    "Centinela", 
+    "Explorador"],
   "mbti_descriptions": {
     "Analista": "Pensadores lógicos, estratégicos e independientes. Priorizan la eficiencia y los sistemas sobre las convenciones sociales.",
     "Diplomático": "Empáticos e idealistas. Buscan conexión emocional y armonía en cada decisión que toman.",
     "Centinela": "Prácticos y organizados. Guardianes del orden estructural y la estabilidad operativa.",
     "Explorador": "Adaptables e impulsivos. Observadores del entorno con capacidad de respuesta inmediata."
+  },
+  "mbti_subtypes": {
+    "Analista": ["INTJ", "INTP", "ENTJ", "ENTP"],
+    "Diplomático": ["INFJ", "INFP", "ENFJ", "ENFP"],
+    "Centinela": ["ISTJ", "ISFJ", "ESTJ", "ESFJ"],
+    "Explorador": ["ISTP", "ISFP", "ESTP", "ESFP"]
   },
   "attribute_tooltips": {
     "mbti": "Arquetipo psicológico del Hunter. Define su patrón de toma de decisiones y respuesta emocional ante situaciones críticas.",
