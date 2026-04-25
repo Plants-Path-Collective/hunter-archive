@@ -10,7 +10,7 @@ como expedientes estructurados dentro de un sistema de archivo estilizado.
 Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo 
 de construcción de mundos.
 
-**Versión actual:** v1.6.0
+**Versión actual:** v1.6.1
 
 ---
 
@@ -265,7 +265,7 @@ Almacena todos los Hunters creados. Cada Hunter sigue el esquema:
 ``` json
 {
   "id": "H-1776239790089",
-  "game": "Awakening",
+  "game": "Vega",
   "name": "Typlon",
   "gender": "No Binario",
   "class": "Archivista",
@@ -323,7 +323,7 @@ En las vistas previas (Generador, Editor, Archivos) se renderiza visualmente con
 
 ## v2.0 – Separación en visor público y editor privado
 
-A partir de la versión actual (v1.5.5), se planea una reestructuración del sistema para separar claramente los flujos de **visualización pública** y **edición/administración**. Esto permitirá usar Hunter Association OS como una galería de personajes para el proyecto *Hunters Vega*, mientras que la creación y edición quedará restringida a una herramienta interna de desarrollo.
+A partir de la versión actual (v1.6.0), se planea una reestructuración del sistema para separar claramente los flujos de **visualización pública** y **edición/administración**. Esto permitirá usar Hunter Association OS como una galería de personajes para el proyecto *Hunters Vega*, mientras que la creación y edición quedará restringida a una herramienta interna de desarrollo.
 
 ### 1. División en dos interfaces independientes
 
@@ -351,6 +351,12 @@ A partir de la versión actual (v1.5.5), se planea una reestructuración del sis
 - **Separación de roles**: los artistas y escritores consultan la galería sin riesgo de modificar datos.
 - **Seguridad**: la edición queda aislada en una herramienta que no estará expuesta al público general.
 - **Rendimiento**: la versión pública puede cargarse más rápido al prescindir de los módulos de edición.
+
+---
+
+Nota `v1.6.0` – Todos los estilos inline se han migrado a clases CSS, se han definido variables 
+de espaciado y se ha mejorado la consistencia visual. En la `v1.6.1` se hicieron correcciones 
+para que las habilidades y las stats se renderizen correctamente.
 
 ---
 

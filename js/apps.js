@@ -1125,9 +1125,27 @@ async function loadApp(name, el, data) {
                             <div class="concept-row"><span class="concept-label" id="fv-an">AN</span><span>${escapeHtml(anText)}</span></div>
                         </div>
                     </div>
-                    <div class="panel" style="margin-top:8px;"><h3>Estadísticas</h3><div class="stats-grid">...</div></div>
                     <div class="panel" style="margin-top:8px;"><h3>Descripción</h3><p>${escapeHtml(h.description || "Sin descripción.")}</p></div>
-                    <div class="panel" style="margin-top:8px;"><h3>Habilidades</h3>...</div>
+                    <div class="panel" style="margin-top:8px;">
+                        <h3>Estadísticas</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item"><span class="stat-label">HP</span><span class="stat-value">${stats.hp}</span></div>
+                            <div class="stat-item"><span class="stat-label">MP</span><span class="stat-value">${stats.mp}</span></div>
+                            <div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value">${stats.speed}</span></div>
+                            <div class="stat-item"><span class="stat-label">Strength</span><span class="stat-value">${stats.strength}</span></div>
+                            <div class="stat-item"><span class="stat-label">Magic Power</span><span class="stat-value">${stats.magicpower}</span></div>
+                            <div class="stat-item"><span class="stat-label">Defense</span><span class="stat-value">${stats.defense}</span></div>
+                            <div class="stat-item"><span class="stat-label">Magic Defense</span><span class="stat-value">${stats.magicdefense}</span></div>
+                            <div class="stat-item"><span class="stat-label">Evasion</span><span class="stat-value">${stats.evasion}</span></div>
+                            <div class="stat-item"><span class="stat-label">Accuracy</span><span class="stat-value">${stats.accuracy}</span></div>
+                        </div>
+                    </div>                    
+                    <div class="panel" style="margin-top:8px;">
+                        <h3>Habilidades</h3>
+                        <p style="margin-bottom:8px;"><b id="fv-passive-lbl">Pasiva:</b> ${escapeHtml(h.passive || "—")}</p>
+                        <p style="margin-bottom:6px;"><b id="fv-active-lbl">Activa — Árbol de habilidad</b></p>
+                        ${renderSkillTreeHTML(h.active)}
+                    </div>
                     ${weaponHtml}
                 </div>
                 <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
