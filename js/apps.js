@@ -579,113 +579,137 @@ async function loadApp(name, el, data) {
         const dimEntry = isNewSchema ? getDim(h.dimension_id) : null;
         const conceptsFormInner = isNewSchema ? `
             <label id="ed-fn-lbl">Función</label><input id="concept0" placeholder="qué hace el Hunter en el mundo...">
-            <label id="ed-an-lbl" style="margin-top:8px;">Anomalía</label><input id="concept1" placeholder="rasgo inexplicable o contradicción...">
-            <div style="margin-top:10px; padding:8px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary); overflow-y: auto">
-                <div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase; overflow-y: auto">Dimensión de Origen — Inmutable</div>
-                <div id="ed-dim-name" style="color:var(--accent-warning); font-weight:bold; font-size:13px;">${escapeHtml(dimEntry?.name || h.dimension_id)}</div>
-                ${dimEntry?.description ? `<div style="font-size:10px; color:var(--text-muted); margin-top:3px; font-style:italic;">${escapeHtml(dimEntry.description)}</div>` : ""}
+            <label id="ed-an-lbl">Anomalía</label><input id="concept1" placeholder="rasgo inexplicable o contradicción...">
+            <div class="dimension-block">
+                <div class="dimension-block-label">Dimensión de Origen — Inmutable</div>
+                <div id="ed-dim-name" class="dimension-block-name">${escapeHtml(dimEntry?.name || h.dimension_id)}</div>
+                ${dimEntry?.description ? `<div class="dimension-block-desc">${escapeHtml(dimEntry.description)}</div>` : ""}
             </div>
         ` : `
             <label id="ed-fn-lbl">Función</label><input id="concept0" placeholder="qué hace el Hunter en el mundo...">
-            <label id="ed-ae-lbl" style="margin-top:8px;">Estética</label><input id="concept1" placeholder="atmósfera visual o entorno...">
-            <label id="ed-an-lbl" style="margin-top:8px;">Anomalía</label><input id="concept2" placeholder="rasgo inexplicable o contradicción...">
+            <label id="ed-ae-lbl">Estética</label><input id="concept1" placeholder="atmósfera visual o entorno...">
+            <label id="ed-an-lbl">Anomalía</label><input id="concept2" placeholder="rasgo inexplicable o contradicción...">
         `;
+        
         el.innerHTML = `
-        <div class="split split-30-70">
-            <div class="stack">
+        <div class="editor-layout">
+            <div class="editor-left-panel">
                 <h3>Editor de Hunter</h3>
-
+        
                 <details class="editor-section">
                     <summary><span class="editor-section-arrow">▶</span> Info Básica</summary>
                     <div class="editor-section-body">
                         <label>Nombre del Hunter</label>
                         <input type="text" id="hunterName" placeholder="Ej: Typlon" value="${escapeHtml(h.name)}">
-                        <div style="font-size:9px; color:var(--text-muted); margin-top:2px; margin-bottom:10px;">ID: ${escapeHtml(h.id)}</div>
+                        <div class="editor-id-hint">ID: ${escapeHtml(h.id)}</div>
                         <label>Clase</label>
                         <select id="classSelect"></select>
                         <div id="classHint" class="field-hint"></div>
-                        <label style="margin-top:8px;">Arma seleccionada</label>
+                        <label>Arma seleccionada</label>
                         <select id="weaponSelect"></select>
-                        <label style="margin-top:8px;">Proyecto / Juego</label>
+                        <label>Proyecto / Juego</label>
                         <select id="gameSelect">
                             <option value="Awakening">Hunters: Awakening</option>
                             <option value="Vega">Hunters: Vega</option>
                         </select>
-                        <label style="margin-top:10px;">Personalidad (MBTI)</label>
-                        <div style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
-                            <span id="ed-mbti" style="background:#1a1d24; padding:4px 8px;">${escapeHtml(h.mbti)}</span>
-                            <span style="color:var(--text-muted);">→</span>
-                            <select id="mbtiSubtype" style="flex:1;">
+                        <label>Personalidad (MBTI)</label>
+                        <div class="mbti-row">
+                            <span id="ed-mbti" class="mbti-badge">${escapeHtml(h.mbti)}</span>
+                            <span>→</span>
+                            <select id="mbtiSubtype">
                                 <option value="">— Sin subtipo —</option>
                             </select>
                         </div>
-                        <div style="font-size:10px; color:var(--text-muted);">Género: ${escapeHtml(h.gender)}</div>
+                        <div class="gender-hint">Género: ${escapeHtml(h.gender)}</div>
                     </div>
                 </details>
-
+        
                 <details class="editor-section">
                     <summary><span class="editor-section-arrow">▶</span> <span id="ed-concepts-h">Conceptos</span></summary>
                     <div class="editor-section-body">
                         ${conceptsFormInner}
                     </div>
                 </details>
-
+        
                 <details class="editor-section">
                     <summary><span class="editor-section-arrow">▶</span> Estadísticas</summary>
                     <div class="editor-section-body">
-                        <div class="stats-grid">
-                            <div class="stat-item"><span class="stat-label">HP</span><input type="number" id="stat_hp" value="${h.stats.hp}" style="width:60px;"></div>
-                            <div class="stat-item"><span class="stat-label">MP</span><input type="number" id="stat_mp" value="${h.stats.mp}" style="width:60px;"></div>
-                            <div class="stat-item"><span class="stat-label">Speed</span><input type="number" id="stat_speed" value="${h.stats.speed}" style="width:60px;"></div>
-                            <div class="stat-item"><span class="stat-label">Strength</span><input type="number" id="stat_strength" value="${h.stats.strength}" style="width:60px;"></div>
-                            <div class="stat-item"><span class="stat-label">Magic Power</span><input type="number" id="stat_magicpower" value="${h.stats.magicpower}" style="width:60px;"></div>
-                            <div class="stat-item"><span class="stat-label">Defense</span><input type="number" id="stat_defense" value="${h.stats.defense}" style="width:60px;"></div>
-                            <div class="stat-item"><span class="stat-label">Magic Defense</span><input type="number" id="stat_magicdefense" value="${h.stats.magicdefense}" style="width:60px;"></div>
-                            <div class="stat-item"><span class="stat-label">Evasion</span><input type="number" id="stat_evasion" value="${h.stats.evasion}" style="width:60px;"></div>
-                            <div class="stat-item"><span class="stat-label">Accuracy</span><input type="number" id="stat_accuracy" value="${h.stats.accuracy}" style="width:60px;"></div>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="editor-section">
-                    <summary><span class="editor-section-arrow">▶</span> Imágenes y Descripción</summary>
-                    <div class="editor-section-body">
-                        <label>Imágenes (URLs de Imgur)</label>
-                        <textarea id="imgs" placeholder="una url por línea" style="min-height:60px;"></textarea>
-                        <label style="margin-top:10px;">Descripción</label>
-                        <textarea id="desc" style="min-height:80px;"></textarea>
-                    </div>
-                </details>
-
-                <details class="editor-section">
-                    <summary><span class="editor-section-arrow">▶</span> Habilidades</summary>
-                    <div class="editor-section-body">
-                        <label id="ed-passive-lbl">Pasiva</label><input id="passive">
-                        <div style="margin-top:10px; padding-top:8px; border-top:1px solid var(--border-light);">
-                            <label id="ed-active-lbl" style="margin-bottom:6px;">Activa — Árbol de habilidad</label>
-                            <div class="active-fields">
-                                <label style="margin-top:0; font-size:9px;"><span class="skill-badge skill-badge-base" style="font-size:9px;">BASE</span></label>
-                                <input id="active-base" placeholder="habilidad principal...">
-                                <div style="border-left:2px solid var(--accent-primary); margin-left:14px; padding-left:10px; margin-top:4px; display:flex; flex-direction:column; gap:4px;">
-                                    <label style="margin-top:0; font-size:9px;"><span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA I</span></label>
-                                    <input id="active-path0" placeholder="primera evolución...">
-                                    <label style="margin-top:4px; font-size:9px;"><span class="skill-badge skill-badge-path" style="font-size:9px;">RUTA II</span></label>
-                                    <input id="active-path1" placeholder="segunda evolución...">
-                                </div>
+                        <div class="editor-stats-list">
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">HP</span>
+                                <input type="number" id="stat_hp" value="${h.stats.hp}" class="editor-stat-input">
+                            </div>
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">MP</span>
+                                <input type="number" id="stat_mp" value="${h.stats.mp}" class="editor-stat-input">
+                            </div>
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">Speed</span>
+                                <input type="number" id="stat_speed" value="${h.stats.speed}" class="editor-stat-input">
+                            </div>
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">Strength</span>
+                                <input type="number" id="stat_strength" value="${h.stats.strength}" class="editor-stat-input">
+                            </div>
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">Magic Power</span>
+                                <input type="number" id="stat_magicpower" value="${h.stats.magicpower}" class="editor-stat-input">
+                            </div>
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">Defense</span>
+                                <input type="number" id="stat_defense" value="${h.stats.defense}" class="editor-stat-input">
+                            </div>
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">Magic Defense</span>
+                                <input type="number" id="stat_magicdefense" value="${h.stats.magicdefense}" class="editor-stat-input">
+                            </div>
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">Evasion</span>
+                                <input type="number" id="stat_evasion" value="${h.stats.evasion}" class="editor-stat-input">
+                            </div>
+                            <div class="editor-stat-row">
+                                <span class="editor-stat-label">Accuracy</span>
+                                <input type="number" id="stat_accuracy" value="${h.stats.accuracy}" class="editor-stat-input">
                             </div>
                         </div>
                     </div>
                 </details>
-
-                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        
+                <details class="editor-section">
+                    <summary><span class="editor-section-arrow">▶</span> Imágenes y Descripción</summary>
+                    <div class="editor-section-body">
+                        <label>Imágenes (URLs de Imgur)</label>
+                        <textarea id="imgs" placeholder="una url por línea"></textarea>
+                        <label>Descripción</label>
+                        <textarea id="desc"></textarea>
+                    </div>
+                </details>
+        
+                <details class="editor-section">
+                    <summary><span class="editor-section-arrow">▶</span> Habilidades</summary>
+                    <div class="editor-section-body">
+                        <label id="ed-passive-lbl">Pasiva</label><input id="passive">
+                        <div class="active-fields">
+                            <label class="active-base-label"><span class="skill-badge skill-badge-base">BASE</span></label>
+                            <input id="active-base" placeholder="habilidad principal...">
+                            <div class="active-paths">
+                                <label class="active-path-label"><span class="skill-badge skill-badge-path">RUTA I</span></label>
+                                <input id="active-path0" placeholder="primera evolución...">
+                                <label class="active-path-label"><span class="skill-badge skill-badge-path">RUTA II</span></label>
+                                <input id="active-path1" placeholder="segunda evolución...">
+                            </div>
+                        </div>
+                    </div>
+                </details>
+        
+                <div class="editor-buttons">
                     <button id="update">Actualizar</button>
                     <button id="download">Descargar JSON</button>
                     <button id="copy">Copiar JSON</button>
                 </div>
             </div>
-            <div class="panel scroll" id="preview"></div>
-        </div>
-        `;
+            <div class="panel scroll editor-preview" id="preview"></div>
+        </div>`;
 
         // Poblar selector de clases
         const classSelect = el.querySelector("#classSelect");

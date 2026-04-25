@@ -50,12 +50,19 @@
     --window-min-left: 10px;
     --window-margin-bottom: 10px;
 
-    /* Tipografía */
-    --font-base: 13px;
-    --font-sm: 11px;
-    --font-xs: 10px;
+    /* Tipografía - Tamaños aumentados para v1.6.2 */
+    --font-base: 14px;
+    --font-sm: 12px;
+    --font-xs: 11px;
     --line-base: 1.65;
     --line-tight: 1.4;
+
+    /* Espaciado estándar */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
 }
 
 /* =========================
@@ -91,8 +98,8 @@ label {
     color: var(--accent-primary);
     font-size: var(--font-sm);
     display: block;
-    margin-top: 6px;
-    margin-bottom: 4px;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
     letter-spacing: 0.5px;
 }
 
@@ -104,16 +111,16 @@ h1, h2, h3, h4, .title-text, button, label {
 }
 
 h3 {
-    margin: 0 0 8px 0;
+    margin: 0 0 var(--spacing-sm) 0;
     font-size: var(--font-base);
     border-left: 3px solid var(--accent-primary);
-    padding-left: 6px;
+    padding-left: var(--spacing-sm);
     color: var(--accent-warning);
     line-height: var(--line-tight);
 }
 
 h4 {
-    margin: 8px 0 4px 0;
+    margin: var(--spacing-sm) 0 var(--spacing-xs) 0;
     font-size: var(--font-sm);
     color: var(--text-secondary);
     letter-spacing: 0.5px;
@@ -155,7 +162,7 @@ h4 {
     bottom: var(--taskbar-height);
     left: 0;
     right: 0;
-    padding: 16px;
+    padding: var(--spacing-lg);
     display: grid;
     grid-template-columns: repeat(auto-fill, 80px);
     grid-auto-rows: 88px;
@@ -169,8 +176,8 @@ h4 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    padding: 6px;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
     background: none;
     border: none;
     cursor: pointer;
@@ -245,7 +252,7 @@ h4 {
 
 .window-controls, .window-controls button {
     display: flex;
-    gap: 4px;
+    gap: var(--spacing-xs);
 }
 
 .window-controls button, .wm-btn {
@@ -326,7 +333,7 @@ h4 {
 /* Botones de tarea en taskbar */
 .wm-task-btn {
     height: 30px;
-    padding: 0 12px;
+    padding: 0 var(--spacing-md);
     max-width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -372,7 +379,7 @@ h4 {
 ========================= */
 
 .content {
-    padding: 14px;
+    padding: var(--spacing-lg);
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -387,7 +394,7 @@ h4 {
 .panel {
     background: var(--panel-bg);
     border: 1px solid var(--border-light);
-    padding: 12px;
+    padding: var(--spacing-lg);
     box-shadow: inset 0 0 0 1px #2a2e3a, 2px 2px 0px black;
     color: var(--text-primary);
 }
@@ -400,7 +407,7 @@ h4 {
 .panel-raised {
     background: var(--bg-raised);
     border: 1px solid var(--accent-primary);
-    padding: 8px;
+    padding: var(--spacing-sm);
 }
 
 .panel.scroll, .scroll {
@@ -413,18 +420,17 @@ h4 {
 
 .split {
     display: grid;
-    gap: 12px;
+    gap: var(--spacing-md);
     height: 100%;
     min-height: 0;
 }
-.split-30-70 { grid-template-columns: minmax(260px, 380px) 1fr; }
 .split-70-30 { grid-template-columns: 1fr minmax(260px, 380px); }
 .split-50    { grid-template-columns: 1fr 1fr; }
 
 .stack {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--spacing-md);
     height: 100%;
     min-height: 0;
 }
@@ -478,7 +484,7 @@ textarea {
     font-style: italic;
     font-family: 'Courier New', monospace;
     font-weight: normal;
-    padding-left: 4px;
+    padding-left: var(--spacing-xs);
     border-left: 2px solid var(--border-light);
     transition: color 0.1s;
 }
@@ -526,11 +532,11 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 0 12px;
+    padding: 0 var(--spacing-md);
     box-sizing: border-box;
     z-index: 1000;
     border-top: 2px solid var(--accent-primary);
-    gap: 12px;
+    gap: var(--spacing-md);
 }
 
 #clock {
@@ -539,7 +545,7 @@ button:hover {
     text-align: center;
     background: var(--clock-bg);
     border: 1px solid var(--border-light);
-    padding: 4px 10px;
+    padding: var(--spacing-xs) 10px;
     font-family: monospace;
     font-size: var(--font-sm);
     color: var(--accent-warning);
@@ -576,7 +582,7 @@ label[data-tooltip] { color: var(--accent-warning); }
 h3[data-tooltip] { border-left-color: var(--accent-warning); }
 
 /* =========================
-   BADGES Y ETIQUETAS
+   BADGES, CONCEPTOS, ETIQUETAS
 ========================= */
 
 .concept-label, .skill-badge {
@@ -614,8 +620,8 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 .concept-row {
     display: flex;
     align-items: flex-start;
-    gap: 4px;
-    margin-bottom: 6px;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
     font-size: var(--font-base);
     color: var(--text-secondary);
     line-height: var(--line-tight);
@@ -628,14 +634,14 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 .skill-tree {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--spacing-xs);
     margin-top: 2px;
 }
 
 .skill-node {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: var(--spacing-sm);
     font-size: var(--font-base);
     line-height: var(--line-tight);
     color: var(--text-secondary);
@@ -644,7 +650,7 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 .skill-paths {
     border-left: 2px solid var(--accent-primary);
     margin-left: 26px;
-    padding-left: 12px;
+    padding-left: var(--spacing-md);
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -672,8 +678,8 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: var(--text-muted);
-    margin-bottom: 6px;
-    padding-bottom: 4px;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-xs);
     border-bottom: 1px solid var(--border-light);
 }
 
@@ -685,13 +691,13 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 .active-fields .path-label-row {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 6px;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
 }
 .path-connector {
     font-size: 11px;
     color: var(--accent-primary);
-    margin-left: 4px;
+    margin-left: var(--spacing-xs);
     margin-right: 2px;
     opacity: 0.7;
     flex-shrink: 0;
@@ -702,12 +708,12 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 ========================= */
 
 .weapons-list {
-    margin: 4px 0 0 0;
+    margin: var(--spacing-xs) 0 0 0;
     padding-left: 20px;
     list-style-type: none;
 }
 .weapons-list li {
-    margin-bottom: 6px;
+    margin-bottom: var(--spacing-sm);
     font-size: var(--font-sm);
     color: var(--text-secondary);
     position: relative;
@@ -723,7 +729,7 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 }
 
 /* =========================
-   EXPLORADOR DE ARCHIVOS
+   EXPLORADOR DE ARCHIVOS (File Explorer)
 ========================= */
 
 #ftree {
@@ -736,14 +742,14 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 #ftree-body {
     flex: 1;
     overflow-y: auto;
-    padding: 8px 0;
+    padding: var(--spacing-md) 0;
 }
 
 .dim-class-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 4px;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
 }
 
 .class-card {
@@ -760,12 +766,12 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 .class-description {
     margin-bottom: 10px;
     color: var(--text-secondary);
-    font-size: 11px;
+    font-size: var(--font-sm);
     line-height: 1.6;
 }
 .class-section-title {
-    font-size: 10px;
-    margin: 0 0 4px 0;
+    font-size: var(--font-xs);
+    margin: 0 0 var(--spacing-xs) 0;
     color: var(--accent-primary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -775,27 +781,178 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
     padding-left: 20px;
 }
 .class-passives-list li {
-    font-size: 10px;
+    font-size: var(--font-xs);
     color: var(--text-muted);
     margin-bottom: 2px;
 }
 
+.explorer-section-header {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    cursor: pointer;
+    font-size: var(--font-sm);
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    user-select: none;
+    border-bottom: 1px solid #1a1d24;
+}
+.explorer-section-header:hover {
+    background: rgba(79, 157, 166, 0.1);
+}
+.explorer-section-header span:first-child {
+    color: var(--accent-primary);
+    font-size: 10px;
+    width: 8px;
+}
+.explorer-section-header .counter {
+    color: var(--text-muted);
+    font-size: var(--font-xs);
+    margin-left: auto;
+}
+
+.explorer-empty {
+    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-sm) 28px;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.explorer-game-group {
+    margin-left: var(--spacing-lg);
+    margin-top: 2px;
+    margin-bottom: var(--spacing-xs);
+}
+.explorer-game-summary {
+    padding: var(--spacing-xs) 0 var(--spacing-xs) var(--spacing-sm);
+    cursor: pointer;
+    font-size: var(--font-sm);
+    font-family: monospace;
+    color: var(--accent-warning);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+.explorer-game-summary .arrow {
+    color: var(--accent-primary);
+    font-size: 9px;
+}
+.explorer-game-container {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.explorer-hunter-item {
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    font-size: var(--font-sm);
+    font-family: monospace;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+    background: transparent;
+    border-left: 2px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: background 0.05s;
+}
+.explorer-hunter-item:hover {
+    background: #14161e;
+}
+.explorer-hunter-item.active {
+    color: var(--accent-warning);
+    background: #1a1d26;
+    border-left-color: var(--accent-warning);
+}
+.explorer-hunter-item .marker {
+    color: var(--accent-primary);
+    font-size: 9px;
+}
+
+.explorer-dimension-item {
+    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-sm) 28px;
+    cursor: pointer;
+    font-size: var(--font-sm);
+    font-family: monospace;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+    background: transparent;
+    border-left: 2px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+.explorer-dimension-item:hover {
+    background: #14161e;
+}
+.explorer-dimension-item.active {
+    color: var(--accent-warning);
+    background: #1a1d26;
+    border-left-color: var(--accent-warning);
+}
+.explorer-dimension-badge {
+    color: var(--accent-primary);
+    font-size: 9px;
+    background: var(--bg-deep);
+    padding: 1px 5px;
+    border: 1px solid var(--border-light);
+    flex-shrink: 0;
+}
+
+.explorer-bestiary-item {
+    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-sm) 28px;
+    cursor: pointer;
+    font-size: var(--font-sm);
+    font-family: monospace;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+    background: transparent;
+    border-left: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+.explorer-bestiary-item:hover {
+    background: #14161e;
+}
+.explorer-bestiary-item.active {
+    color: var(--accent-warning);
+    background: #1a1d26;
+    border-left-color: var(--accent-warning);
+}
+
+.explorer-divider {
+    border-top: 1px solid #1a1d24;
+    margin: var(--spacing-md) 0;
+}
+
 /* =========================
-   INFO DE DIMENSIONES
+   INFO DE DIMENSIONES (bloques comunes)
 ========================= */
 
 .panel-dim-info, .result-dim-block {
-    margin-top: 6px;
-    padding: 6px 10px;
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm) 10px;
     background: var(--bg-deep);
     border-left: 3px solid var(--accent-primary);
 }
 .result-dim-block {
-    margin-top: 8px;
+    margin-top: var(--spacing-sm);
     border: 1px solid var(--accent-primary);
 }
 .dim-origin-label, .result-dim-label {
-    font-size: 9px;
+    font-size: var(--font-xs);
     color: var(--text-muted);
     margin-bottom: 2px;
     text-transform: uppercase;
@@ -806,10 +963,10 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
     font-weight: bold;
 }
 .result-dim-name {
-    font-size: 12px;
+    font-size: var(--font-sm);
 }
 .result-dim-note {
-    font-size: 9px;
+    font-size: var(--font-xs);
     color: var(--text-muted);
     margin-top: 2px;
     font-style: italic;
@@ -820,26 +977,26 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
     border: 1px solid var(--accent-warning);
     color: var(--accent-warning);
     padding: 5px 8px;
-    font-size: 10px;
-    margin-bottom: 8px;
+    font-size: var(--font-xs);
+    margin-bottom: var(--spacing-sm);
 }
 
 /* =========================
-   TABLA DE ESTADÍSTICAS
+   TABLA DE ESTADÍSTICAS (vista previa)
 ========================= */
 
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px 12px;
-    margin-top: 6px;
+    gap: var(--spacing-sm) var(--spacing-lg);
+    margin-top: var(--spacing-sm);
 }
 .stat-item {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px dotted var(--border-light);
-    padding: 4px 0;
-    font-size: 11px;
+    padding: var(--spacing-xs) 0;
+    font-size: var(--font-sm);
 }
 .stat-label {
     color: var(--accent-primary);
@@ -851,17 +1008,55 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 }
 
 /* =========================
-   TABLA ELEMENTAL
+   ESTADÍSTICAS DEL EDITOR
+========================= */
+
+.editor-stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.editor-stat-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.editor-stat-label {
+    color: var(--accent-primary);
+    font-weight: bold;
+    font-size: var(--font-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.editor-stat-input {
+    width: 100%;
+    max-width: 100px;
+    text-align: center;
+    font-family: monospace;
+    background: var(--bg-deep);
+    border: 1px solid var(--border-light);
+    padding: 6px 8px;
+    font-size: var(--font-sm);
+    color: var(--text-primary);
+}
+
+/* =========================
+   TABLA ELEMENTAL / BESTIARIO
 ========================= */
 
 .elemental-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 11px;
+    font-size: var(--font-sm);
 }
 .elemental-table th, .elemental-table td {
     border: 1px solid var(--border-light);
-    padding: 6px 8px;
+    padding: var(--spacing-sm) var(--spacing-sm);
     text-align: left;
     vertical-align: top;
 }
@@ -876,16 +1071,12 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
     color: var(--disadvantage-color);
 }
 
-/* =========================
-   TIPOS DE CRIATURAS
-========================= */
-
 .creature-types-list {
-    margin-top: 8px;
+    margin-top: var(--spacing-sm);
 }
 .creature-type-item {
-    margin-bottom: 12px;
-    padding: 6px 8px;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-sm);
     background: var(--bg-elevated);
     border-left: 3px solid var(--accent-primary);
 }
@@ -894,9 +1085,9 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
     color: var(--accent-warning);
 }
 .creature-type-desc {
-    font-size: 10px;
+    font-size: var(--font-xs);
     color: var(--text-muted);
-    margin-top: 4px;
+    margin-top: var(--spacing-xs);
 }
 
 /* =========================
@@ -907,7 +1098,7 @@ summary, .class-card summary, .enemy-card summary {
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--spacing-sm);
     cursor: pointer;
 }
 summary::-webkit-details-marker,
@@ -923,12 +1114,12 @@ summary::marker, .class-card summary::marker, .enemy-card summary::marker {
     padding: 10px 12px;
     font-weight: bold;
     color: var(--accent-warning);
-    font-size: 12px;
+    font-size: var(--font-sm);
     letter-spacing: 0.5px;
     background: var(--content-bg);
 }
 .enemy-card summary {
-    padding: 8px 10px;
+    padding: var(--spacing-sm) 10px;
 }
 
 .arrow {
@@ -942,7 +1133,7 @@ summary::marker, .class-card summary::marker, .enemy-card summary::marker {
 }
 
 /* =========================
-   READABILITY: LINE HEIGHT FOR DESCRIPTIONS
+   READABILITY
 ========================= */
 
 .panel p, .class-description {
@@ -950,7 +1141,7 @@ summary::marker, .class-card summary::marker, .enemy-card summary::marker {
 }
 
 /* =========================
-   COLLAPSIBLE EDITOR SECTIONS (original style)
+   EDITOR: SECCIONES COLAPSABLES
 ========================= */
 
 details.editor-section {
@@ -958,11 +1149,12 @@ details.editor-section {
     border: 1px solid var(--border-light);
     box-shadow: inset 0 0 0 1px #2a2e3a, 2px 2px 0px black;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 details.editor-section > summary {
     list-style: none;
-    padding: 8px 12px;
+    padding: var(--spacing-sm) var(--spacing-md);
     background: var(--bg-raised);
     font-size: var(--font-sm);
     color: var(--accent-primary);
@@ -970,7 +1162,7 @@ details.editor-section > summary {
     user-select: none;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--spacing-sm);
     letter-spacing: 1.5px;
     text-transform: uppercase;
     border-bottom: 1px solid var(--border-light);
@@ -999,43 +1191,42 @@ details.editor-section[open] > summary .editor-section-arrow {
 }
 
 .editor-section-body {
-    padding: 12px;
+    padding: var(--spacing-lg);
     overflow-y: auto;
     overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
 }
 
 /* =========================
-   ESPACIADO MEJORADO PARA EL EDITOR (gap, padding, etc.)
+   LAYOUT ESPECÍFICO DEL EDITOR (v1.6.2)
 ========================= */
 
-/* El stack izquierdo debe ocupar toda la altura y permitir scroll */
-.split-30-70 .stack {
+.editor-layout {
+    display: grid;
+    grid-template-columns: minmax(340px, 420px) 1fr;
+    gap: var(--spacing-lg);
+    height: 100%;
+    min-height: 0;
+}
+
+.editor-left-panel {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--spacing-lg);
     overflow-y: auto;
-    flex: 1;               /* fuerza a ocupar el espacio disponible */
-    min-height: 0;         /* necesario para flex overflow */
-    padding-right: 4px;    /* separación para la barra de scroll */
+    padding-right: var(--spacing-xs);
 }
 
-/* Espaciado interno de cada sección y separación entre campos */
-.editor-section-body {
-    padding: 14px 12px 16px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.editor-left-panel > h3 {
+    margin-bottom: var(--spacing-xs);
+    flex-shrink: 0;
 }
 
-/* Evitar overflow horizontal en las secciones */
-details.editor-section {
-    overflow-x: hidden;
-}
-
-/* Márgenes más finos para etiquetas dentro de una sección */
 .editor-section-body > label {
     margin-bottom: 2px;
-    margin-top: 6px;
+    margin-top: var(--spacing-sm);
 }
 .editor-section-body > input,
 .editor-section-body > textarea,
@@ -1043,254 +1234,91 @@ details.editor-section {
     margin-bottom: 2px;
 }
 
-/* Ajuste para stats-grid dentro de sección (evita doble margen) */
-.stats-grid {
+.editor-left-panel .stats-grid {
     margin-top: 0;
 }
 
-/* Separar los botones finales de la última sección */
-.split-30-70 .stack > div:last-child {
-    margin-top: 8px;
-    margin-bottom: 4px;
+.editor-left-panel > div:last-child {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-xs);
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
 }
 
-/* Dar un poco más de respiro al título del Editor */
-.split-30-70 .stack > h3 {
-    margin-bottom: 4px;
-    flex-shrink: 0;
+/* Vista previa del editor */
+.editor-preview {
+    padding: var(--spacing-lg);
+}
+.editor-preview .panel {
+    margin-bottom: var(--spacing-md);
 }
 
-/* Mejor espaciado en la vista previa del Editor */
-.split-30-70 .panel.scroll {
-    padding: 16px;
+.editor-preview-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
 }
-.split-30-70 .panel.scroll .panel {
-    margin-bottom: 12px;
+.editor-preview-image {
+    width: 100%;
+    image-rendering: pixelated;
+}
+.editor-preview-no-image {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: var(--font-xs);
 }
 
 /* =========================
-   EXPORT BUTTON
+   DIMENSION BLOCK (dentro del editor)
 ========================= */
 
-.btn-export {
-    background: transparent;
+.dimension-block {
+    margin-top: 10px;
+    padding: 8px 10px;
+    background: var(--bg-deep);
     border: 1px solid var(--accent-primary);
-    color: var(--accent-primary);
-    font-size: 9px;
-    padding: 4px 10px;
-    letter-spacing: 1.5px;
-}
-.btn-export:hover {
-    background: var(--accent-primary);
-    color: #000;
-    border-color: var(--accent-primary);
-}
-
-/* Indentación para grupos de juegos en el explorador */
-#ftree-body details details {
-    margin-left: 0.5rem;
+    border-left: 3px solid var(--accent-primary);
 }
 
 /* =========================
-   v1.6.0 – REFACTOR: CLASES PARA MIGRAR ESTILOS INLINE
+   HUNTER VIEW
 ========================= */
 
-/* Variables de espaciado (ya existen, pero reforzamos) */
-:root {
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 12px;
-    --spacing-lg: 16px;
-    --spacing-xl: 24px;
-}
-
-/* ─────────── File Explorer Tree ─────────── */
-.explorer-section-header {
-    padding: 6px 14px;
-    cursor: pointer;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    user-select: none;
-    border-bottom: 1px solid #1a1d24;
-}
-.explorer-section-header:hover {
-    background: rgba(79, 157, 166, 0.1);
-}
-.explorer-section-header span:first-child {
-    color: var(--accent-primary);
-    font-size: 10px;
-    width: 8px;
-}
-.explorer-section-header .counter {
-    color: var(--text-muted);
-    font-size: 9px;
-    margin-left: auto;
-}
-
-.explorer-empty {
-    padding: 6px 14px 6px 28px;
-    font-size: 10px;
-    color: var(--text-muted);
-    font-style: italic;
-}
-
-/* Grupo de juego (dentro de Hunters) */
-.explorer-game-group {
-    margin-left: 14px;
-    margin-top: 2px;
-}
-.explorer-game-summary {
-    padding: 5px 0 5px 8px;
-    cursor: pointer;
-    font-size: 10px;
-    font-family: monospace;
-    color: var(--accent-warning);
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-.explorer-game-summary .arrow {
-    color: var(--accent-primary);
-    font-size: 9px;
-}
-.explorer-game-container {
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-/* Ítem de hunter en el árbol */
-.explorer-hunter-item {
-    padding: 5px 8px;
-    cursor: pointer;
-    font-size: 10px;
-    font-family: monospace;
-    letter-spacing: 0.3px;
-    color: var(--text-muted);
-    background: transparent;
-    border-left: 2px solid transparent;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: background 0.05s;
-}
-.explorer-hunter-item:hover {
-    background: #14161e;
-}
-.explorer-hunter-item.active {
-    color: var(--accent-warning);
-    background: #1a1d26;
-    border-left-color: var(--accent-warning);
-}
-.explorer-hunter-item .marker {
-    color: var(--accent-primary);
-    font-size: 9px;
-}
-
-/* Ítem de dimensión */
-.explorer-dimension-item {
-    padding: 5px 14px 5px 28px;
-    cursor: pointer;
-    font-size: 10px;
-    font-family: monospace;
-    letter-spacing: 0.3px;
-    color: var(--text-muted);
-    background: transparent;
-    border-left: 2px solid transparent;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.explorer-dimension-item:hover {
-    background: #14161e;
-}
-.explorer-dimension-item.active {
-    color: var(--accent-warning);
-    background: #1a1d26;
-    border-left-color: var(--accent-warning);
-}
-.explorer-dimension-badge {
-    color: var(--accent-primary);
-    font-size: 9px;
-    background: #0a0c10;
-    padding: 1px 5px;
-    border: 1px solid var(--border-light);
-    flex-shrink: 0;
-}
-
-/* Ítem de bestiario */
-.explorer-bestiary-item {
-    padding: 5px 14px 5px 28px;
-    cursor: pointer;
-    font-size: 10px;
-    font-family: monospace;
-    letter-spacing: 0.3px;
-    color: var(--text-muted);
-    background: transparent;
-    border-left: 2px solid transparent;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.explorer-bestiary-item:hover {
-    background: #14161e;
-}
-.explorer-bestiary-item.active {
-    color: var(--accent-warning);
-    background: #1a1d26;
-    border-left-color: var(--accent-warning);
-}
-
-/* Separadores */
-.explorer-divider {
-    border-top: 1px solid #1a1d24;
-    margin: 6px 0;
-}
-
-/* ─────────── Hunter View ─────────── */
 .hunter-view-grid {
     display: grid;
     grid-template-columns: 200px 1fr;
-    gap: 10px;
-    margin-top: 8px;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
 }
 .hunter-image-panel {
-    padding: 8px;
+    padding: var(--spacing-sm);
 }
 .hunter-image-panel img {
     width: 100%;
     image-rendering: pixelated;
 }
 .hunter-info-panel {
-    /* hereda de .panel pero podemos sobreescribir */
+    /* hereda de .panel */
 }
 .hunter-game-badge {
-    font-size: 9px;
+    font-size: var(--font-xs);
     color: var(--text-muted);
-    margin-top: 4px;
+    margin-top: var(--spacing-xs);
 }
 .hunter-dimension-block {
-    margin-bottom: 10px;
-    padding: 6px 10px;
-    background: #0a0c10;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) 10px;
+    background: var(--bg-deep);
     border: 1px solid var(--accent-primary);
     border-left: 3px solid var(--accent-primary);
 }
 .hunter-dimension-label {
-    font-size: 9px;
+    font-size: var(--font-xs);
     letter-spacing: 1px;
     color: var(--text-muted);
     margin-bottom: 3px;
@@ -1299,35 +1327,38 @@ details.editor-section {
 .hunter-dimension-name {
     color: var(--accent-warning);
     font-weight: bold;
-    font-size: 12px;
+    font-size: var(--font-sm);
     cursor: pointer;
     text-decoration: underline dotted var(--accent-primary);
 }
 
-/* ─────────── Dimension View ─────────── */
+/* =========================
+   DIMENSION VIEW
+========================= */
+
 .dimension-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: var(--spacing-md);
 }
 .dimension-title {
     margin-bottom: 2px;
 }
 .dimension-hunter-count {
-    padding: 4px 10px;
-    background: #0a0c10;
+    padding: var(--spacing-xs) 10px;
+    background: var(--bg-deep);
     border: 1px solid var(--accent-primary);
-    font-size: 10px;
+    font-size: var(--font-xs);
     color: var(--accent-primary);
     letter-spacing: 1px;
     text-transform: uppercase;
 }
 .dimension-image {
-    margin-bottom: 10px;
-    padding: 8px;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm);
     text-align: center;
 }
 .dimension-image img {
@@ -1336,11 +1367,11 @@ details.editor-section {
     image-rendering: pixelated;
 }
 .dimension-lore {
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-sm);
     border-left: 3px solid var(--accent-warning);
 }
 .dimension-lore h3 {
-    font-size: 11px;
+    font-size: var(--font-sm);
     color: var(--accent-primary);
 }
 .dimension-lore p {
@@ -1348,19 +1379,19 @@ details.editor-section {
     line-height: 1.75;
 }
 .dimension-classes {
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-sm);
 }
 .dimension-enemies {
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-sm);
 }
 .dimension-hunters {
-    margin-top: 8px;
+    margin-top: var(--spacing-sm);
 }
 .dimension-hunter-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 10px;
     background: #0d0f14;
     border: 1px solid var(--border-light);
     cursor: pointer;
@@ -1374,89 +1405,69 @@ details.editor-section {
 }
 .dimension-hunter-name {
     font-family: monospace;
-    font-size: 11px;
+    font-size: var(--font-sm);
     color: var(--text-secondary);
 }
 .dimension-hunter-meta {
-    font-size: 10px;
+    font-size: var(--font-xs);
     color: var(--text-muted);
     margin-left: auto;
 }
 .dimension-hunter-arrow {
-    font-size: 10px;
+    font-size: var(--font-xs);
     color: var(--accent-primary);
 }
 
-/* ─────────── Bestiary ─────────── */
+/* =========================
+   BESTIARY (adicional)
+========================= */
+
 .bestiary-header {
-    margin-bottom: 12px;
+    margin-bottom: var(--spacing-md);
 }
 .bestiary-table-container {
-    margin-bottom: 12px;
+    margin-bottom: var(--spacing-md);
 }
 .creature-types-list {
-    margin-top: 8px;
+    margin-top: var(--spacing-sm);
 }
 
-/* ─────────── Editor preview grid ─────────── */
-.editor-preview-grid {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 6px;
-    margin-top: 6px;
-}
-.editor-preview-image {
-    width: 100%;
-    image-rendering: pixelated;
-}
-.editor-preview-no-image {
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-muted);
-    font-size: 10px;
-}
+/* =========================
+   GENERADOR
+========================= */
 
-/* ─────────── Generador ─────────── */
 .generator-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    gap: var(--spacing-sm);
     height: 100%;
 }
 .generator-panel-spacing {
-    margin-top: 6px;
+    margin-top: var(--spacing-sm);
 }
 
-/* ─────────── Miscelánea ─────────── */
-.panel-dim-info, .result-dim-block {
-    margin-top: 6px;
-    padding: 6px 10px;
-    background: var(--bg-deep);
-    border-left: 3px solid var(--accent-primary);
-}
-.result-dim-block {
-    margin-top: 8px;
+/* =========================
+   EXPORT BUTTON (estilo mínimo)
+========================= */
+
+.btn-export {
+    background: transparent;
     border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+    font-size: var(--font-xs);
+    padding: var(--spacing-xs) 10px;
+    letter-spacing: 1.5px;
 }
-.dim-origin-label, .result-dim-label {
-    font-size: 9px;
-    color: var(--text-muted);
-    margin-bottom: 2px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.btn-export:hover {
+    background: var(--accent-primary);
+    color: #000;
+    border-color: var(--accent-primary);
 }
-.dim-origin-name, .result-dim-name {
-    color: var(--accent-warning);
-    font-weight: bold;
-}
-.result-dim-name {
-    font-size: 12px;
-}
-.result-dim-note {
-    font-size: 9px;
-    color: var(--text-muted);
-    margin-top: 2px;
-    font-style: italic;
+
+/* =========================
+   MISCELÁNEA
+========================= */
+
+#ftree-body details details {
+    margin-left: 0.5rem;
 }

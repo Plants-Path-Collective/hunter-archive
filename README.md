@@ -10,7 +10,7 @@ como expedientes estructurados dentro de un sistema de archivo estilizado.
 Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo 
 de construcción de mundos.
 
-**Versión actual:** v1.6.1
+**Versión actual:** v1.6.2
 
 ---
 
@@ -355,7 +355,7 @@ A partir de la versión actual (v1.6.0), se planea una reestructuración del sis
 ---
 
 Nota `v1.6.0` – Todos los estilos inline se han migrado a clases CSS, se han definido variables 
-de espaciado y se ha mejorado la consistencia visual. En la `v1.6.1` se hicieron correcciones 
+de espaciado y se ha mejorado la consistencia visual. En la `v1.6.1` y la `1.6.2` se hicieron correcciones 
 para que las habilidades y las stats se renderizen correctamente.
 
 ---
