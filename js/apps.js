@@ -43,30 +43,26 @@ function escapeHtml(str) {
 }
 
 function renderSkillTreeHTML(active) {
-    const base  = active?.base  || "—";
-    const paths = Array.isArray(active?.paths) ? active.paths : [];
-    const pathLabels = ["RUTA I", "RUTA II", "RUTA III"];
-    const pathsHTML = paths.length
-        ? `<div class="skill-paths">
-            ${paths.map((p, i) => `
-            <div class="skill-node skill-path-node">
-                <span class="skill-badge skill-badge-path">${pathLabels[i] || "RUTA"}</span>
-                <span>${escapeHtml(p)}</span>
-            </div>`).join("")}
-           </div>`
-        : `<div class="skill-paths">
-            <div class="skill-node" style="color:var(--text-muted); font-style:italic;">
-                Sin rutas de evolución definidas.
-            </div>
-           </div>`;
-    return `
-<div class="skill-tree">
-    <div class="skill-node">
-        <span class="skill-badge skill-badge-base">BASE</span>
-        <span>${escapeHtml(base)}</span>
-    </div>
-    ${pathsHTML}
-</div>`;
+    const base = active?.base || "—";
+    const paths = Array.isArray(active?.paths) ? active.paths.slice(0, 2) : []; // máximo 2 rutas
+    const pathLabels = ["RUTA I", "RUTA II"];
+
+    let treeHTML = `<div class="skill-tree">`;
+    treeHTML += `<div class="skill-node skill-base-node">[ BASE ] ${escapeHtml(base)}</div>`;
+
+    if (paths.length === 0) {
+        treeHTML += `<div class="skill-node skill-empty-path" style="color:var(--text-muted); font-style:italic;">Sin rutas de evolución definidas.</div>`;
+    } else {
+        paths.forEach((p, idx) => {
+            const isLast = idx === paths.length - 1;
+            const prefix = isLast ? "└─" : "├─";
+            treeHTML += `<div class="skill-node skill-path-node">
+                <span class="skill-prefix">${prefix}</span> [ ${pathLabels[idx]} ] ${escapeHtml(p)}
+            </div>`;
+        });
+    }
+    treeHTML += `</div>`;
+    return treeHTML;
 }
 
 /* =========================
@@ -1345,11 +1341,52 @@ async function loadApp(name, el, data) {
        MAIL
     ========================= */
     if (name === "mail") {
-        el.innerHTML = `
-        <div class="panel">
+    el.innerHTML = `
+    <div class="panel">
+        <div class="mail-header">
             <h3>Hunter Association — Correo Interno</h3>
-            <div class="panel" style="margin-top:8px;"><p><b>De:</b> Hunter Association — Terminal de Control</p><p><b>Asunto:</b> Protocolo de gestión de Hunters (v2.0)</p></div>
-            <div class="panel" style="margin-top:8px; line-height:1.75;"><p>Operador,<br><br>El flujo de trabajo es el siguiente:<br><br><b>1. BUSCADOR</b><br>Selecciona Género y MBTI. La Clase se genera automáticamente según la Dimensión de Origen (o aleatoria si no hay sugerencias).<br>Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN), una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase generada.<br><br><b>2. DIMENSIONES DE ORIGEN</b><br>Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br><b>3. CLASES</b><br>Las clases no son roles de combate: son oficios cotidianos.<br>Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>El Buscador solo usa las habilidades de la clase generada, nunca un pool genérico.<br><br><b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>Las rutas son expansiones o variaciones de la base, definidas por clase.<br>Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br><b>5. EDITOR</b><br>Modifica el nombre, descripción, conceptos (FN + AN), habilidades, imágenes, estadísticas, clase y arma.<br>Además puedes seleccionar un <b>subtipo MBTI</b> (INTJ, INFP, etc.) según la categoría principal.<br>La Dimensión de Origen es de solo lectura.<br>Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>. Las estadísticas se guardan automáticamente en localStorage.<br><br><b>6. ARCHIVOS DE DATOS</b><br><code>data/data.json</code> — Géneros, MBTI, subtipos de MBTI y tooltips de atributos.<br><code>data/classes.json</code> — Clases con sus pools de habilidades y armas.<br><code>data/concepts.json</code> — Organizado por dimensión (funciones y anomalías temáticas).<br><code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br><code>data/files.json</code> — Hunters registrados.<br><code>data/elemental_types.json</code> — Tipos elementales y criaturas.<br><br><b>Glosario de badges:</b><br>&nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>&nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br><b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>— Hunter Association</p></div>
-        </div>`;
+            <p class="text-muted" style="font-size:10px;">Sistema de mensajería interna · Nivel de seguridad: ALTO</p>
+        </div>
+        <div class="panel mail-from-panel">
+            <p><b>De:</b> <span class="accent-warning">Hunter Association — Terminal de Control</span></p>
+            <p><b>Asunto:</b> <span class="accent-warning">Protocolo de gestión de Hunters (v2.0)</span></p>
+        </div>
+        <div class="panel mail-body-panel" style="line-height:1.75;">
+            <p>Operador,<br><br>El flujo de trabajo es el siguiente:<br><br>
+            <b>1. BUSCADOR</b><br>
+            Selecciona Género y MBTI. La Clase se genera automáticamente según la Dimensión de Origen (o aleatoria si no hay sugerencias).<br>
+            Al generar se asignan: <b>Dimensión de Origen</b> (inmutable), dos conceptos (FN / AN), una habilidad pasiva y un árbol de habilidad activa — todos derivados de la clase generada.<br><br>
+            <b>2. DIMENSIONES DE ORIGEN</b><br>
+            Cada Hunter nace en una dimensión del multiverso, asignada aleatoriamente e inmutable.<br>
+            Las dimensiones tienen <b>clases sugeridas</b>: oficios que encajan narrativamente con ese mundo.<br>
+            Puedes verlas en el Explorador de Archivos al seleccionar una dimensión.<br>
+            Gestión: <code>data/dimensions.json</code> — campo <code>suggested_classes[]</code>.<br><br>
+            <b>3. CLASES</b><br>
+            Las clases no son roles de combate: son oficios cotidianos.<br>
+            Cada clase tiene su propio pool de habilidades pasivas y activas en <code>data/classes.json</code>.<br>
+            El Buscador solo usa las habilidades de la clase generada, nunca un pool genérico.<br><br>
+            <b>4. ÁRBOL DE HABILIDAD ACTIVA</b><br>
+            Cada Hunter tiene una habilidad <b>BASE</b> y hasta dos <b>RUTAS DE EVOLUCIÓN</b>.<br>
+            Las rutas son expansiones o variaciones de la base, definidas por clase.<br>
+            Estructura en JSON: <code>active.base</code> + <code>active.paths[]</code>.<br><br>
+            <b>5. EDITOR</b><br>
+            Modifica el nombre, descripción, conceptos (FN + AN), habilidades, imágenes, estadísticas, clase y arma.<br>
+            Además puedes seleccionar un <b>subtipo MBTI</b> (INTJ, INFP, etc.) según la categoría principal.<br>
+            La Dimensión de Origen es de solo lectura.<br>
+            Descarga o copia el JSON resultante para añadirlo a <code>files.json</code>. Las estadísticas se guardan automáticamente en localStorage.<br><br>
+            <b>6. ARCHIVOS DE DATOS</b><br>
+            <code>data/data.json</code> — Géneros, MBTI, subtipos de MBTI y tooltips de atributos.<br>
+            <code>data/classes.json</code> — Clases con sus pools de habilidades y armas.<br>
+            <code>data/concepts.json</code> — Organizado por dimensión (funciones y anomalías temáticas).<br>
+            <code>data/dimensions.json</code> — Dimensiones con <code>suggested_classes</code> y <code>suggested_enemies</code>.<br>
+            <code>data/files.json</code> — Hunters registrados.<br>
+            <code>data/elemental_types.json</code> — Tipos elementales y criaturas.<br><br>
+            <b>Glosario de badges:</b><br>
+            &nbsp;&nbsp;FN = Función &nbsp;|&nbsp; AN = Anomalía<br>
+            &nbsp;&nbsp;BASE = Habilidad nuclear &nbsp;|&nbsp; RUTA I / II = Evoluciones<br><br>
+            <b>Nota:</b> Cualquier alteración no autorizada será registrada en los logs de la Hunter Association.<br><br>
+            — Hunter Association</p>
+        </div>
+    </div>`;
     }
 }

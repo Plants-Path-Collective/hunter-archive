@@ -1,25 +1,25 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Hunter Association OS v2.0.0</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Hunter Association Files Viewer OS v2.0.0</title>
+    <link rel="stylesheet" href="css/viewer.css">
 </head>
 <body>
 
 <pre class="ascii-bg">
-                                                                                                            
-                                                                                                    
+                                                                                                        
+                                                                                                                
                                                        :::                                          
                                     :::::            :::.:::                                        
                                    ::::::::         ::::.:::                                        
                                    ::::::::::     :::::.:..::           ::::                        
                             ::::: ::::::::::::   ::::::.:..:::        ::::.:.                       
-                           :::::::::::::::::::: :::::::::::.::    ::::.::::::                       
-                            ::::::::::-::::::::::-::::::::::::: ::::...::::::                       
-               :::          :::::::::::::::::::::---:::::..::::::::.....:::::                       
-               :::::::     :::::::::::::::::::::::--:::::..::::::::.....:-:::                       
-               ::::::::::: ::::::::::::---::::::::::::::::..:--:::::.:..:----                       
+                           :::::::::::::::::::: :::::::::::.::    ::::.::::::                        
+                            ::::::::::-::::::::::-::::::::::::: ::::...::::::                        
+               :::          :::::::::::::::::::::---:::::..::::::::.....:::::                        
+               :::::::     :::::::::::::::::::::::--:::::..::::::::.....:-:::                        
+               ::::::::::: ::::::::::::---::::::::::::::::..:--:::::.:..:----                        
                 :::::::::::::::-::::::::-----:::::---::::::::----:::::::----=  :::::                
                 :::::::::::::::---:::-:::-====-::::-==--:-:::==---::::::====-:::::::                
                  ::::::::::::::------------===-::---====:::::====::::::======-::::::                
@@ -50,33 +50,20 @@
              **+------::::::::::::::::-=                 :---------::::::::::-+*#*                  
               ***=--:::::::::::::::--=                      --=====---===++****                     
                  ++==--===----===                                                                   
-                                          
-    
-                                    Hunter Association OS v2.0.0
+                                                                              
+                                    Hunter Association Files Viewer OS v2.0.0
 </pre>
 
 <div id="desktop">
-
-    <button class="icon" onclick="openApp('generator')">
-        <img src="https://i.imgur.com/kUxi2AZ.png" class="icon-img">
-        <span class="icon-label">Buscador</span>
-    </button>
-
     <button class="icon" onclick="openApp('files')">
         <img src="https://i.imgur.com/0BDLWir.png" class="icon-img">
         <span class="icon-label">Archivos</span>
-    </button>
-
-    <button class="icon" onclick="openApp('editor')">
-        <img src="https://i.imgur.com/5vjXlj2.png" class="icon-img">
-        <span class="icon-label">Editor</span>
     </button>
 
     <button class="icon" onclick="openApp('mail')">
         <img src="https://i.imgur.com/vC1FJdm.png" class="icon-img">
         <span class="icon-label">Mail</span>
     </button>
-
 </div>
 
 <div id="windows"></div>
@@ -87,5 +74,12 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="js/os.js"></script>
-<script src="js/apps.js"></script>
+<script src="js/viewer-apps.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        openApp('mail');
+    });
+</script>
 </body>
+</html>

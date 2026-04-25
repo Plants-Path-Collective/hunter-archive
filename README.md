@@ -10,7 +10,28 @@ como expedientes estructurados dentro de un sistema de archivo estilizado.
 Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo 
 de construcción de mundos.
 
-**Versión actual:** v1.6.2
+**Versión actual:** v2.0.0
+
+---
+
+## Separación completa entre visor público y editor privado
+
+El sistema ahora cuenta con **dos puntos de entrada independientes**:
+
+- **`index.html`** – Editor completo para desarrolladores y artistas.  
+  Incluye todas las aplicaciones: **Buscador**, **Editor**, **Archivos** y **Mail** (con documentación de uso).  
+  Permite crear, modificar y exportar Hunters.
+
+- **`viewer.html`** – Visor público para consulta.  
+  Muestra únicamente las aplicaciones **Archivos** (exploración de Hunters, dimensiones y bestiario) y **Mail** (mensaje de bienvenida y advertencia de seguridad).  
+  No tiene acceso al Buscador ni al Editor. Ideal para compartir con jugadores o para documentación.
+
+Ambas versiones comparten los mismos archivos de datos (`data/*.json`) y el gestor de ventanas (`os.js`), pero usan CSS y JavaScript separados:
+
+- `css/styles.css` + `js/apps.js`         → Editor
+- `css/viewer.css` + `js/viewer-apps.js` → Visor
+
+Esta separación garantiza que los datos públicos nunca se modifiquen accidentalmente y que el flujo de trabajo sea seguro.
 
 ---
 
@@ -37,7 +58,8 @@ de construcción de mundos.
 ```
 hunter-archive/
 ├── css/
-│   └── styles.css
+│   ├── styles.css
+│   └── viewer.css
 ├── data/
 │   ├── classes.json
 │   ├── concepts.json
@@ -47,10 +69,11 @@ hunter-archive/
 │   └── files.json
 ├── js/
 │   ├── apps.js
-│   └── os.js
-├── Guía para la Creación de Dimensiones, Clases y Habilidades.md
+│   ├── os.js
+│   └── viewer-apps.js
 ├── README.md
-└── index.html
+├── index.html
+└── viewer.html
 ```
 
 ---
@@ -321,45 +344,187 @@ En las vistas previas (Generador, Editor, Archivos) se renderiza visualmente con
 
 # Roadmap
 
-## v2.0 – Separación en visor público y editor privado
-
-A partir de la versión actual (v1.6.0), se planea una reestructuración del sistema para separar claramente los flujos de **visualización pública** y **edición/administración**. Esto permitirá usar Hunter Association OS como una galería de personajes para el proyecto *Hunters Vega*, mientras que la creación y edición quedará restringida a una herramienta interna de desarrollo.
-
-### 1. División en dos interfaces independientes
-
-- **Visor público (`index.html`)**
-    - Conservará el entorno de escritorio (ventanas, barra de tareas, reloj) o adoptará un diseño más minimalista orientado a la consulta.
-    - Mostrará únicamente la aplicación **Archivos** (explorador de Hunters, Dimensiones y Bestiario).
-    - Eliminará el acceso al **Buscador** y al **Editor**.
-    - Los datos se leerán exclusivamente desde `data/files.json` (o desde un endpoint simulado), sin permitir modificaciones ni guardado local.
-    - La navegación cruzada (Hunter ↔ Dimensión) seguirá funcionando.
-
-- **Editor privado (`editor.html`)**
-    - Aplicación independiente, sin el escritorio completo si se prefiere, pero con todas las funcionalidades de creación y modificación.
-    - Incluirá el **Buscador** (generador aleatorio) y el **Editor** completo (estadísticas, habilidades, imágenes, cambio de clase, armas).
-    - Soportará la carga/guardado en `localStorage` y la exportación manual a JSON.
-    - Opcionalmente, permitirá **sobrescribir `files.json`** mediante descarga manual o mediante una API en el futuro.
-
-### 2. Gestión de datos
-
-- Se mantendrá el esquema actual de `files.json` como fuente de verdad para los Hunters.
-- El Editor privado podrá **leer** el `files.json` existente (cargándolo manualmente o situándolo en el mismo directorio) y **actualizarlo** exportando el JSON modificado.
-- En una versión posterior, se podría implementar un pequeño servidor local o una sincronización automática con `localStorage` para agilizar el flujo de trabajo.
-
-### 3. Beneficios
-
-- **Separación de roles**: los artistas y escritores consultan la galería sin riesgo de modificar datos.
-- **Seguridad**: la edición queda aislada en una herramienta que no estará expuesta al público general.
-- **Rendimiento**: la versión pública puede cargarse más rápido al prescindir de los módulos de edición.
+A continuación se detalla el plan de evolución del sistema, organizado por versiones semánticas (X.Y.Z).  
+Todas las mejoras se implementarán manteniendo la compatibilidad con el despliegue estático en GitHub Pages y la separación actual entre editor (`index.html`) y visor público (`viewer.html`).
 
 ---
 
-Nota `v1.6.0` – Todos los estilos inline se han migrado a clases CSS, se han definido variables 
-de espaciado y se ha mejorado la consistencia visual. En la `v1.6.1` y la `1.6.2` se hicieron correcciones 
-para que las habilidades y las stats se renderizen correctamente.
+## v2.1.0 – Bestiario avanzado y ficha de enemigos
+
+**Objetivo:** Convertir el Bestiario en una herramienta completa para consultar tanto las reglas elementales como un catálogo de enemigos, integrando a los enemigos como parte del lore de las dimensiones.
+
+### Tareas
+
+1. **Reestructurar la sección Bestiario en dos subcategorías**
+  - **Enciclopedia elemental**: tabla de ventajas/desventajas entre tipos elementales (actual), diagrama de relaciones tipo “piedra-papel-tijera”, listado de razas de criaturas con descripciones.
+  - **Catálogo de enemigos**: lista completa de todos los enemigos (cargados desde `dimensions.json` o un nuevo `enemies.json`).
+
+2. **Añadir ficha detallada de cada enemigo** (visible en el visor y el editor)
+  - Campos:
+    - `id` (identificador único)
+    - `name`
+    - `dimension_id` (enlace a la dimensión de origen)
+    - `types`: `race` (raza), `element` (elemento), `rarity` (esbirro, miniboss, boss)
+    - `description`
+    - `stats` (HP, MP, Speed, Strength, Magic, Defense, Magic Defense, Evasion, Accuracy)
+    - `abilities`: array de 1 a 2 habilidades (solo nombre y descripción, sin árbol de rutas)
+  - La ficha se mostrará al hacer clic en un enemigo del catálogo.
+
+3. **Actualizar `dimensions.json`** para que cada dimensión pueda incluir una lista de enemigos (ya existe `suggested_enemies` – se estandarizará y completará).
+
+4. **Ampliar el explorador de Archivos** para mostrar el Bestiario con las dos subcategorías colapsables (similar a la agrupación de Hunters por juego).
+
+5. **Adaptar el editor** (si se desea) para permitir crear/modificar enemigos. *Opcional para esta versión, prioridad solo en el visor.*
 
 ---
 
-## Créditos
+## v2.2.0 – Ficha de Hunter con pestañas y habilidades expandidas
+
+**Objetivo:** Separar la información narrativa del Hunter de sus estadísticas y habilidades, además de permitir hasta 3 habilidades activas y visualizarlas como diagramas.
+
+### Tareas
+
+1. **Rediseñar la vista de Hunter (tanto en editor como en visor) usando pestañas**
+  - **Pestaña “Info”**: muestra los conceptos (FN, AN), descripción, dimensión de origen, imagen y datos narrativos.
+  - **Pestaña “Combate”**: muestra estadísticas (stats grid) y el nuevo diagrama de habilidades.
+
+2. **Modificar el esquema de habilidades activas**
+  - Cambiar de `active.base` + `active.paths[]` (máximo 2 rutas) a un array `active_skills` de 1 a 3 habilidades independientes.
+  - Cada habilidad tendrá: `name`, `description`, `type` (activa/pasiva), `cost` (opcional).
+  - Mantener compatibilidad con datos antiguos (migración automática en el cargador).
+
+3. **Implementar diagrama visual de habilidades** (en lugar del árbol jerárquico actual)
+  - Usar representación gráfica simple (cajas o nodos conectados) mediante CSS Grid/Flex o SVG básico.
+  - Mostrar el nombre de cada habilidad y su descripción en tooltip o al hacer clic.
+
+4. **Refactorizar `renderHunterView`** para usar las pestañas y el nuevo modelo de habilidades.
+
+5. **Actualizar el Editor** para que permita añadir/eliminar habilidades activas (mínimo 1, máximo 3) y editar sus campos.
+
+---
+
+## v2.3.0 – Mejoras visuales y de usabilidad
+
+**Objetivo:** Pulir la interfaz, optimizar el rendimiento y preparar el terreno para futuras expansiones.
+
+### Tareas
+
+1. **Diagrama de relaciones elementales** en el Bestiario (enciclopedia) usando gráficos vectoriales o una cuadrícula interactiva.
+
+2. **Ordenación y filtros** en el catálogo de enemigos (por dimensión, rareza, elemento).
+
+3. **Tooltips mejorados** para las habilidades de los enemigos.
+
+4. **Optimización de carga** de los archivos JSON (caché local, lazy loading si es necesario).
+
+5. **Añadir un indicador de “en construcción”** en el editor para las secciones no implementadas (por si se decide no incluir la edición de enemigos en v2.1.0).
+
+---
+
+## v3.0.0 – Integración con base de datos externa (futuro)
+
+*Nota: Esta versión requeriría un backend y no está prevista para el corto plazo, ya que el sitio debe seguir siendo estático.*
+
+- Posibilidad de sincronizar Hunters y enemigos con una API REST.
+- Exportación/importación directa desde la nube.
+- Control de versiones de los personajes.
+
+---
+
+## Notas sobre el despliegue
+
+- Todos los cambios deben ser **compatibles con GitHub Pages** (solo HTML/CSS/JS estático).
+- La separación entre `index.html` (editor) y `viewer.html` (visor) se mantendrá.
+- Las nuevas funcionalidades se implementarán primero en el visor público y luego, si es pertinente, se replicarán en el editor.
+
+---
+
+# Guía de implementación – Roadmap v2.1.0, v2.2.0 y v2.3.0
+
+Esta guía detalla los archivos a modificar (y los que se podrían crear) para implementar las futuras versiones del sistema, respetando la separación actual entre editor (`index.html` + `apps.js` + `styles.css`) y visor público (`viewer.html` + `viewer-apps.js` + `viewer.css`).
+
+---
+
+## v2.1.0 – Bestiario avanzado y ficha de enemigos
+
+**Objetivo:** Convertir el Bestiario en una herramienta completa con dos subcategorías: enciclopedia elemental y catálogo de enemigos.
+
+### Archivos a modificar
+
+| Archivo | Cambios necesarios |
+|---------|---------------------|
+| `data/dimensions.json` | Asegurar que cada dimensión tenga un array `enemies` (o `suggested_enemies`) correctamente estructurado con `id`, `name`, `type` (raza, elemento, rareza), `stats`, `abilities`. Si ya existe, solo completar campos. |
+| `data/elemental_types.json` | Puede ampliarse para incluir diagramas de relación (por ejemplo, un objeto `diagram` con ventajas/desventajas en formato matriz). |
+| `js/apps.js` y `js/viewer-apps.js` | Dentro del bloque `if (name === "files")`:<br> - Modificar `renderTree()` para mostrar el Bestiario como dos `<details>`:<br>   * `Enciclopedia elemental` (contenido actual: tabla de ventajas/desventajas y lista de tipos de criatura).<br>   * `Catálogo de enemigos` (lista de enemigos cargados desde `dimensions.json` o desde un nuevo archivo).<br> - Crear nueva función `renderEnemyView(enemy)` para mostrar la ficha detallada del enemigo (similar a `renderHunterView` pero sin árbol de habilidades).<br> - Modificar `renderDimensionView()` para que los enemigos sugeridos enlace a la ficha del enemigo en lugar de mostrarse solo como texto. |
+| `css/styles.css` y `css/viewer.css` | Añadir clases para la ficha de enemigo (`.enemy-id`, `.enemy-types`, `.enemy-stats-grid`, etc.) y para el diagrama de relaciones elementales (por ahora, una cuadrícula simple con CSS Grid). |
+
+### Nuevos archivos sugeridos
+
+- **`data/enemies.json`** – Centraliza todos los enemigos en un único archivo, facilitando el catálogo. Cada enemigo tendrá un `dimension_id` para mantener la relación con las dimensiones. Ejemplo:
+```json
+[
+  {
+    "id": "E-12345",
+    "name": "Espectro de obsidiana",
+    "dimension_id": "DIM-6084206892469",
+    "types": {
+      "race": "Espectro",
+      "element": "Oscuridad",
+      "rarity": "esbirro"
+    },
+    "description": "Un ser etéreo...",
+    "stats": { "hp": 45, "mp": 20, "speed": 12, ... },
+    "abilities": [ "Grito astral", "Manto de obsidiana" ]
+  }
+]
+```
+
+-`js/enemies.js` – Si se decide separar la lógica de gestión de enemigos, se podría crear un módulo auxiliar. No es imprescindible.
+
+### Orden de implementación sugerido
+1. Crear `data/enemies.json` y migrar los enemigos existentes desde `dimensions.json`.
+2. Modificar `loadApp()` para que cargue también `enemies.json`.
+3. Actualizar `renderTree()` para la nueva estructura del Bestiario.
+4. Implementar `renderEnemyView()`.
+5. Ajustar `renderDimensionView()` para enlazar a las fichas de enemigos.
+6. Probar en ambos entornos (editor y visor).
+
+---
+
+## v2.2.0 – Ficha de Hunter con pestañas y habilidades expandidas
+
+### Archivos a modificar
+
+| Archivo | Cambios necesarios |
+|---------|---------------------|
+| `data/files.json` | Cada hunter debe cambiar de `active.base` + `active.paths` a un array `active_skills` de 1 a 3 habilidades. Para no romper datos antiguos, se hará una migración automática en el cargador de datos. |
+| `js/apps.js` y `js/viewer-apps.js` | - Crear función `migrateHunterToNewFormat(hunter)` para convertir el formato antiguo al nuevo al cargar.<br> - Reemplazar `renderHunterView()` para que use pestañas (`.tabs`). Dividir el contenido en:<br>   * `Pestaña Info`: conceptos, descripción, dimensión, imagen.<br>   * `Pestaña Combate`: estadísticas, diagrama de habilidades.<br> - Crear `renderSkillsDiagram(skills)` que genere una visualización con tarjetas o nodos (usando CSS Grid/flex).<br> - Modificar el Editor para manejar `active_skills` (inputs dinámicos, botones para añadir/eliminar, limitando a 3). |
+| `css/styles.css` y `css/viewer.css` | Añadir estilos para las pestañas (`.tab-bar`, `.tab-button`, `.tab-pane`, `.tab-active`) y para el diagrama de habilidades (`.skill-diagram`, `.skill-card`, `.skill-name`, `.skill-desc`). |
+| `js/utils.js` (nuevo) | Centralizar funciones comunes de migración y validación, para no duplicar código entre `apps.js` y `viewer-apps.js`. Ejemplo: `migrateHunterToNewFormat()`. |
+
+### Nuevos archivos sugeridos
+
+- `js/utils.js` – Centraliza funciones comunes de migración y validación, para no duplicar código entre `apps.js` y `viewer-apps.js`
+
+```json
+function migrateHunterToNewFormat(hunter) {
+  if (hunter.active_skills) return hunter;
+  const newSkills = [];
+  if (hunter.active?.base) newSkills.push({ name: hunter.active.base, description: "", type: "activa", cost: 0 });
+  if (hunter.active?.paths) {
+    hunter.active.paths.forEach(p => newSkills.push({ name: p, description: "", type: "activa", cost: 0 }));
+  }
+  return { ...hunter, active_skills: newSkills };
+}
+```
+
+### Orden de implementación
+1. Implementar la migración automática en el cargador de datos.
+2. Cambiar la vista de Hunter para usar pestañas (primero la estructura, luego el diseño).
+3. Implementar el diagrama de habilidades (inicialmente una lista simple, luego mejorar visualmente).
+4. Actualizar el Editor para que soporte la edición del array `active_skills` (inputs dinámicos).
+5. Probar ambas aplicaciones.
+
+---
 
 © 2024 - 2026 Plants Path Collective

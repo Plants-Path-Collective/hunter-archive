@@ -358,7 +358,7 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 .concept-row { display: flex; align-items: flex-start; gap: var(--spacing-xs); margin-bottom: var(--spacing-sm); font-size: var(--font-base); color: var(--text-secondary); line-height: var(--line-tight); }
 
 /* =========================
-   ÁRBOL DE HABILIDADES (versión tipográfica)
+   ÁRBOL DE HABILIDADES (versión tipográfica limpia)
 ========================= */
 .skill-tree {
     display: flex;
@@ -386,11 +386,6 @@ h3[data-tooltip] { border-left-color: var(--accent-warning); }
 .skill-empty-path {
     margin-left: 2em;
     font-style: italic;
-}
-/* Eliminar cualquier resto de estilos antiguos que pudieran interferir */
-.skill-paths,
-.skill-path-node::before {
-    display: none;
 }
 
 /* =========================
