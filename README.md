@@ -318,6 +318,66 @@ En las vistas previas (Generador, Editor, Archivos) se renderiza visualmente con
 
 ---
 
+# Futuros cambios (roadmap) – Hunter Association OS
+
+## v1.6.0 – Reestructuración del CSS
+
+**Objetivo:** Solucionar problemas actuales de maquetación y mejorar la mantenibilidad del estilo.
+
+- **Problemas detectados:**
+    - Clases CSS confusas, anidadas sin una nomenclatura clara (mezcla de estilos de ventanas, escritorio, aplicaciones).
+    - Espaciados inconsistentes (paddings, margins) que afectan a la visualización de las fichas de Hunter, especialmente en el árbol de habilidades y las tarjetas del explorador.
+    - Falta de un sistema de espaciado uniforme (por ejemplo, usar una unidad base como `rem` o variables CSS).
+    - Algunos elementos colapsan en resoluciones intermedias.
+
+- **Acciones planificadas:**
+    - Renombrar clases siguiendo una metodología clara (ej. BEM o similares): `.window__titlebar`, `.explorer__hunter-card`, `.skill-tree__path`.
+    - Definir variables CSS globales (`--spacing-xs`, `--spacing-sm`, `--spacing-md`, ...) para márgenes y paddings.
+    - Revisar y corregir los contenedores del Editor y del Generador para que respeten los espacios internos.
+    - Ajustar el árbol de habilidades para que no se superponga y sea responsive.
+    - Garantizar que las ventanas redimensionables mantengan un aspecto limpio.
+
+- **Versión objetivo:** v1.6.0 (manteniendo toda la funcionalidad actual, solo cambios visuales y de organización del CSS).
+
+---
+
+## v2.0 – Separación en visor público y editor privado
+
+A partir de la versión actual (v1.5.5), se planea una reestructuración del sistema para separar claramente los flujos de **visualización pública** y **edición/administración**. Esto permitirá usar Hunter Association OS como una galería de personajes para el proyecto *Hunters Vega*, mientras que la creación y edición quedará restringida a una herramienta interna de desarrollo.
+
+### 1. División en dos interfaces independientes
+
+- **Visor público (`index.html`)**
+    - Conservará el entorno de escritorio (ventanas, barra de tareas, reloj) o adoptará un diseño más minimalista orientado a la consulta.
+    - Mostrará únicamente la aplicación **Archivos** (explorador de Hunters, Dimensiones y Bestiario).
+    - Eliminará el acceso al **Buscador** y al **Editor**.
+    - Los datos se leerán exclusivamente desde `data/files.json` (o desde un endpoint simulado), sin permitir modificaciones ni guardado local.
+    - La navegación cruzada (Hunter ↔ Dimensión) seguirá funcionando.
+
+- **Editor privado (`editor.html`)**
+    - Aplicación independiente, sin el escritorio completo si se prefiere, pero con todas las funcionalidades de creación y modificación.
+    - Incluirá el **Buscador** (generador aleatorio) y el **Editor** completo (estadísticas, habilidades, imágenes, cambio de clase, armas).
+    - Soportará la carga/guardado en `localStorage` y la exportación manual a JSON.
+    - Opcionalmente, permitirá **sobrescribir `files.json`** mediante descarga manual o mediante una API en el futuro.
+
+### 2. Gestión de datos
+
+- Se mantendrá el esquema actual de `files.json` como fuente de verdad para los Hunters.
+- El Editor privado podrá **leer** el `files.json` existente (cargándolo manualmente o situándolo en el mismo directorio) y **actualizarlo** exportando el JSON modificado.
+- En una versión posterior, se podría implementar un pequeño servidor local o una sincronización automática con `localStorage` para agilizar el flujo de trabajo.
+
+### 3. Beneficios
+
+- **Separación de roles**: los artistas y escritores consultan la galería sin riesgo de modificar datos.
+- **Seguridad**: la edición queda aislada en una herramienta que no estará expuesta al público general.
+- **Rendimiento**: la versión pública puede cargarse más rápido al prescindir de los módulos de edición.
+
+---
+
+**Nota final:** La versión v1.6.0 es un paso previo necesario para asegurar que la interfaz sea sólida antes de abordar la separación en v2.0. Ambos hitos están planificados dentro del desarrollo de *Hunters Vega*.
+
+---
+
 ## Créditos
 
 © 2024 - 2026 Plants Path Collective
