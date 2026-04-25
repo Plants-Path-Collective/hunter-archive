@@ -1085,3 +1085,378 @@ details.editor-section {
     color: #000;
     border-color: var(--accent-primary);
 }
+
+/* Indentación para grupos de juegos en el explorador */
+#ftree-body details details {
+    margin-left: 0.5rem;
+}
+
+/* =========================
+   v1.6.0 – REFACTOR: CLASES PARA MIGRAR ESTILOS INLINE
+========================= */
+
+/* Variables de espaciado (ya existen, pero reforzamos) */
+:root {
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+}
+
+/* ─────────── File Explorer Tree ─────────── */
+.explorer-section-header {
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    user-select: none;
+    border-bottom: 1px solid #1a1d24;
+}
+.explorer-section-header:hover {
+    background: rgba(79, 157, 166, 0.1);
+}
+.explorer-section-header span:first-child {
+    color: var(--accent-primary);
+    font-size: 10px;
+    width: 8px;
+}
+.explorer-section-header .counter {
+    color: var(--text-muted);
+    font-size: 9px;
+    margin-left: auto;
+}
+
+.explorer-empty {
+    padding: 6px 14px 6px 28px;
+    font-size: 10px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Grupo de juego (dentro de Hunters) */
+.explorer-game-group {
+    margin-left: 14px;
+    margin-top: 2px;
+}
+.explorer-game-summary {
+    padding: 5px 0 5px 8px;
+    cursor: pointer;
+    font-size: 10px;
+    font-family: monospace;
+    color: var(--accent-warning);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.explorer-game-summary .arrow {
+    color: var(--accent-primary);
+    font-size: 9px;
+}
+.explorer-game-container {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Ítem de hunter en el árbol */
+.explorer-hunter-item {
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 10px;
+    font-family: monospace;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+    background: transparent;
+    border-left: 2px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.05s;
+}
+.explorer-hunter-item:hover {
+    background: #14161e;
+}
+.explorer-hunter-item.active {
+    color: var(--accent-warning);
+    background: #1a1d26;
+    border-left-color: var(--accent-warning);
+}
+.explorer-hunter-item .marker {
+    color: var(--accent-primary);
+    font-size: 9px;
+}
+
+/* Ítem de dimensión */
+.explorer-dimension-item {
+    padding: 5px 14px 5px 28px;
+    cursor: pointer;
+    font-size: 10px;
+    font-family: monospace;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+    background: transparent;
+    border-left: 2px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.explorer-dimension-item:hover {
+    background: #14161e;
+}
+.explorer-dimension-item.active {
+    color: var(--accent-warning);
+    background: #1a1d26;
+    border-left-color: var(--accent-warning);
+}
+.explorer-dimension-badge {
+    color: var(--accent-primary);
+    font-size: 9px;
+    background: #0a0c10;
+    padding: 1px 5px;
+    border: 1px solid var(--border-light);
+    flex-shrink: 0;
+}
+
+/* Ítem de bestiario */
+.explorer-bestiary-item {
+    padding: 5px 14px 5px 28px;
+    cursor: pointer;
+    font-size: 10px;
+    font-family: monospace;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+    background: transparent;
+    border-left: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.explorer-bestiary-item:hover {
+    background: #14161e;
+}
+.explorer-bestiary-item.active {
+    color: var(--accent-warning);
+    background: #1a1d26;
+    border-left-color: var(--accent-warning);
+}
+
+/* Separadores */
+.explorer-divider {
+    border-top: 1px solid #1a1d24;
+    margin: 6px 0;
+}
+
+/* ─────────── Hunter View ─────────── */
+.hunter-view-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 10px;
+    margin-top: 8px;
+}
+.hunter-image-panel {
+    padding: 8px;
+}
+.hunter-image-panel img {
+    width: 100%;
+    image-rendering: pixelated;
+}
+.hunter-info-panel {
+    /* hereda de .panel pero podemos sobreescribir */
+}
+.hunter-game-badge {
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+.hunter-dimension-block {
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    background: #0a0c10;
+    border: 1px solid var(--accent-primary);
+    border-left: 3px solid var(--accent-primary);
+}
+.hunter-dimension-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+}
+.hunter-dimension-name {
+    color: var(--accent-warning);
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline dotted var(--accent-primary);
+}
+
+/* ─────────── Dimension View ─────────── */
+.dimension-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+.dimension-title {
+    margin-bottom: 2px;
+}
+.dimension-hunter-count {
+    padding: 4px 10px;
+    background: #0a0c10;
+    border: 1px solid var(--accent-primary);
+    font-size: 10px;
+    color: var(--accent-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.dimension-image {
+    margin-bottom: 10px;
+    padding: 8px;
+    text-align: center;
+}
+.dimension-image img {
+    max-width: 100%;
+    max-height: 220px;
+    image-rendering: pixelated;
+}
+.dimension-lore {
+    margin-bottom: 8px;
+    border-left: 3px solid var(--accent-warning);
+}
+.dimension-lore h3 {
+    font-size: 11px;
+    color: var(--accent-primary);
+}
+.dimension-lore p {
+    font-style: italic;
+    line-height: 1.75;
+}
+.dimension-classes {
+    margin-bottom: 8px;
+}
+.dimension-enemies {
+    margin-bottom: 8px;
+}
+.dimension-hunters {
+    margin-top: 8px;
+}
+.dimension-hunter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: #0d0f14;
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    transition: background 0.05s;
+}
+.dimension-hunter-row:hover {
+    background: #1a1d26;
+}
+.dimension-hunter-class {
+    flex-shrink: 0;
+}
+.dimension-hunter-name {
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+.dimension-hunter-meta {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-left: auto;
+}
+.dimension-hunter-arrow {
+    font-size: 10px;
+    color: var(--accent-primary);
+}
+
+/* ─────────── Bestiary ─────────── */
+.bestiary-header {
+    margin-bottom: 12px;
+}
+.bestiary-table-container {
+    margin-bottom: 12px;
+}
+.creature-types-list {
+    margin-top: 8px;
+}
+
+/* ─────────── Editor preview grid ─────────── */
+.editor-preview-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 6px;
+    margin-top: 6px;
+}
+.editor-preview-image {
+    width: 100%;
+    image-rendering: pixelated;
+}
+.editor-preview-no-image {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 10px;
+}
+
+/* ─────────── Generador ─────────── */
+.generator-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    height: 100%;
+}
+.generator-panel-spacing {
+    margin-top: 6px;
+}
+
+/* ─────────── Miscelánea ─────────── */
+.panel-dim-info, .result-dim-block {
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: var(--bg-deep);
+    border-left: 3px solid var(--accent-primary);
+}
+.result-dim-block {
+    margin-top: 8px;
+    border: 1px solid var(--accent-primary);
+}
+.dim-origin-label, .result-dim-label {
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.dim-origin-name, .result-dim-name {
+    color: var(--accent-warning);
+    font-weight: bold;
+}
+.result-dim-name {
+    font-size: 12px;
+}
+.result-dim-note {
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-style: italic;
+}

@@ -10,7 +10,7 @@ como expedientes estructurados dentro de un sistema de archivo estilizado.
 Está pensado como una herramienta para la ideación rápida, diseño de personajes y flujos de trabajo 
 de construcción de mundos.
 
-**Versión actual:** v1.5.5
+**Versión actual:** v1.6.0
 
 ---
 
@@ -148,7 +148,6 @@ Define las entradas del generador, tooltips y algunos pools genéricos (usados s
     "Explorador": ["ISTP", "ISFP", "ESTP", "ESFP"]
   },
   "attribute_tooltips": { ... },
-  "concepts": { ... },  // obsoleto si usas concepts.json por dimensión
   "passive_pool": [ ... ],
   "active_pool": [ ... ]
 }
@@ -248,6 +247,7 @@ Define los tipos elementales (con ventajas y desventajas) y los tipos de criatur
 Almacena todos los Hunters creados. Cada Hunter sigue el esquema:
 
 - `id`: identificador único
+- `game`: juego en el cuál aparece (Vega por defecto)
 - `name`: nombre de cazador
 - `gender`: género
 - `class`: clase jrpg
@@ -265,6 +265,7 @@ Almacena todos los Hunters creados. Cada Hunter sigue el esquema:
 ``` json
 {
   "id": "H-1776239790089",
+  "game": "Awakening",
   "name": "Typlon",
   "gender": "No Binario",
   "class": "Archivista",
@@ -318,28 +319,7 @@ En las vistas previas (Generador, Editor, Archivos) se renderiza visualmente con
 
 ---
 
-# Futuros cambios (roadmap) – Hunter Association OS
-
-## v1.6.0 – Reestructuración del CSS
-
-**Objetivo:** Solucionar problemas actuales de maquetación y mejorar la mantenibilidad del estilo.
-
-- **Problemas detectados:**
-    - Clases CSS confusas, anidadas sin una nomenclatura clara (mezcla de estilos de ventanas, escritorio, aplicaciones).
-    - Espaciados inconsistentes (paddings, margins) que afectan a la visualización de las fichas de Hunter, especialmente en el árbol de habilidades y las tarjetas del explorador.
-    - Falta de un sistema de espaciado uniforme (por ejemplo, usar una unidad base como `rem` o variables CSS).
-    - Algunos elementos colapsan en resoluciones intermedias.
-
-- **Acciones planificadas:**
-    - Renombrar clases siguiendo una metodología clara (ej. BEM o similares): `.window__titlebar`, `.explorer__hunter-card`, `.skill-tree__path`.
-    - Definir variables CSS globales (`--spacing-xs`, `--spacing-sm`, `--spacing-md`, ...) para márgenes y paddings.
-    - Revisar y corregir los contenedores del Editor y del Generador para que respeten los espacios internos.
-    - Ajustar el árbol de habilidades para que no se superponga y sea responsive.
-    - Garantizar que las ventanas redimensionables mantengan un aspecto limpio.
-
-- **Versión objetivo:** v1.6.0 (manteniendo toda la funcionalidad actual, solo cambios visuales y de organización del CSS).
-
----
+# Roadmap
 
 ## v2.0 – Separación en visor público y editor privado
 
@@ -371,10 +351,6 @@ A partir de la versión actual (v1.5.5), se planea una reestructuración del sis
 - **Separación de roles**: los artistas y escritores consultan la galería sin riesgo de modificar datos.
 - **Seguridad**: la edición queda aislada en una herramienta que no estará expuesta al público general.
 - **Rendimiento**: la versión pública puede cargarse más rápido al prescindir de los módulos de edición.
-
----
-
-**Nota final:** La versión v1.6.0 es un paso previo necesario para asegurar que la interfaz sea sólida antes de abordar la separación en v2.0. Ambos hitos están planificados dentro del desarrollo de *Hunters Vega*.
 
 ---
 

@@ -296,10 +296,10 @@ async function loadApp(name, el, data) {
     ========================= */
     if (name === "generator") {
         el.innerHTML = `
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; height:100%;">
+        <div class="generator-split">
             <div class="panel">
                 <h3>Generador</h3>
-                <div class="panel" style="margin-top:6px">
+                <div class="panel generator-panel-spacing">
                     <label>Género</label>
                     <select id="gender"></select>
                     <label id="lbl-mbti">MBTI</label>
@@ -316,6 +316,7 @@ async function loadApp(name, el, data) {
             </div>
         </div>
         `;
+        
         const fillSelect = (id, arr) => {
             const sel = el.querySelector("#" + id);
             arr.forEach(v => {
@@ -605,6 +606,11 @@ async function loadApp(name, el, data) {
                         <div id="classHint" class="field-hint"></div>
                         <label style="margin-top:8px;">Arma seleccionada</label>
                         <select id="weaponSelect"></select>
+                        <label style="margin-top:8px;">Proyecto / Juego</label>
+                        <select id="gameSelect">
+                            <option value="Awakening">Hunters: Awakening</option>
+                            <option value="Vega">Hunters: Vega</option>
+                        </select>
                         <label style="margin-top:10px;">Personalidad (MBTI)</label>
                         <div style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
                             <span id="ed-mbti" style="background:#1a1d24; padding:4px 8px;">${escapeHtml(h.mbti)}</span>
@@ -745,7 +751,9 @@ async function loadApp(name, el, data) {
         el.querySelector("#active-base").value = h.active?.base || "";
         el.querySelector("#active-path0").value = h.active?.paths?.[0] || "";
         el.querySelector("#active-path1").value = h.active?.paths?.[1] || "";
-
+        const gameSelect = el.querySelector("#gameSelect");
+        gameSelect.value = h.game || "Vega";
+        
         const mdesc = mbtiDesc(h.mbti);
         if (mdesc) Tooltip.bind(el.querySelector("#ed-mbti")?.parentElement?.querySelector("span") || el.querySelector("#ed-mbti"), mdesc);
         if (tt("concepts")) Tooltip.bind(el.querySelector("#ed-concepts-h"), tt("concepts"));
@@ -788,7 +796,8 @@ async function loadApp(name, el, data) {
                     evasion: parseInt(el.querySelector("#stat_evasion").value) || 0,
                     accuracy: parseInt(el.querySelector("#stat_accuracy").value) || 0
                 },
-                weapon: weapon
+                weapon: weapon,
+                game: gameSelect.value,
             };
             if (isNewSchema) {
                 built.concepts = [el.querySelector("#concept0").value.trim(), el.querySelector("#concept1").value.trim()];
@@ -823,6 +832,7 @@ async function loadApp(name, el, data) {
                     <div class="panel">${d.images[0] ? `<img src="${escapeHtml(d.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div style="height:200px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`}</div>
                     <div class="panel">
                         <div class="panel"><p><b id="prev-class">${escapeHtml(d.class)}</b> &nbsp;—&nbsp; <span id="prev-mbti">${escapeHtml(mbtiDisplay)}</span></p><p style="color:var(--text-muted); font-size:11px;">${escapeHtml(d.gender)}</p></div>
+                        <div style="font-size:9px; color:var(--text-muted); margin-top:4px;">Juego: ${escapeHtml(d.game || "Vega")}</div>
                         ${dimEntry ? `<div style="margin-top:6px; padding:6px 10px; background:#0a0c10; border-left:3px solid var(--accent-primary);"><div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">DIMENSIÓN DE ORIGEN</div><span id="prev-dim" style="color:var(--accent-warning); font-weight:bold;">${escapeHtml(dimEntry.name)}</span></div>` : ""}
                         <div class="panel" style="margin-top:6px;"><h3 id="prev-concepts-h">Conceptos</h3><div class="concept-row"><span class="concept-label" id="prev-fn">FN</span><span>${escapeHtml(fnText)}</span></div>${aeText !== null ? `<div class="concept-row"><span class="concept-label" id="prev-ae">AE</span><span>${escapeHtml(aeText)}</span></div>` : ""}<div class="concept-row"><span class="concept-label" id="prev-an">AN</span><span>${escapeHtml(anText)}</span></div></div>
                     </div>
@@ -906,58 +916,93 @@ async function loadApp(name, el, data) {
         const viewer = el.querySelector("#fviewer");
         function renderTree() {
             treeBody.innerHTML = "";
+
             // Hunters section
             const hunterSec = document.createElement("div");
             const hunterHdr = document.createElement("div");
-            hunterHdr.style.cssText = `padding:6px 14px; cursor:pointer; font-size:12px; letter-spacing:1.5px; color:var(--text-secondary); text-transform:uppercase; display:flex; align-items:center; gap:7px; user-select:none; border-bottom:1px solid #1a1d24;`;
-            hunterHdr.innerHTML = `<span style="color:var(--accent-primary); font-size:10px; width:8px;">${expandHunters ? "▼" : "▶"}</span><span>Hunters</span><span style="color:var(--text-muted); font-size:9px; margin-left:auto;">${hunterFiles.length}</span>`;
+            hunterHdr.className = "explorer-section-header";
+            hunterHdr.innerHTML = `<span>${expandHunters ? "▼" : "▶"}</span><span>Hunters</span><span class="counter">${hunterFiles.length}</span>`;
             hunterHdr.onclick = () => { expandHunters = !expandHunters; renderTree(); };
             hunterSec.appendChild(hunterHdr);
             if (expandHunters) {
                 if (hunterFiles.length === 0) {
                     const empty = document.createElement("div");
-                    empty.style.cssText = "padding:6px 14px 6px 28px; font-size:10px; color:var(--text-muted); font-style:italic;";
+                    empty.className = "explorer-empty";
                     empty.textContent = "Sin hunters registrados.";
                     hunterSec.appendChild(empty);
                 } else {
+                    // Agrupar por juego (mismo código de grupos, pero usando clases)
+                    const groups = new Map();
                     hunterFiles.forEach(h => {
-                        const isActive = selectedItem?.type === "hunter" && selectedItem?.data?.id === h.id;
-                        const item = document.createElement("div");
-                        item.style.cssText = `padding:5px 14px 5px 28px; cursor:pointer; font-size:10px; font-family:monospace; letter-spacing:0.3px; color:${isActive ? "var(--accent-warning)" : "var(--text-muted)"}; background:${isActive ? "#1a1d26" : "transparent"}; border-left:2px solid ${isActive ? "var(--accent-warning)" : "transparent"}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;`;
-                        item.title = h.id;
-                        const dimInfo = h.dimension_id ? getDim(h.dimension_id) : null;
-                        const displayText = h.name ? `${h.name} (${h.id})` : h.id;
-                        item.innerHTML = `<span style="color:var(--accent-primary); font-size:9px;">◆</span><span style="overflow:hidden; text-overflow:ellipsis;">${escapeHtml(displayText)}</span>`;
-                        Tooltip.bind(item, dimInfo ? `${h.class} — ${dimInfo.name}` : (h.class || h.id));
-                        item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
-                        item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
-                        item.onclick = () => {
-                            let displayHunter = h;
-                            const stored = localStorage.getItem(`hunter_${h.id}`);
-                            if (stored) try { displayHunter = JSON.parse(stored); } catch(e) {}
-                            selectedItem = { type: "hunter", data: displayHunter };
-                            renderTree();
-                            renderViewer();
-                        };
-                        hunterSec.appendChild(item);
+                        const game = h.game || "Awakening";
+                        if (!groups.has(game)) groups.set(game, []);
+                        groups.get(game).push(h);
                     });
+                    const groupOrder = ["Awakening", "Vega"];
+                    const sortedGroups = Array.from(groups.keys()).sort((a,b) => {
+                        const ia = groupOrder.indexOf(a);
+                        const ib = groupOrder.indexOf(b);
+                        if (ia !== -1 && ib !== -1) return ia - ib;
+                        if (ia !== -1) return -1;
+                        if (ib !== -1) return 1;
+                        return a.localeCompare(b);
+                    });
+                    for (const game of sortedGroups) {
+                        const hunters = groups.get(game);
+                        const groupDetails = document.createElement("details");
+                        groupDetails.className = "explorer-game-group";
+                        const groupSummary = document.createElement("summary");
+                        groupSummary.className = "explorer-game-summary";
+                        groupSummary.innerHTML = `<span class="arrow">▶</span> Hunters: ${game} <span style="color:var(--text-muted);">(${hunters.length})</span>`;
+                        groupSummary.addEventListener("click", (e) => {
+                            e.preventDefault();
+                            groupDetails.open = !groupDetails.open;
+                            const arrow = groupSummary.querySelector(".arrow");
+                            arrow.textContent = groupDetails.open ? "▼" : "▶";
+                        });
+                        groupDetails.appendChild(groupSummary);
+                        const container = document.createElement("div");
+                        container.className = "explorer-game-container";
+                        hunters.forEach(h => {
+                            const isActive = selectedItem?.type === "hunter" && selectedItem?.data?.id === h.id;
+                            const item = document.createElement("div");
+                            item.className = `explorer-hunter-item ${isActive ? "active" : ""}`;
+                            item.title = h.id;
+                            const dimInfo = h.dimension_id ? getDim(h.dimension_id) : null;
+                            const displayText = h.name ? `${h.name} (${h.id})` : h.id;
+                            item.innerHTML = `<span class="marker">◆</span><span>${escapeHtml(displayText)}</span>`;
+                            Tooltip.bind(item, dimInfo ? `${h.class} — ${dimInfo.name}` : (h.class || h.id));
+                            item.onclick = () => {
+                                let displayHunter = h;
+                                const stored = localStorage.getItem(`hunter_${h.id}`);
+                                if (stored) try { displayHunter = JSON.parse(stored); } catch(e) {}
+                                selectedItem = { type: "hunter", data: displayHunter };
+                                renderTree();
+                                renderViewer();
+                            };
+                            container.appendChild(item);
+                        });
+                        groupDetails.appendChild(container);
+                        hunterSec.appendChild(groupDetails);
+                    }
                 }
             }
             treeBody.appendChild(hunterSec);
             const divider1 = document.createElement("div");
-            divider1.style.cssText = "border-top:1px solid #1a1d24; margin:6px 0;";
+            divider1.className = "explorer-divider";
             treeBody.appendChild(divider1);
+            
             // Dimensions section
             const dimSec = document.createElement("div");
             const dimHdr = document.createElement("div");
-            dimHdr.style.cssText = `padding:6px 14px; cursor:pointer; font-size:10px; letter-spacing:1.5px; color:var(--text-secondary); text-transform:uppercase; display:flex; align-items:center; gap:7px; user-select:none; border-bottom:1px solid #1a1d24;`;
-            dimHdr.innerHTML = `<span style="color:var(--accent-primary); font-size:10px; width:8px;">${expandDims ? "▼" : "▶"}</span><span>Dimensiones</span><span style="color:var(--text-muted); font-size:9px; margin-left:auto;">${dims.length}</span>`;
+            dimHdr.className = "explorer-section-header";
+            dimHdr.innerHTML = `<span>${expandDims ? "▼" : "▶"}</span><span>Dimensiones</span><span class="counter">${dims.length}</span>`;
             dimHdr.onclick = () => { expandDims = !expandDims; renderTree(); };
             dimSec.appendChild(dimHdr);
             if (expandDims) {
                 if (dims.length === 0) {
                     const empty = document.createElement("div");
-                    empty.style.cssText = "padding:6px 14px 6px 28px; font-size:10px; color:var(--text-muted); font-style:italic;";
+                    empty.className = "explorer-empty";
                     empty.textContent = "dimensions.json no encontrado.";
                     dimSec.appendChild(empty);
                 } else {
@@ -965,12 +1010,10 @@ async function loadApp(name, el, data) {
                         const isActive = selectedItem?.type === "dimension" && selectedItem?.data?.id === d.id;
                         const count = hunterFiles.filter(h => h.dimension_id === d.id).length;
                         const item = document.createElement("div");
-                        item.style.cssText = `padding:5px 14px 5px 28px; cursor:pointer; font-size:10px; font-family:monospace; letter-spacing:0.3px; color:${isActive ? "var(--accent-warning)" : "var(--text-muted)"}; background:${isActive ? "#1a1d26" : "transparent"}; border-left:2px solid ${isActive ? "var(--accent-warning)" : "transparent"}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;`;
+                        item.className = `explorer-dimension-item ${isActive ? "active" : ""}`;
                         item.title = d.name;
-                        item.innerHTML = `<span style="color:var(--accent-primary); font-size:9px;">⬡</span><span style="overflow:hidden; text-overflow:ellipsis; flex:1;">${escapeHtml(d.name)}</span>${count > 0 ? `<span style="color:var(--accent-primary); font-size:9px; background:#0a0c10; padding:1px 5px; border:1px solid var(--border-light); flex-shrink:0;">${count}</span>` : ""}`;
+                        item.innerHTML = `<span style="color:var(--accent-primary); font-size:9px;">⬡</span><span style="overflow:hidden; text-overflow:ellipsis; flex:1;">${escapeHtml(d.name)}</span>${count > 0 ? `<span class="explorer-dimension-badge">${count}</span>` : ""}`;
                         Tooltip.bind(item, d.tagline || d.description || d.name);
-                        item.addEventListener("mouseenter", () => { if (!isActive) item.style.background = "#14161e"; });
-                        item.addEventListener("mouseleave", () => { if (!isActive) item.style.background = "transparent"; });
                         item.onclick = () => {
                             selectedItem = { type: "dimension", data: d };
                             renderTree();
@@ -982,19 +1025,20 @@ async function loadApp(name, el, data) {
             }
             treeBody.appendChild(dimSec);
             const divider2 = document.createElement("div");
-            divider2.style.cssText = "border-top:1px solid #1a1d24; margin:6px 0;";
+            divider2.className = "explorer-divider";
             treeBody.appendChild(divider2);
+            
             // Bestiary section
             const bestSec = document.createElement("div");
             const bestHdr = document.createElement("div");
-            bestHdr.style.cssText = `padding:6px 14px; cursor:pointer; font-size:10px; letter-spacing:1.5px; color:var(--text-secondary); text-transform:uppercase; display:flex; align-items:center; gap:7px; user-select:none; border-bottom:1px solid #1a1d24;`;
-            bestHdr.innerHTML = `<span style="color:var(--accent-primary); font-size:10px; width:8px;">${expandBestiary ? "▼" : "▶"}</span><span>Bestiario</span><span style="color:var(--text-muted); font-size:9px; margin-left:auto;">⚔️</span>`;
+            bestHdr.className = "explorer-section-header";
+            bestHdr.innerHTML = `<span>${expandBestiary ? "▼" : "▶"}</span><span>Bestiario</span><span class="counter">[B]</span>`;
             bestHdr.onclick = () => { expandBestiary = !expandBestiary; renderTree(); };
             bestSec.appendChild(bestHdr);
             if (expandBestiary) {
                 const bestItem = document.createElement("div");
-                bestItem.style.cssText = `padding:5px 14px 5px 28px; cursor:pointer; font-size:10px; font-family:monospace; letter-spacing:0.3px; color:${selectedItem?.type === "bestiary" ? "var(--accent-warning)" : "var(--text-muted)"}; background:${selectedItem?.type === "bestiary" ? "#1a1d26" : "transparent"}; border-left:2px solid ${selectedItem?.type === "bestiary" ? "var(--accent-warning)" : "transparent"}; display:flex; align-items:center; gap:6px;`;
-                bestItem.innerHTML = `<span style="color:var(--accent-primary); font-size:9px;">📖</span><span>Tipos elementales y criaturas</span>`;
+                bestItem.className = `explorer-bestiary-item ${selectedItem?.type === "bestiary" ? "active" : ""}`;
+                bestItem.innerHTML = `<span style="color:var(--accent-primary); font-size:9px;"></span><span>Tipos elementales y criaturas</span>`;
                 bestItem.onclick = () => {
                     selectedItem = { type: "bestiary", data: null };
                     renderTree();
@@ -1067,21 +1111,23 @@ async function loadApp(name, el, data) {
                 <div class="export-hunter">
                     <h3>${escapeHtml(h.name || h.id)}</h3>
                     <div style="font-size:9px; color:var(--text-muted); margin-bottom:8px;">ID: ${escapeHtml(h.id)}</div>
-                    <div style="display:grid; grid-template-columns:200px 1fr; gap:10px; margin-top:8px;">
-                        <div class="panel" style="padding:8px;">${h.images?.[0] ? `<img src="${escapeHtml(h.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div style="height:180px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:10px;">SIN IMAGEN</div>`}</div>
-                        <div class="panel">
+                    <div class="hunter-view-grid">
+                        <div class="panel hunter-image-panel">
+                            ${h.images?.[0] ? `<img src="${escapeHtml(h.images[0])}" style="width:100%; image-rendering:pixelated;">` : `<div class="editor-preview-no-image">SIN IMAGEN</div>`}
+                        </div>
+                        <div class="panel hunter-info-panel">
                             <p style="margin-bottom:4px;"><b id="fv-class">${escapeHtml(h.class)}</b> &nbsp;—&nbsp; <span id="fv-mbti">${escapeHtml(mbtiDisplay)}</span></p>
                             <p style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">${escapeHtml(h.gender || "")}</p>
-                            ${hunterDim ? `<div style="margin-bottom:10px; padding:6px 10px; background:#0a0c10; border:1px solid var(--accent-primary); border-left:3px solid var(--accent-primary);"><div style="font-size:9px; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase;">Dimensión de Origen</div><span id="fv-dim" style="color:var(--accent-warning); font-weight:bold; font-size:12px; cursor:pointer; text-decoration:underline dotted var(--accent-primary);">${escapeHtml(hunterDim.name)}</span></div>` : ""}
+                            ${hunterDim ? `<div class="hunter-dimension-block"><div class="hunter-dimension-label">Dimensión de Origen</div><span id="fv-dim" class="hunter-dimension-name">${escapeHtml(hunterDim.name)}</span></div>` : ""}
                             <h3 id="fv-concepts-h" style="font-size:11px; margin-bottom:6px;">Conceptos</h3>
                             <div class="concept-row"><span class="concept-label" id="fv-fn">FN</span><span>${escapeHtml(fnText)}</span></div>
                             ${aeText !== null ? `<div class="concept-row"><span class="concept-label" id="fv-ae">AE</span><span>${escapeHtml(aeText)}</span></div>` : ""}
                             <div class="concept-row"><span class="concept-label" id="fv-an">AN</span><span>${escapeHtml(anText)}</span></div>
                         </div>
                     </div>
-                    <div class="panel" style="margin-top:8px;"><h3>Estadísticas</h3><div class="stats-grid"><div class="stat-item"><span class="stat-label">HP</span><span class="stat-value">${stats.hp}</span></div><div class="stat-item"><span class="stat-label">MP</span><span class="stat-value">${stats.mp}</span></div><div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value">${stats.speed}</span></div><div class="stat-item"><span class="stat-label">Strength</span><span class="stat-value">${stats.strength}</span></div><div class="stat-item"><span class="stat-label">Magic Power</span><span class="stat-value">${stats.magicpower}</span></div><div class="stat-item"><span class="stat-label">Defense</span><span class="stat-value">${stats.defense}</span></div><div class="stat-item"><span class="stat-label">Magic Defense</span><span class="stat-value">${stats.magicdefense}</span></div><div class="stat-item"><span class="stat-label">Evasion</span><span class="stat-value">${stats.evasion}</span></div><div class="stat-item"><span class="stat-label">Accuracy</span><span class="stat-value">${stats.accuracy}</span></div></div></div>
+                    <div class="panel" style="margin-top:8px;"><h3>Estadísticas</h3><div class="stats-grid">...</div></div>
                     <div class="panel" style="margin-top:8px;"><h3>Descripción</h3><p>${escapeHtml(h.description || "Sin descripción.")}</p></div>
-                    <div class="panel" style="margin-top:8px;"><h3>Habilidades</h3><p style="margin-bottom:8px;"><b id="fv-passive-lbl">Pasiva:</b> ${escapeHtml(h.passive || "—")}</p><p style="margin-bottom:6px;"><b id="fv-active-lbl">Activa — Árbol de habilidad</b></p>${renderSkillTreeHTML(h.active)}</div>
+                    <div class="panel" style="margin-top:8px;"><h3>Habilidades</h3>...</div>
                     ${weaponHtml}
                 </div>
                 <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
@@ -1090,6 +1136,7 @@ async function loadApp(name, el, data) {
                     <button class="btn-export" id="fv-export-btn" title="Exportar perfil como PNG">⬇ PNG</button>
                 </div>
             </div>`;
+            
             viewer.querySelector("#fv-export-btn").onclick = () => exportAsPng(viewer.querySelector(".export-hunter"), `hunter_${h.id}`);
             const cdesc = classDesc(h.class);
             const mdesc = mbtiDesc(h.mbti);
@@ -1117,21 +1164,20 @@ async function loadApp(name, el, data) {
             viewer.innerHTML = `
             <div class="panel">
                 <div class="export-dimension">
-                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+                    <div class="dimension-header">
                         <div><h3 class="dimension-title" style="margin-bottom:2px;">${escapeHtml(d.name)}</h3><span style="font-size:9px; color:var(--text-muted); letter-spacing:1px;">${escapeHtml(d.id)}</span></div>
-                        <div style="padding:4px 10px; background:#0a0c10; border:1px solid var(--accent-primary); font-size:10px; color:var(--accent-primary); letter-spacing:1px; text-transform:uppercase;">${related.length} Hunter${related.length !== 1 ? "s" : ""}</div>
+                        <div class="dimension-hunter-count">${related.length} Hunter${related.length !== 1 ? "s" : ""}</div>
                     </div>
-                    ${d.image ? `<div class="panel" style="margin-bottom:10px; padding:8px; text-align:center;"><img src="${escapeHtml(d.image)}" style="max-width:100%; max-height:220px; image-rendering:pixelated;"></div>` : ""}
+                    ${d.image ? `<div class="dimension-image"><img src="${escapeHtml(d.image)}"></div>` : ""}
                     <div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Descripción</h3><p>${escapeHtml(d.description || "Sin descripción.")}</p></div>
-                    ${d.lore ? `<div class="panel" style="margin-bottom:8px; border-left:3px solid var(--accent-warning);"><h3 style="font-size:11px; color:var(--accent-primary);">Lore</h3><p style="font-style:italic; line-height:1.75;">${escapeHtml(d.lore)}</p></div>` : ""}
-                    ${suggestedClassObjs.length > 0 ? `<div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Clases sugeridas para esta dimensión</h3><div id="dim-class-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div></div>` : ""}
-                    ${d.suggested_enemies && d.suggested_enemies.length ? `<div class="panel" style="margin-bottom:8px;"><h3 style="font-size:11px;">Enemigos comunes</h3><div id="dim-enemies-list" style="display:flex; flex-direction:column; gap:6px; margin-top:4px;"></div></div>` : ""}
-                    <div class="panel" style="margin-top:8px;"><h3 style="font-size:11px;">Hunters de esta dimensión</h3>${related.length === 0 ? `<p style="color:var(--text-muted); font-style:italic; font-size:11px;">Ningún hunter registrado en esta dimensión todavía.</p>` : `<div id="dim-hunter-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div>`}</div>
+                    ${d.lore ? `<div class="dimension-lore"><h3 style="font-size:11px; color:var(--accent-primary);">Lore</h3><p style="font-style:italic; line-height:1.75;">${escapeHtml(d.lore)}</p></div>` : ""}
+                    ${suggestedClassObjs.length > 0 ? `<div class="dimension-classes"><h3 style="font-size:11px;">Clases sugeridas para esta dimensión</h3><div id="dim-class-list" class="dim-class-list"></div></div>` : ""}
+                    ${d.suggested_enemies && d.suggested_enemies.length ? `<div class="dimension-enemies"><h3 style="font-size:11px;">Enemigos comunes</h3><div id="dim-enemies-list"></div></div>` : ""}
+                    <div class="dimension-hunters"><h3 style="font-size:11px;">Hunters de esta dimensión</h3>${related.length === 0 ? `<p style="color:var(--text-muted); font-style:italic; font-size:11px;">Ningún hunter registrado en esta dimensión todavía.</p>` : `<div id="dim-hunter-list" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div>`}</div>
                 </div>
-                <div style="margin-top:10px;">
-                    <button class="btn-export" id="dim-export-btn" title="Exportar dimensión como PNG">⬇ Exportar PNG</button>
-                </div>
+                <div style="margin-top:10px;"><button class="btn-export" id="dim-export-btn" title="Exportar dimensión como PNG">⬇ Exportar PNG</button></div>
             </div>`;
+            
             const dimTitle = viewer.querySelector(".dimension-title");
             if (dimTitle && d.tagline) Tooltip.bind(dimTitle, d.tagline);
             if (suggestedClassObjs.length > 0) {
@@ -1177,10 +1223,13 @@ async function loadApp(name, el, data) {
                 const list = viewer.querySelector("#dim-hunter-list");
                 related.forEach(h => {
                     const row = document.createElement("div");
-                    row.style.cssText = `display:flex; align-items:center; gap:8px; padding:6px 10px; background:#0d0f14; border:1px solid var(--border-light); cursor:pointer; transition:background 0.05s;`;
+                    row.className = "dimension-hunter-row";
                     const hunterDisplayName = h.name ? `${h.name} (${h.id})` : h.id;
                     const mbtiDisplay = h.mbti_subtype ? `${h.mbti} · ${h.mbti_subtype}` : h.mbti;
-                    row.innerHTML = `<span class="concept-label" style="flex-shrink:0;">${escapeHtml(h.class)}</span><span style="font-family:monospace; font-size:11px; color:var(--text-secondary);">${escapeHtml(hunterDisplayName)}</span><span style="font-size:10px; color:var(--text-muted); margin-left:auto;">${escapeHtml(mbtiDisplay)} · ${escapeHtml(h.gender || "")}</span><span style="font-size:10px; color:var(--accent-primary);">→</span>`;
+                    row.innerHTML = `<span class="concept-label dimension-hunter-class">${escapeHtml(h.class)}</span>
+                         <span class="dimension-hunter-name">${escapeHtml(hunterDisplayName)}</span>
+                         <span class="dimension-hunter-meta">${escapeHtml(mbtiDisplay)} · ${escapeHtml(h.gender || "")}</span>
+                         <span class="dimension-hunter-arrow">→</span>`;
                     row.addEventListener("mouseenter", () => row.style.background = "#1a1d26");
                     row.addEventListener("mouseleave", () => row.style.background = "#0d0f14");
                     row.onclick = () => {

@@ -1,9 +1,10 @@
 ﻿[
   {
     "id": "H-0000473851963",
+    "game": "Awakening",
     "name": "Metztli",
     "gender": "Masculino (Andrógino)",
-    "class": "Fractal Resonante (comunicador de combate)",
+    "class": "Avatar de la Luna (Metztli)",
     "mbti": "Analista",
     "mbti_subtype": "INFJ",
     "dimension_id": "DIM-6084206892469",
@@ -14,7 +15,9 @@
       "paths": []
     },
     "description": "Hijo de madre azteca y padre mexica, nació como un símbolo viviente de dos herencias que convergen en su identidad. Su apariencia, de rasgos suaves y andróginos pero marcada por la fortaleza de un guerrero, refleja esa dualidad. Sin embargo, su verdadero destino trasciende lo humano: fue elegido como avatar de Meztli, canalizando un poder antiguo que le permite sanar a sus aliados y herir a sus enemigos, equilibrando vida y destrucción como la luna en sus ciclos. En su dimensión es visto como una figura casi heroica, aunque él rehúye ese lugar. Al alcanzar la mayoría de edad, fue reclutado por la Asociación de Cazadores y enviado de inmediato como refuerzo a una misión en la dimensión de Javiera, donde decidió ocultar su identidad adoptando la estética de una tribu urbana gótica para pasar desapercibido.\n\nReservado y tímido, carga con el peso de un rol que nunca buscó. No desea reconocimiento ni ser elevado por otros; por el contrario, le incomoda profundamente ser visto como algo más que una persona común. Aun así, su impulso de ayudar a su pueblo, amigos y compañeros es inquebrantable, incluso cuando eso lo obliga a exponerse. Vive con el constante temor de cometer un error, no por orgullo, sino porque entiende que sus decisiones pueden afectar a muchos más que a él mismo. Como todos los avatares, ha dejado atrás su nombre de nacimiento: ahora es conocido simplemente como Meztli, un nombre que representa tanto su poder como la carga silenciosa que lleva consigo.",
-    "images": [],
+    "images": [
+      "https://i.imgur.com/wU9uixp.png"
+    ],
     "stats": {
       "hp": 10,
       "mp": 10,
@@ -36,6 +39,7 @@
   },
   {
     "id": "H-1776999818457",
+    "game": "Vega",
     "name": "Fasila",
     "gender": "Femenino",
     "class": "Fractal Resonante (comunicador de combate)",
@@ -79,6 +83,7 @@
   },
   {
     "id": "H-1777006969292",
+    "game": "Vega",
     "name": "Renjiro",
     "gender": "Masculino",
     "class": "Domador de Kuroyū (controlador)",
