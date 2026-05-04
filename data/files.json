@@ -124,5 +124,48 @@
       "damage": 2,
       "effect": "pacifica a un enjambre de Kuroyū"
     }
+  },
+  {
+    "id": "H-4736008961202",
+    "game": "Vega",
+    "name": "Iter",
+    "gender": "No binario",
+    "class": "Irruptor",
+    "mbti": "Analista",
+    "mbti_subtype": "INTJ",
+    "dimension_id": null,
+    "concepts": [
+      "Dobla el espacio tiempo para alcanzar a su objetivo"
+    ],
+    "passive": null,
+    "active": {
+      "base": "Wormhole",
+      "paths": [
+        null,
+        null
+      ]
+    },
+    "description": null,
+    "images": [
+      null
+    ],
+    "stats": {
+      "hp": 20,
+      "mp": 10,
+      "speed": 10,
+      "strength": 10,
+      "magicpower": 10,
+      "defense": 10,
+      "magicdefense": 10,
+      "evasion": 5,
+      "accuracy": 100
+    },
+    "weapon": {
+      "name": null,
+      "description": null,
+      "type": null,
+      "damage": null,
+      "effect": null
+    }
   }
 ]
