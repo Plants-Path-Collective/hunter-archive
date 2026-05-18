@@ -133,7 +133,7 @@
     "class": "Irruptor",
     "mbti": "Analista",
     "mbti_subtype": "INTJ",
-    "dimension_id": null,
+    "dimension_id": "DIM-8372910456",
     "concepts": [
       "Dobla el espacio tiempo para alcanzar a su objetivo"
     ],
@@ -151,20 +151,20 @@
     ],
     "stats": {
       "hp": 20,
-      "mp": 10,
+      "mp": 15,
       "speed": 10,
-      "strength": 10,
-      "magicpower": 10,
-      "defense": 10,
-      "magicdefense": 10,
+      "strength": 40,
+      "magicpower": 25,
+      "defense": 25,
+      "magicdefense": 5,
       "evasion": 5,
       "accuracy": 100
     },
     "weapon": {
-      "name": null,
-      "description": null,
-      "type": null,
-      "damage": null,
+      "name": "Desarmado",
+      "description": "Combate a puño limpio, sin utilizar armas.",
+      "type": "Físico",
+      "damage": 10,
       "effect": null
     }
   }

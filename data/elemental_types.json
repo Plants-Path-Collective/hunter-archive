@@ -1,5 +1,6 @@
 {
   "elemental_types": [
+    { "name": "Físico", "advantage": null, "disadvantage": null },
     { "name": "Fuego", "advantage": ["Hielo", "Planta"], "disadvantage": ["Agua", "Tierra"] },
     { "name": "Agua", "advantage": ["Fuego", "Tierra"], "disadvantage": ["Rayo", "Planta"] },
     { "name": "Tierra", "advantage": ["Rayo", "Fuego"], "disadvantage": ["Agua", "Hielo"] },
