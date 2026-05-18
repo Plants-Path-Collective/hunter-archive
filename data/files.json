@@ -38,6 +38,44 @@
     }
   },
   {
+    "id": "H-0000000000101",
+    "game": "Awakening",
+    "name": "Brok Astor",
+    "gender": "Masculino",
+    "class": "Mercenario",
+    "mbti": "Analista",
+    "mbti_subtype": "ENTJ",
+    "dimension_id": "DIM-8372910456",
+    "concepts": [],
+    "passive": null,
+    "active": {
+      "base": "Aguantar: Absorbe daño y luego devuelve parte de él en un solo ataque, luego recupera parte del HP perdido.",
+      "paths": []
+    },
+    "description": "Brok Astor es un mercenario originario de Nix Umbra (la dimensión DIM-8372910456) que ahora opera desde la Ciudadela, un nexo interdimensional donde tiene su sede la Asociación de los Hunters, organización dedicada a mantener el equilibrio multiversal. Con una filosofía estrictamente profesional, Brok viaja entre líneas temporales como un observador neutral: contempla el destino de cada mundo con desapego y se niega rotundamente a intervenir a menos que haya un pago de por medio. Fuera de sus contratos, es un hombre tranquilo que prefiere pasar las horas en el bar de la Ciudadela, pero esa calma se transforma en letalidad absoluta si es provocado o cuando caza criaturas. En combate, destaca por una habilidad única que lo convierte en un guerrero de desgaste implacable: es capaz de absorber y almacenar todo el daño que le infligen sus enemigos para luego liberarlo en un contraataque devastador, un proceso que canaliza para sanar sus propias heridas mientras destruye a su objetivo.",
+    "images": [
+      null
+    ],
+    "stats": {
+      "hp": 10,
+      "mp": 10,
+      "speed": 10,
+      "strength": 10,
+      "magicpower": 10,
+      "defense": 10,
+      "magicdefense": 10,
+      "evasion": 5,
+      "accuracy": 100
+    },
+    "weapon": {
+      "name": null,
+      "description": null,
+      "type": null,
+      "damage": null,
+      "effect": null
+    }
+  },
+  {
     "id": "H-1776999818457",
     "game": "Vega",
     "name": "Fasila",
