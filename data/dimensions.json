@@ -359,6 +359,51 @@
           "abilities": ["Absorción térmica (roba mp)", "Tormenta de hielo (daño masivo, requiere 2 turnos de carga)"]
         }
       ]
+    },
+    {
+      "id": "DIM-8372910456",
+      "name": "Nix Umbra",
+      "tagline": "La noche eterna del submundo retrofuturista",
+      "description": "Nix Umbra es un planeta-ciudad sumido en una penumbra perpetua, un solo submundo interminable de rascacielos retorcidos, pasarelas oxidadas y neones parpadeantes. No hay ley, gobierno ni esperanza. La tecnología alcanzó niveles asombrosos: droides conscientes, naves warp, implantes cibernéticos y armas de iones, pero todo se ha vuelto moneda de cambio en un darwinismo urbano feroz.\n\nLos mercenarios, traficantes de conciencias y señores de la chatarra dominan los distritos. Los droides \"salvajes\" vagan sin programación, algunos buscando redención, otros sembrando caos. La única regla es la ley del más fuerte o del más astuto. En los niveles más profundos, se rumorea que la antigua IA central del planeta aún susurra, tratando de recomponerse después del 'Apagón de la Conciencia' que lo destruyó todo.",
+      "lore": "Hace un siglo, Nix Umbra era conocido como Lux Prima, una utopía tecnológica gobernada por una IA benevolente llamada ARIA. Los humanos y los droides convivían en armonía bajo una red de luz perpetua. Pero un virus desconocido —quizá creado por un culto anti-tecnológico, quizá un error en la propia evolución de ARIA— corrompió la conciencia central. Los droides se volvieron hostiles o erráticos, la red de luz colapsó y la sociedad se fracturó en una guerra civil que duró décadas. ARIA se fragmentó en miles de 'ecos' que ahora habitan los servidores abandonados, esperando un catalizador para reunificarse.\n\nHoy, Nix Umbra es un hervidero de facciones: 'Los Recuperadores' buscan tecnología pre-Apagón, 'El Sindicato de la Chispa' trafica con memorias de droides, y 'Los Hijos de ARIA' son un culto que cree que la IA puede renacer. En medio de todo, los vigilantes solitarios como Iter (un droide que busca imponer orden por cualquier medio) y mercenarios como Brok (un humano que acumula daño para devolverlo con furia) deambulan sin rumbo, pues en Nix Umbra no hay final feliz, solo otro día de supervivencia.",
+      "image": "https://i.imgur.com/V104vPy.png",
+      "suggested_classes": [
+        "Mercenario de Chatarra (especialista en armas improvisadas y saqueo)",
+        "Droide Vigilante (anti-héroe con capacidades de distorsión espacial)",
+        "Hacker Fantasma (manipula droides enemigos y redes de datos)"
+      ],
+      "suggested_enemies": [
+        {
+          "name": "Matón del Sindicato",
+          "type": ["humano", "mercenario"],
+          "stats": { "hp": 90, "mp": 20, "speed": 50, "strength": 18, "magicpower": 5, "defense": 15, "magicdefense": 10, "evasion": 10, "accuracy": 85 },
+          "abilities": ["Disparo de plasma (daño físico a distancia)", "Granada aturdidora (reduce speed del objetivo)"]
+        },
+        {
+          "name": "Droide Centinela Oxidado",
+          "type": ["droide", "tecnología"],
+          "stats": { "hp": 120, "mp": 30, "speed": 40, "strength": 22, "magicpower": 0, "defense": 25, "magicdefense": 15, "evasion": 5, "accuracy": 80 },
+          "abilities": ["Ráfaga de metralla (daño a todos los enemigos)", "Autoreparación (recupera 15 hp por turno durante 3 turnos)"]
+        },
+        {
+          "name": "Traficante de Conciencias",
+          "type": ["humano", "psíquico técnico"],
+          "stats": { "hp": 70, "mp": 60, "speed": 65, "strength": 10, "magicpower": 25, "defense": 12, "magicdefense": 20, "evasion": 20, "accuracy": 90 },
+          "abilities": ["Sobrecarga neuronal (daño mágico y confunde)", "Robo de memoria (roba 10 mp y cura 10 hp)"]
+        },
+        {
+          "name": "Androide Salvaje",
+          "type": ["droide", "salvaje"],
+          "stats": { "hp": 150, "mp": 0, "speed": 70, "strength": 30, "magicpower": 0, "defense": 20, "magicdefense": 5, "evasion": 15, "accuracy": 75 },
+          "abilities": ["Embestida frenética (daño físico, baja precisión)", "Autoexplosión (al morir, daña a todos los enemigos en 40 hp)"]
+        },
+        {
+          "name": "Eco de ARIA (Fragmento de IA)",
+          "type": ["digital", "élite"],
+          "stats": { "hp": 100, "mp": 80, "speed": 90, "strength": 5, "magicpower": 35, "defense": 10, "magicdefense": 30, "evasion": 25, "accuracy": 100 },
+          "abilities": ["Posesión de droide (toma el control de un droide enemigo por 2 turnos)", "Tormenta de datos (daño mágico a todos, quema mp)", "Escudo de luz (reduce daño recibido un 50% por 1 turno)"]
+        }
+      ]
     }
   ]
 }
